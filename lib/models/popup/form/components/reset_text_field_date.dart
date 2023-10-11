@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../../config/theme.dart';
 import 'Labels.dart';
 
-class ResetTextField extends StatelessWidget {
-  const ResetTextField({
+class ResetTextFieldDate extends StatelessWidget {
+  const ResetTextFieldDate({
     Key? key,
     this.autoFocus = false,
     required this.placeholder,
@@ -30,8 +29,6 @@ class ResetTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      //https://stackoverflow.com/questions/70830888/how-to-restrict-flutter-textfield-or-textformfield-to-accept-only-english-langua
-      inputFormatters: [sFormats('')], // for resctric input character
       autofocus: autoFocus,
       cursorColor: BrandColors.secondary,
       controller: textController,
@@ -40,7 +37,7 @@ class ResetTextField extends StatelessWidget {
         hintText: placeholder,
         hintStyle: TextStyle(
           color: Colors.grey[500],
-          fontWeight: FontWeight.normal, //43 12 55 26
+          fontWeight: FontWeight.normal,
         ),
         contentPadding: const EdgeInsets.symmetric(vertical: 14),
         isCollapsed: true,
@@ -57,11 +54,5 @@ class ResetTextField extends StatelessWidget {
         fontWeight: FontWeight.w500,
       ),
     );
-  }
-
-  FilteringTextInputFormatter sFormats(String ipFormat) {
-    //FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]'));
-
-    return FilteringTextInputFormatter.deny('');
   }
 }

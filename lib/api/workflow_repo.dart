@@ -5,7 +5,7 @@ import 'api.dart';
 class WorkflowRepo {
   const WorkflowRepo();
 
-  static Future<Response<List>> getWorkflows(Map<String, String> payload) {
+/*  static Future<Response<List>> getWorkflows(Map<String, String> payload) {
     return Api().client().post<List>('/Mobile/getWorkflows', data: payload);
   }
 
@@ -58,5 +58,5 @@ class WorkflowRepo {
 
   static Future<Response<Map>> processTicket(Map<String, dynamic> payload) {
     return Api().client().post<Map>('/Mobile/processTicket', data: payload);
-  }
+  }*/
 }

@@ -12,7 +12,11 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 class Panel extends StatefulWidget {
   final String sHeading;
   final String sDescription;
-  const Panel({required this.sHeading, required this.sDescription});
+  final bool sVisible;
+  const Panel(
+      {required this.sHeading,
+      required this.sDescription,
+      required this.sVisible});
   PanelState createState() => PanelState();
 }
 
@@ -32,8 +36,8 @@ class PanelState extends State<Panel> {
     return Container(
         margin: EdgeInsets.fromLTRB(5, 2, 5, 2),
         padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-        height: 40,
-        // color: Colors.black12,
+        //height: 40,
+        //color: Colors.red,
         alignment: Alignment.centerLeft,
         child: Column(
             //mainAxisSize: MainAxisSize.min,
@@ -45,6 +49,7 @@ class PanelState extends State<Panel> {
                   ? DefaultTextStyle(
                       style: TextStyle(decoration: TextDecoration.none),
                       child: Text(
+                          overflow: TextOverflow.ellipsis,
                           widget
                               .sHeading, //  '${myBooks[index]["name"]}',  print(item['settings']['title']); datas
                           style: TextStyle(
@@ -57,6 +62,8 @@ class PanelState extends State<Panel> {
                   ? DefaultTextStyle(
                       style: TextStyle(decoration: TextDecoration.none),
                       child: Text(widget.sDescription,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 4,
                           style: TextStyle(
                               //fontSize: 14,
                               fontSize: 12,

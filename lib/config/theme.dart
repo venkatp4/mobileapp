@@ -82,4 +82,11 @@ class BrandColors {
     700: Color(0xFF0000F4),
   });
   static const int _grayAccentValue = 0xFF4141FF;
+
+  static const MaterialColor formtextColor =
+      MaterialColor(_primaryAccentValue, <int, Color>{
+    50: Color(0xFF94a3b8),
+    100: Color(0xFF1e293b),
+    200: Color(0xFF64748b),
+  });
 }

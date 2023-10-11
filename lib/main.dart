@@ -21,7 +21,7 @@ import 'controllers/signup_controller.dart';
 import 'controllers/taskcontroller.dart';
 import 'controllers/taskmaincontroller.dart';
 import 'controllers/webmaincontroller.dart';
-import 'package:local_auth/local_auth.dart';
+//import 'package:local_auth/local_auth.dart';
 import 'models/popup/controllers/commentcontroller.dart';
 
 void initialize() {
@@ -121,7 +121,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Authentication {
+/*class Authentication {
   static Future<bool> authenticateWithBiometrics() async {
     LocalAuthentication localAuthentication = LocalAuthentication();
     bool isBiometricSupported = await localAuthentication.isDeviceSupported();
@@ -139,4 +139,4 @@ class Authentication {
 
     return isAuthenticated;
   }
-}
+}*/

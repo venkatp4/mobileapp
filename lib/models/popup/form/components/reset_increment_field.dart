@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 import '../../../../config/theme.dart';
 import 'Labels.dart';
 
-class ResetTextField extends StatelessWidget {
-  const ResetTextField({
+class ResetIncrementField extends StatelessWidget {
+  const ResetIncrementField({
     Key? key,
     this.autoFocus = false,
     required this.placeholder,
@@ -29,9 +29,28 @@ class ResetTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      //https://stackoverflow.com/questions/70830888/how-to-restrict-flutter-textfield-or-textformfield-to-accept-only-english-langua
-      inputFormatters: [sFormats('')], // for resctric input character
+    return NumberInputWithIncrementDecrement(
+      controller: textController,
+      textAlign: TextAlign.left,
+      numberFieldDecoration: InputDecoration(
+        border: InputBorder.none,
+      ),
+      incDecBgColor: Colors.white,
+      decIconColor: Color(0xFF64748b),
+      incIconColor: Color(0xFF64748b),
+      incIcon: Icons.keyboard_arrow_up_rounded,
+      decIcon: Icons.keyboard_arrow_down_rounded,
+      separateIcons: true,
+      style: TextStyle(
+        fontFamily: 'Outfit',
+        color: Color(0xFF1e293b),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      widgetContainerDecoration: BoxDecoration(),
+      enabled: true,
+    );
+    /*return TextField(
       autofocus: autoFocus,
       cursorColor: BrandColors.secondary,
       controller: textController,
@@ -40,7 +59,7 @@ class ResetTextField extends StatelessWidget {
         hintText: placeholder,
         hintStyle: TextStyle(
           color: Colors.grey[500],
-          fontWeight: FontWeight.normal, //43 12 55 26
+          fontWeight: FontWeight.normal,
         ),
         contentPadding: const EdgeInsets.symmetric(vertical: 14),
         isCollapsed: true,
@@ -56,12 +75,6 @@ class ResetTextField extends StatelessWidget {
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-    );
-  }
-
-  FilteringTextInputFormatter sFormats(String ipFormat) {
-    //FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]'));
-
-    return FilteringTextInputFormatter.deny('');
+    );*/
   }
 }

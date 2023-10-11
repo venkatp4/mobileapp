@@ -26,10 +26,11 @@ class BaseInputForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Labels(sLabel: sLable),
+    return Expanded(
+        child: Column(children: [
+      Labels(sLabel: sLable, bRequired: sOptional),
       SizedBox(
-        height: 4,
+        height: 5,
       ),
       GestureDetector(
         onTap: onTap,
@@ -51,18 +52,14 @@ class BaseInputForm extends StatelessWidget {
                 ),
                 const SizedBox(width: 12)
               ],
-
               // ...
-
               // children
-
               if (children != null) ...children!
-
               // ...
             ],
           ),
         ),
       )
-    ]);
+    ]));
   }
 }

@@ -18,7 +18,7 @@ class AaaEncryption {
   static decryptAESaaa(String encrptedString) {
     final encrypter = Encrypter(AES(KeyVal, mode: AESMode.cbc));
     var decrypted = encrypter.decrypt64(encrptedString, iv: IvVal);
-    print('2ddddddddddddddddddddddddddddddddddddddd');
+
     print(decrypted);
     return decrypted;
   }

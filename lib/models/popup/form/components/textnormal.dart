@@ -19,7 +19,7 @@ class _TextNormalState extends State<TextNormal> {
   @override
   Widget build(BuildContext context) {
     return Text(widget.sLabel,
-        maxLines: 2,
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
             fontSize: 16, color: Colors.black45, fontWeight: FontWeight.w400));

@@ -23,34 +23,34 @@ class _DividersState extends State<Dividers> {
   @override
   Widget build(BuildContext context) {
     switch (widget.sType) {
-      case 'solid':
+      case 'SOLID':
         return Container(
             margin: EdgeInsets.only(
               top: 5,
               bottom: 5,
             ),
             child: Divider(
-              height: 10,
-              color: Colors.black12,
+              height: 2,
+              color: Colors.grey.shade300,
               thickness: 2,
-              indent: 15,
-              endIndent: 15,
+              indent: 0,
+              endIndent: 0,
             ));
-      case 'Dotted':
+      case 'DOTTED':
         return Container(
             margin: EdgeInsets.only(
               top: 5,
               bottom: 5,
             ),
             child: CustomPaint(painter: DrawDottedhorizontalline()));
-      case 'Dashed':
+      case 'DASHED':
         return Container(
             margin: EdgeInsets.only(
               top: 5,
               bottom: 5,
             ),
             child: CustomPaint(painter: DrawDashhorizontalline()));
-      case 'double':
+      case 'DOUBLE':
         return Container(
             margin: EdgeInsets.only(
               top: 5,
@@ -59,18 +59,18 @@ class _DividersState extends State<Dividers> {
             child: Column(
               children: [
                 Divider(
-                  height: 10,
-                  color: Colors.black12,
+                  height: 2,
+                  color: Colors.grey.shade300,
                   thickness: 2,
-                  indent: 15,
-                  endIndent: 15,
+                  indent: 0,
+                  endIndent: 0,
                 ),
                 Divider(
-                  height: 10,
-                  color: Colors.black12,
+                  height: 2,
+                  color: Colors.grey.shade300,
                   thickness: 2,
-                  indent: 15,
-                  endIndent: 15,
+                  indent: 0,
+                  endIndent: 0,
                 )
               ],
             ));
@@ -81,10 +81,10 @@ class _DividersState extends State<Dividers> {
               bottom: 5,
             ),
             child: Divider(
-              color: Colors.black12,
+              color: Colors.grey.shade300,
               thickness: 2,
-              indent: 15,
-              endIndent: 15,
+              indent: 0,
+              endIndent: 0,
             ));
     }
   }
@@ -121,7 +121,7 @@ class DrawDashhorizontalline extends CustomPainter {
   Paint _paint = Paint();
   DrawDottedhorizontalline() {
     _paint = Paint();
-    _paint.color = Colors.black12; //dots color
+    _paint.color = Colors.grey.shade300; //dots color
     _paint.strokeWidth = 2; //dots thickness
     _paint.strokeCap = StrokeCap.square; //dots corner edges
   }
