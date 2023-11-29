@@ -2,20 +2,16 @@ import 'package:ez/widgets/textnormal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../config/theme.dart';
+
 import '../controllers/browse_view_controller.dart';
 import '../controllers/taskmaincontroller.dart';
-import '../layouts/auth/widgets/fab.dart';
+
 import '../layouts/search/SearchLayout.dart';
 
-import '../layouts/test/TestLayout.dart';
 import '../utils/helper/safe_area.dart';
-import '../widgets/batchwork.dart';
-import '../widgets/batchworkbrowse.dart';
+
 import '../widgets/batchworktaslcompleted.dart';
-import '../widgets/batchworkweb.dart';
-import '../widgets/batchworkwebservice.dart';
+
 import '../widgets/buttonrounded.dart';
 import 'package:get/get.dart';
 

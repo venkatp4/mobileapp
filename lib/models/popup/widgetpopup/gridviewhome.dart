@@ -5,9 +5,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../../utils/format_date_time.dart';
 import '../../../widgets/CustomWidget.dart';
 import '../controllers/gridviewhomecontroller.dart';
 import 'package:flutter/material.dart';
+
+import '../controllers/popupfullpagecontroller.dart';
 
 class GridViewHome extends StatefulWidget {
   @override //
@@ -16,62 +19,54 @@ class GridViewHome extends StatefulWidget {
 
 class _GridViewHomeState extends State<GridViewHome> {
   final controller = Get.put(GridViewHomeController());
+  final controllerpopup = Get.put(PopupFullPageController());
   var i = 0.obs;
 
   @override
   void initState() {
     super.initState();
-    //controller.
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    double dheight = mediaQuery.size.height * .7;
-    // TODO: implement build
-    final orientation = MediaQuery.of(context).orientation;
     return Container(
-        //width: mediaQuery.size.width,
-
-        /// not need
         child: Column(
       children: [
+        const SizedBox(
+          height: 20,
+        ),
         Expanded(
             flex: 70,
             child: controller.filedsnew.keys.length > 0
-                ? GridView.builder(
+                ? ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: controller.filedsnew.keys.length,
                     shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            (orientation == Orientation.portrait) ? 2 : 4,
-                        childAspectRatio: 2.4),
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                        margin: EdgeInsets.all(2),
+                        padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                        // margin: EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.grey
+                                  .shade200), /*borderRadius: BorderRadius.all(Radius.circular(5.0))*/
+                        ),
+                        child: Row(
                           children: [
-                            Text(
+                            Expanded(
+                                child: Text(
                               controller.filedsnew.keys.elementAt(index),
                               style: TextStyle(
                                   color: Colors.indigoAccent,
                                   fontWeight: FontWeight.w500,
                                   overflow: TextOverflow.ellipsis,
                                   fontSize: 14),
-                              maxLines: 1,
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            Text(
+                              maxLines: 2,
+                            )),
+                            VerticalDivider(width: 10.0),
+                            Expanded(
+                                child: Text(
                               controller.filedsnew.values.elementAt(index),
                               style: TextStyle(
                                   color: Colors.black87,
@@ -79,46 +74,50 @@ class _GridViewHomeState extends State<GridViewHome> {
                                   overflow: TextOverflow.ellipsis,
                                   fontSize: 16),
                               maxLines: 2,
-                            ),
+                            )),
                           ],
                         ),
                       );
                     },
                   )
-                : GridView.builder(
-                    scrollDirection: Axis.vertical,
+                : ListView.builder(
                     itemCount: 10,
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            (orientation == Orientation.portrait) ? 2 : 4,
-                        childAspectRatio: 2.4),
+                    // / shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         //padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                        //margin: EdgeInsets.all(2),
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                        child: Row(
                           children: [
-                            Container(
-                                //margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                child: ListTile(
+                            Expanded(
+                                child: Container(
+                                    child: ListTile(
+                              title: Align(
+                                alignment: Alignment.centerLeft,
+                                child: CustomWidget.rectangular(
+                                  height: 8,
+                                  width: MediaQuery.of(context).size.width * 0.3,
+                                ),
+                              ),
+                              // subtitle: CustomWidget.rectangular(height: 8),
+                            ))),
+                            Expanded(
+                                child: Container(
+                                    //margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                    child: ListTile(
                               //leading: CustomWidget.circular(height: 64, width: 64),
                               title: Align(
                                 alignment: Alignment.centerLeft,
                                 child: CustomWidget.rectangular(
                                   height: 8,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                  width: MediaQuery.of(context).size.width * 0.3,
                                 ),
                               ),
-                              subtitle: CustomWidget.rectangular(height: 8),
-                            ))
+                              // subtitle: CustomWidget.rectangular(height: 8),
+                            )))
                           ],
                         ),
                       );
@@ -162,9 +161,8 @@ class _GridViewHomeState extends State<GridViewHome> {
                                       color: Colors.black45,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 20),
-                                  child: Text(
-                                      new Random().nextInt(7).toString() +
-                                          ' Days Ago'),
+                                  child: Text(timeFormate(controllerpopup
+                                      .transaction_createdAt)), //       timeFormate(_inboxDetailss[index].raisedAt.trim()),
                                   maxLines: 2,
                                 )))),
                   ],
@@ -178,11 +176,17 @@ class _GridViewHomeState extends State<GridViewHome> {
                 width: double.infinity,
                 margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child: Center(
-                    child: ListView(
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controllerpopup.wButtons.length,
+                        itemBuilder: (context, index) {
+                          //filedatas item = controllerpopup.wButtons.elementAt(index);
+                          return controllerpopup.wButtons.elementAt(index);
+                        }) /*ListView(
                   scrollDirection: Axis.horizontal,
-                  children: <Widget>[
+                  children: <Widget>[controllerpopup.wButtons,
                     buttonGenerate(
-                        'Initate ',
+                        'Initate',
                         Colors.green,
                         Icon(
                           MdiIcons.arrowRight,
@@ -217,7 +221,8 @@ class _GridViewHomeState extends State<GridViewHome> {
                           color: Colors.red,
                         )),
                   ],
-                ))))
+                )*/
+                    )))
       ],
     ));
   }
@@ -230,8 +235,7 @@ class _GridViewHomeState extends State<GridViewHome> {
             textStyle: TextStyle(color: clr),
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(22.0),
-                side: BorderSide(width: 2, color: clr)),
+                borderRadius: BorderRadius.circular(22.0), side: BorderSide(width: 2, color: clr)),
           ),
           onPressed: () => {},
           icon: icn,

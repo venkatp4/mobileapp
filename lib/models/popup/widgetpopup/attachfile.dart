@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,16 @@ import '../../../api/auth_repo.dart';
 import '../../../utils/file_fns.dart';
 import '../../../utils/format_date_time.dart';
 import '../../../utils/helper/aes_encryption.dart';
+import '../../../widgets/MotionToastWidget.dart';
 import '../controllers/attachfilecontroller.dart';
+import 'package:get/get.dart';
+
+import '../controllers/popupfullpagecontroller.dart';
+import '../models/selectedFileUpload.dart';
+import '../models/selected_file.dart';
+import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 //import '../utils/format_date_time.dart';
 
 class AttachFiles extends StatefulWidget {
@@ -23,39 +33,38 @@ class AttachFiles extends StatefulWidget {
 
 class _AttachFilesState extends State<AttachFiles> {
   final controller = Get.put(AttcaheFileController());
+  final controllerpopup = Get.put(PopupFullPageController());
   int iSelectedFileCount = 0;
 
-  @override
+/*  @override
   void initState() {
-    print('Attatched File fffffffffffffffffff');
     super.initState();
     getFileDetails();
     //controller.
+  }*/
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getFileDetails();
   }
 
   void getFileDetails() async {
-    SharedPreferences pre = await SharedPreferences.getInstance();
-    print('1ccccccccccccccccccccccccccc');
-    final responses = await AuthRepo.getFileList('7', '1082');
-    print('2ccccccccccccccccccccccccccc');
+    final responses =
+        await AuthRepo.getFileList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-    print('31ccccccccccccccccccccccccccc');
-    print(dec);
-    print('31wwwwccccccccccccccccccccccccccc');
-    print(pre.getString('username'));
     var tagObjsJson = jsonDecode(dec) as List;
-    //var tagObjsJson = jsonDecode(dec) as List;
-    List<filedatas> tagObjs =
-        tagObjsJson.map((tagJson) => filedatas.fromJson(tagJson)).toList();
+    List<filedatas> tagObjs = tagObjsJson.map((tagJson) => filedatas.fromJson(tagJson)).toList();
     setState(() {
       controller.dataFileListNew = tagObjs;
+
+      //dataFileListNew
+      //https://stackoverflow.com/questions/44841729/how-to-upload-images-to-server-in-flutter
     });
-    debugPrint('678ccccccccccccccccccccccccccc');
   }
 
   @override
   Widget build(BuildContext context) {
-    var sTextdatadesc = sReturnStatus();
+    //var sTextdatadesc = sReturnStatus();
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -70,11 +79,10 @@ class _AttachFilesState extends State<AttachFiles> {
                       onTap: () {
                         setState(() {
                           item.selected = !item.selected;
-                          if (item.selected)
-                            controller.dataFileListNew[index] = item;
+                          if (item.selected) controller.dataFileListNew[index] = item;
 
-                          controller.iSelecteFileCount = controller
-                              .getSelectedFileCount(controller.dataFileListNew);
+                          controller.iSelecteFileCount =
+                              controller.getSelectedFileCount(controller.dataFileListNew);
                         });
                       },
                       onLongPress: () {
@@ -82,22 +90,21 @@ class _AttachFilesState extends State<AttachFiles> {
                           //list[index].isSelected = true;
                           controller.iSelecteFileCount = 0;
                           item.selected = true;
-                          controller.iSelecteFileCount = controller
-                              .getSelectedFileCount(controller.dataFileListNew);
+                          controller.iSelecteFileCount =
+                              controller.getSelectedFileCount(controller.dataFileListNew);
                         });
                       },
                       /*fnLongPress(item.selected, index)*/
                       child: Container(
+                          key: UniqueKey(),
                           padding: EdgeInsets.all(5),
                           decoration: !item.selected
                               ? BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0)))
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0)))
                               : BoxDecoration(
                                   color: Colors.blue.shade100,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0))),
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
                           child: Column(children: [
                             Row(
                               mainAxisSize: MainAxisSize.max,
@@ -120,11 +127,9 @@ class _AttachFilesState extends State<AttachFiles> {
                                 Expanded(
                                     flex: 65,
                                     child: Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             // name
@@ -133,8 +138,7 @@ class _AttachFilesState extends State<AttachFiles> {
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
+                                                    fontWeight: FontWeight.w500)),
                                             // ...
                                             SizedBox(height: 2),
                                             // email
@@ -143,25 +147,21 @@ class _AttachFilesState extends State<AttachFiles> {
                                                 style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w300)),
+                                                    fontWeight: FontWeight.w300)),
                                             RichText(
                                               text: TextSpan(
                                                 text: item.createdByEmail + ' ',
                                                 style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                     color: Colors.black,
                                                     fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w300),
+                                                    fontWeight: FontWeight.w300),
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                       text: item.Status,
                                                       style: TextStyle(
                                                           fontSize: 12,
-                                                          color: sReturnColor(
-                                                              item.Status))),
+                                                          color: sReturnColor(item.Status))),
                                                 ],
                                               ),
                                             ),
@@ -171,8 +171,7 @@ class _AttachFilesState extends State<AttachFiles> {
                                 Expanded(
                                     flex: 15,
                                     child: Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 2, 0, 0),
+                                        padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
                                         child: Text(
                                             textAlign: TextAlign.end,
                                             timeFormate(item.createdAt.trim()),
@@ -188,64 +187,6 @@ class _AttachFilesState extends State<AttachFiles> {
                                                 fontWeight: FontWeight.w300))))
                               ],
                             ),
-                            /* Row(children: [
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      padding: EdgeInsets.all(8),
-                                      child: Image.asset(
-                                        fileIcon(item.name),
-                                        height: 24,
-                                        width: 24,
-                                        color:
-                                            sTextdatadesc.contains('MODIFIED')
-                                                ? Colors.blueAccent
-                                                : Colors.red,
-                                      ))),
-                              Expanded(
-                                  flex: 9,
-                                  child: Container(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  10, 5, 5, 5),
-                                              child: Text(
-                                                item.name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.clip,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Colors.black87,
-                                                    fontSize: 18),
-                                              )),
-                                          //               SizedBox(height: 10),
-                                          Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  10, 0, 5, 5),
-                                              child: RichText(
-                                                maxLines: 3,
-                                                text: TextSpan(
-                                                  text: sReturnVal(),
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.grey),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                        text: sTextdatadesc,
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: sReturnColor(
-                                                                sTextdatadesc))),
-                                                  ],
-                                                ),
-                                              )),
-                                        ],
-                                      ))),
-                            ]),*/
                           ]))));
             },
           ),
@@ -259,10 +200,9 @@ class _AttachFilesState extends State<AttachFiles> {
                       child: FloatingActionButton.small(
                         backgroundColor: Colors.blueAccent.shade200,
                         shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0))),
+                            borderRadius: BorderRadius.all(Radius.circular(7.0))),
                         child: Icon(color: Colors.white, Icons.delete_outline),
-                        onPressed: () => {},
+                        onPressed: () => {deleteFiles()},
                       ))
                   : SizedBox(), //button first
 
@@ -272,8 +212,7 @@ class _AttachFilesState extends State<AttachFiles> {
                       child: FloatingActionButton.small(
                         backgroundColor: Colors.blueAccent.shade200,
                         shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0))),
+                            borderRadius: BorderRadius.all(Radius.circular(7.0))),
                         child: Icon(color: Colors.white, Icons.merge),
                         onPressed: () => {},
                       ))
@@ -285,11 +224,9 @@ class _AttachFilesState extends State<AttachFiles> {
                       child: FloatingActionButton.small(
                         backgroundColor: Colors.blueAccent.shade200,
                         shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0))),
-                        child: Icon(
-                            color: Colors.white, Icons.file_upload_outlined),
-                        onPressed: () => {},
+                            borderRadius: BorderRadius.all(Radius.circular(7.0))),
+                        child: Icon(color: Colors.white, Icons.file_upload_outlined),
+                        onPressed: () => {onUpload()},
                       ))
                   : SizedBox(), // button third
 
@@ -297,25 +234,6 @@ class _AttachFilesState extends State<AttachFiles> {
             ],
           ),
         ));
-  }
-
-  String sReturnVal() {
-    var arr = [
-/*      "Inversments1 \u2022 DATE:12-Apr-2023 \u2022 sangilimurugan.nezofis.com \u2022 ",
-      "Inversments2 \u2022 DATE:02-Jun-2023  \u2022 raja@ezofis.com \u2022 ",
-      "Inversments3 \u2022 DATE:23-May-2023  \u2022 arun.ezofis.com \u2022 "*/
-    ];
-    return arr[randomgrn()];
-  }
-
-  int randomgrn() {
-    Random r = new Random();
-    return r.nextInt(3);
-  }
-
-  String sReturnStatus() {
-    var arrStatus = ["UPLOADED", "MODIFIED", "ESIGN_REQUIRED"];
-    return arrStatus[randomgrn()];
   }
 
   Color sReturnColor(String sStutus) {
@@ -341,7 +259,153 @@ class _AttachFilesState extends State<AttachFiles> {
     }
   }
 
+  void onUpload() async {
+    if (await controller.selectedUploadedFiles()) {
+      print('sssssssssssssss');
+      MotionToastWidget().displaySuccessMotionToast('File Uploaded Sucessfully.', context);
+      getFileDetailsCount();
+      getFileDetails();
+    } else {
+      print('sssssssssssssssveee');
+      MotionToastWidget().displayErrorMotionToast('File Not Uploaded.', context);
+    }
+    debugPrint('onFabPlus onUpload');
+  }
+
+/*  void selectedUploadedFiles() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    if (result != null) {
+      this.selectedFiles.clear();
+
+      selectedFiles.value = result.files
+          .map((file) => SelectedFileUpload(
+              name: file.name,
+              size: formatFileSize(file.size),
+              type: file.extension ?? '',
+              file: file.path,
+              workflowId: controllerpopup.sWorkFlowId,
+              repositoryId: controllerpopup.repositoryId,
+              processId: controllerpopup.sProcessId,
+              transactionId: controllerpopup.sTransactionId,
+              fields: ''))
+          .toList();
+
+      showSelectedFiles.value = true;
+
+      dii.FormData formData = new dii.FormData.fromMap({
+        'name': selectedFiles[0].name,
+        'size': selectedFiles[0].size,
+        'type': selectedFiles[0].type,
+        'file': await dii.MultipartFile.fromFile(selectedFiles[0].file),
+        'workflowId': controllerpopup.sWorkFlowId,
+        'repositoryId': controllerpopup.repositoryId,
+        'processId': controllerpopup.sProcessId,
+        'transactionId': controllerpopup.sTransactionId,
+        'fields': ''
+      });
+
+      final responses = await AuthRepo.postAttachment(formData);
+      String dec = AaaEncryption.decryptAESaaa(responses.toString());
+
+      final statusCode = responses.statusCode;
+
+      if (statusCode != 200) {
+        return true;
+      }
+      return false;
+    }
+  }*/
+
+  Future<void> deleteFiles() async {
+    bool res = await controller.DeleteMultipleFiles(context);
+    if (res) {
+      controller.iSelecteFileCount = 0;
+      getFileDetails();
+      getFileDetailsCount();
+    }
+  }
+
+  void getFileDetailsCount() async {
+    final responses =
+        await AuthRepo.getFileList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
+    List lFiles = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
+    setState(() {
+      controllerpopup.iFilecount = lFiles.length;
+    });
+  }
+
+/*  Future selectFiles() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    if (result != null) {
+      controller.selectedFiles.clear();
+
+      controller.selectedFiles.value = result.files
+          .map((file) => SelectedFile(
+                name: file.name,
+                size: formatFileSize(file.size),
+                type: file.extension ?? '',
+                file: file,
+              ))
+          .toList();
+      controller.showSelectedFiles.value = true;
+
+*/ /*      for (var file in selectedFiles) {
+        void setUploadProgress(int uploaded, int total) {
+          uploadProgress[file.name] = uploaded / total;
+        }
+
+        await uploadFile(
+          file.name,
+          file.file.path ?? '',
+          file.size,
+          setUploadProgress,
+        );
+      }*/ /*
+      //selectedFiles.clear();
+    }
+  }*/
+
   String formatFileSize(int size) {
     return filesize(size);
+  }
+
+  void _displayErrorMotionToast() {
+    MotionToast.error(
+      title: const Text(
+        'Error',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      description: const Text('Please enter your name'),
+      position: MotionToastPosition.top,
+      barrierColor: Colors.black.withOpacity(0.3),
+      width: 300,
+      height: 80,
+      dismissable: false,
+    ).show(context);
+  }
+
+  void _displaySuccessMotionToast(String Msgs, BuildContext ctx) {
+    MotionToast toast = MotionToast.success(
+        title: const Text(
+          'Sucess',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        description: Text(
+          Msgs,
+          style: TextStyle(fontSize: 12),
+        ),
+        layoutOrientation: ToastOrientation.rtl,
+        animationType: AnimationType.fromRight,
+        borderRadius: 5,
+        dismissable: true,
+        height: 50,
+        width: 300);
+
+    toast.show(ctx);
+    Future.delayed(Duration(seconds: 4)).then((value) {
+      toast.dismiss();
+    });
   }
 }

@@ -32,16 +32,36 @@ class _DashMainScreenState extends State<DashMainScreen> {
   void initState() {
     super.initState();
     dbcontroller.justPrint();
+    dbcontroller.getTotalInboxCount();
   }
 
   Future<bool> _onWillPop() async {
-    if (dbcontroller.iCurrentSelect != 'dashboard') {
+    print('12345rrrr1== ' + dbcontroller.iCurrentSelect.toString());
+    if (dbcontroller.iCurrentSelect == 'treeinbox') {
       setState(() {
         dbcontroller.iCurrentSelect = 'dashboard'.obs;
+        controller.bFabVisible = false.obs;
+      });
+      return Future.value(null);
+    } else if (dbcontroller.iCurrentSelect == 'listview') {
+      setState(() {
+        dbcontroller.iCurrentSelect = 'treeinbox'.obs;
+        controller.bFabVisible = false.obs;
+      });
+      return Future.value(null);
+    } else if (dbcontroller.iCurrentSelect == 'taskfn') {
+      setState(() {
+        dbcontroller.iCurrentSelect = 'dashboard'.obs;
+        controller.bFabVisible = false.obs;
+      });
+      return Future.value(null);
+    } else if (dbcontroller.iCurrentSelect != 'dashboard') {
+      setState(() {
+        dbcontroller.iCurrentSelect = 'dashboard'.obs;
+        controller.bFabVisible = false.obs;
       });
       return Future.value(null);
     }
-
     return (await showDialog(
           context: context,
           builder: (context) => new AlertDialog(
@@ -94,12 +114,10 @@ class _DashMainScreenState extends State<DashMainScreen> {
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
                                 color: Colors.indigoAccent,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0))),
+                                borderRadius: BorderRadius.all(Radius.circular(5.0))),
                             child: IntrinsicHeight(
                                 child: Row(
                               children: [
-                                //
                                 GestureDetector(
                                     onTap: inboxfn,
                                     child: ImageMultitext(
@@ -110,29 +128,30 @@ class _DashMainScreenState extends State<DashMainScreen> {
                                           Icons.mail_outline_outlined,
                                           color: Colors.indigoAccent,
                                         ))),
-                                VerticalDivider(
-                                    color: Colors.white,
-                                    thickness: 1,
-                                    indent: 7),
+                                VerticalDivider(color: Colors.white, thickness: 1, indent: 7),
                                 GestureDetector(
                                     onTap: taskfn,
-                                    child: ImageMultitext(
+                                    child: Obx(() => ImageMultitext(
                                         title: 'My Task',
-                                        subtext: '30 Pending',
+                                        subtext:
+                                            dbcontroller.iPendingtask.value.toString() + ' Pending',
                                         iIcon: Icon(
                                           MdiIcons.cubeOutline,
                                           color: Colors.indigoAccent,
-                                        )))
+                                        ))))
                               ],
                             ))))
                     : Container(),
                 dbcontroller.iCurrentSelect == 'inboxfn'
                     ? Expanded(
                         child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: ListViewSearch()))
+                        decoration:
+                            BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
+                        /*child: ListViewSearch(
+                              sWorkflowId: '7',
+                              sType: '0',
+                            )*/
+                      ))
                     : Container(),
                 dbcontroller.iCurrentSelect == 'taskfn'
                     ? Expanded(
@@ -141,30 +160,28 @@ class _DashMainScreenState extends State<DashMainScreen> {
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                borderRadius: BorderRadius.all(Radius.circular(10))),
                             child: TreeInboxListview())) /*TestInbox()*/
-                    /*Container(
-              child: InboxExpandableTree(
-              title: 'dddd',
-            ))*/
+
                     : Container()
-              ])))
+              ]))),
         ]));
   }
 
   void inboxfn() {
-    debugPrint('inboxfn');
+/*    debugPrint('inboxfn');
     setState(() {
       dbcontroller.iCurrentSelect = 'inboxfn'.obs;
-    });
+      controller.bFabVisible = false.obs;
+    });*/
   }
 
   void taskfn() {
-    debugPrint('taskfn');
-
     setState(() {
+      print('12345rrrr==23' + dbcontroller.iCurrentSelect.toString());
       dbcontroller.iCurrentSelect = 'taskfn'.obs;
+      print('12345rrrr ' + dbcontroller.iCurrentSelect.toString());
+      controller.bFabVisible = false.obs;
     });
   }
 

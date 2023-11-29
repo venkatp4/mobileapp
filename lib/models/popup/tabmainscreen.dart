@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:badges/badges.dart';
@@ -15,8 +16,13 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../api/auth_repo.dart';
+import '../../utils/helper/aes_encryption.dart';
+import '../comments.dart';
 import 'controllers/attachfilecontroller.dart';
+import 'controllers/popupfullpagecontroller.dart';
 import 'controllers/tabmainscreencontroller.dart';
 
 class TabMianScreen extends StatefulWidget {
@@ -24,25 +30,69 @@ class TabMianScreen extends StatefulWidget {
   TabMianScreenState createState() => TabMianScreenState();
 }
 
-class TabMianScreenState extends State<TabMianScreen>
-    with TickerProviderStateMixin {
+class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMixin {
   late TabController _controller;
+  final controllerpopup = Get.put(PopupFullPageController());
+
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _controller = new TabController(length: 5, vsync: this);
+    print('wwwwwwwwwwwwwwwwwwwwwww236');
+    print(controllerpopup.sWorkFlowId);
+    print(controllerpopup.sActivityId);
+
+    _controller = Get.put(TabController(length: 5, vsync: this));
     _controller.addListener(() {
       setState(() {
         _selectedIndex = _controller.index;
       });
-      print("Selected Index: " + _controller.index.toString());
+      // print("Selected Index: " + _controller.index.toString());
     });
+
+    setState(() {
+      controllerpopup.iFilecount = 0;
+      controllerpopup.iTaskCount = 0;
+      controllerpopup.iMsgCount = 0;
+    });
+
+    getCommentsDetailsCount();
+    getFileDetailsCount();
+    getTasklIstCount();
   }
 
   double safeAreaHeight = 0;
-  int iffFilecount = 0;
+
+  void getCommentsDetailsCount() async {
+    final responses =
+        await AuthRepo.getCommentsList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
+    List lComments = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
+    setState(() {
+      controllerpopup.iMsgCount = lComments.length;
+    });
+  }
+
+  void getFileDetailsCount() async {
+    final responses =
+        await AuthRepo.getFileList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
+    List lFiles = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
+    setState(() {
+      controllerpopup.iFilecount = lFiles.length;
+    });
+  }
+
+  void getTasklIstCount() async {
+    String payloadenc = '{"filterBy":[]}';
+    final responses = await AuthRepo.getTaskList(controllerpopup.sWorkFlowId,
+        controllerpopup.sProcessId, jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)));
+    // String dec = AaaEncryption.decryptAESaaa(responses.toString());
+    List lTask = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
+
+    setState(() {
+      controllerpopup.iTaskCount = lTask.length;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,178 +111,89 @@ class TabMianScreenState extends State<TabMianScreen>
             controller: _controller,
             indicatorColor: Colors.purple,
             indicatorSize: TabBarIndicatorSize.tab,
-            /*       indicator: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10.0),
-                  topLeft: Radius.circular(10.0)),
-              //borderRadius: BorderRadius.circular(),
-              color: Colors.black12,
-            ),*/
             tabs: [
               Tab(
                   icon: Badge(
-                badgeContent: Text(''),
+                showBadge: false,
+                badgeContent: Text('',
+                    style: TextStyle(
+                        //fontSize: 14,
+                        fontSize: 10,
+                        color: Colors.white, //#00bfd6
+                        fontWeight: FontWeight.w500)),
                 badgeStyle: BadgeStyle(
-                  badgeColor: Colors.white,
+                  badgeColor: const Color(0xFF00bfd6),
                 ),
                 child: Icon(MdiIcons.listBoxOutline),
               )),
               Tab(
                   icon: Badge(
-                badgeContent: Text(''),
+                badgeContent: Text(controllerpopup.iFilecount.toString(),
+                    style: TextStyle(
+                        //fontSize: 14,
+                        fontSize: 10,
+                        color: Colors.white, //#00bfd6
+                        fontWeight:
+                            FontWeight.w500)), //Text(controllerpopup.iFilecount.toString()),
+                showBadge: controllerpopup.iFilecount > 0,
                 badgeStyle: BadgeStyle(
-                  badgeColor: Colors.cyanAccent,
+                  badgeColor: const Color(0xFF00bfd6),
                 ),
                 child: Icon(Icons.attachment),
               )),
               Tab(
                   icon: Badge(
-                badgeContent: Text(''),
-                showBadge: false,
+                badgeContent: Text(controllerpopup.iMsgCount.toString(),
+                    style: TextStyle(
+                        //fontSize: 14,
+                        fontSize: 10,
+                        color: Colors.white, //#00bfd6
+                        fontWeight: FontWeight.w500)),
+                showBadge: controllerpopup.iMsgCount > 0,
                 badgeStyle: BadgeStyle(
-                  badgeColor: Colors.cyanAccent,
+                  badgeColor: const Color(0xFF00bfd6),
                 ),
                 child: Icon(MdiIcons.commentOutline),
               )),
               Tab(
                   icon: Badge(
-                badgeContent: Text(''),
+                badgeContent: Text(controllerpopup.iTaskCount.toString(),
+                    style: TextStyle(
+                        //fontSize: 14,
+                        fontSize: 10,
+                        color: Colors.white, //#00bfd6
+                        fontWeight: FontWeight.w500)),
+                showBadge: controllerpopup.iTaskCount > 0,
                 badgeStyle: BadgeStyle(
-                  badgeColor: Colors.cyanAccent,
+                  badgeColor: const Color(0xFF00bfd6),
                 ),
                 child: Icon(MdiIcons.cubeOutline),
               )),
               Tab(
                   icon: Badge(
-                badgeContent: Text(''),
+                badgeContent: Text('',
+                    style: TextStyle(
+                        //fontSize: 14,
+                        fontSize: 10,
+                        color: Colors.white, //#00bfd6
+                        fontWeight: FontWeight.w500)),
                 showBadge: false,
                 badgeStyle: BadgeStyle(
-                  badgeColor: Colors.cyanAccent,
+                  badgeColor: const Color(0xFF00bfd6),
                 ),
                 child: Icon(MdiIcons.history),
               )),
-            ],
+            ], // 9443451033
             onTap: (index) {
               debugPrint('ssssssssss ' + index.toString());
             },
           ),
         ),
-        /*Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(5.0), topLeft: Radius.circular(5.0)),
-            //borderRadius: BorderRadius.circular(),
-            color: Colors.white,
-          ),
-          padding: EdgeInsets.all(5),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                      child: Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          //color: Colors.yellow,
-                          margin: EdgeInsets.fromLTRB(1, 12, 1, 12),
-                          child: Text(
-                            controller.tabitems[_selectedIndex],
-                            style: TextStyle(
-                                color: Colors.purple,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
-                            maxLines: 2,
-                          )),
-                      _selectedIndex != 0
-                          ? Container(
-                              margin: const EdgeInsets.only(left: 5.0),
-                              child: Text(
-                                '(' + new Random().nextInt(5).toString() + ')',
-                                style: TextStyle(
-                                    color: Colors.cyan,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14),
-                              ))
-                          : Container(),
-                    ],
-                  ))),
-              Expanded(
-                  flex: 1,
-                  child: Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Row(
-                        children: [
-                          _selectedIndex != 0
-                              ? IconButton(
-                                  icon: Icon(
-                                    MdiIcons.openInNew,
-                                    color: Colors.teal,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {},
-                                    );
-                                  },
-                                )
-                              : SizedBox(),
-                          _selectedIndex == 1
-                              ? IconButton(
-                                  icon: Icon(
-                                    MdiIcons.vectorCombine,
-                                    color: Colors.blueAccent,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {},
-                                    );
-                                  },
-                                )
-                              : SizedBox(),
-                          _selectedIndex == 2
-                              ? IconButton(
-                                  icon: Icon(
-                                    MdiIcons.reload,
-                                    color: Colors.deepPurple,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {},
-                                    );
-                                  },
-                                )
-                              : SizedBox(),
-                          controller.iSelecteFileCount > 0 &&
-                                  _selectedIndex != 0
-                              ? Container(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                  child: IconButton(
-                                    icon: Icon(
-                                      MdiIcons.trashCanOutline,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      setState(
-                                        () {},
-                                      );
-                                    },
-                                  ))
-                              : SizedBox(),
-                        ],
-                      )))
-            ],
-          ),
-        ),*/
         Container(
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(10.0),
-                  bottomLeft: Radius.circular(10.0))),
+                  bottomRight: Radius.circular(10.0), bottomLeft: Radius.circular(10.0))),
           //height: safeAreaHeight == 716 ? 330 : 380, //351
           height: mediaQuery.size.height * .66,
 
@@ -244,12 +205,13 @@ class TabMianScreenState extends State<TabMianScreen>
               Container(color: Colors.white, child: CommenttList()),
               Container(color: Colors.redAccent, child: TaskTab()),
               Container(color: Colors.white, child: HistoryTask()),
+
               /*             Container(),
               Container(),
               Container(),*/
             ],
           ),
-        ),
+        )
       ],
     );
   }

@@ -22,6 +22,7 @@ class SearchlayoutController extends GetxController {
 
   var activeRoute = '/browse'.obs;
   var bshowSearchbar = false.obs;
+  var bFabVisible = false.obs;
 
   final menus = [
     // MenuHeading(label: 'one'),
@@ -86,10 +87,9 @@ class SearchlayoutController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    debugPrint(
-        'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
-    connectivitySubscription = _connectivity.onConnectivityChanged
-        .listen((ConnectivityResult result) async {
+    debugPrint('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+    connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) async {
       await authController.getConnectivity();
     });
   }
@@ -189,7 +189,7 @@ class SearchlayoutController extends GetxController {
   }
 
   void toggleDrawers(BuildContext context) {
-    debugPrint('toggle controller');
+    debugPrint('toggle controllerrr');
     if (!Scaffold.of(context).isDrawerOpen)
       Scaffold.of(context).openDrawer();
     else

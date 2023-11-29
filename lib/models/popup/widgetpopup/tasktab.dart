@@ -12,6 +12,7 @@ import '../../../api/auth_repo.dart';
 import '../../../utils/file_fns.dart';
 import '../../../utils/helper/aes_encryption.dart';
 import '../../../widgets/connectItemtaskcomplete.dart';
+import '../controllers/popupfullpagecontroller.dart';
 import '../controllers/tasktabcontroller.dart';
 import 'package:dio/dio.dart';
 
@@ -23,47 +24,27 @@ class TaskTab extends StatefulWidget {
 class _TaskTabState extends State<TaskTab> {
   final controller = Get.put(TaskTabController());
   int iSelectedFileCount = 0;
+  final controllerpopup = Get.put(PopupFullPageController());
 
   void getTaskList() async {
-    SharedPreferences pre = await SharedPreferences.getInstance();
+    String payloadenc = '{"filterBy":[]}';
 
-    //final responses = await AuthRepo.getTaskList('7', '1082');
-
-    String payloadenc =
-        '{"filterBy":[{"filters":[{"criteria":"createdBy","condition":"IS_EQUALS_TO","value":8}]}]}';
-    //payloadenc = '{"itemsPerPage":20,"currentPage":1}';
-
-    final responses = await AuthRepo.getTaskList(
-        '7', '1082', jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)));
+    final responses = await AuthRepo.getTaskList(controllerpopup.sWorkFlowId,
+        controllerpopup.sProcessId, jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)));
 
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-
-    print(dec);
-    print('31ttwwwwccccccccccccccccccccccccccc');
-    print(pre.getString('username'));
     List tagObjsJson = jsonDecode(dec) as List;
-    print('wwt31ttwwwwccccccccccccccccccccccccccc');
     Map<String, dynamic> valueMape = tagObjsJson.elementAt(0);
-    print(valueMape['processId']);
-    print('tr31ttwwwwccccccccccccccccccccccccccc');
-    print(valueMape['entryInfo']);
-    print('t31ttwwwwccccccccccccccccccccccccccc');
-    // getFieldValues('19', valueMape['entryInfo']);
     List entryInfo = valueMape['entryInfo'] as List;
 
     controller.fieldkeys.toList().forEach((element) {
       Map<String, dynamic> tmap = new Map<String, dynamic>();
 
       entryInfo.forEach((elementEntry) {
-        print(
-            'qqqqqqqqwttttterr31ttwwwwccccccccccccccccccccccccccc'); // not completed tomorrow 12-09-2023
-        print(elementEntry[element]);
-
         tmap["Assign to"] = elementEntry[element];
         tmap["start date"] = elementEntry[element];
         tmap["end date"] = elementEntry[element];
         tmap["Buttons"] = elementEntry[element];
-        print('wttttterr31ttwwwwccccccccccccccccccccccccccc');
       });
     });
     //var tagObjsJson = jsonDecode(dec) as List;
@@ -75,14 +56,13 @@ class _TaskTabState extends State<TaskTab> {
     debugPrint('678ccccccccccccccccccccccccccc');
   }
 
-  Future getFieldValues(String formId, Map<String, dynamic> mdata) async {
+/*  Future getFieldValues(String formId, Map<String, dynamic> mdata) async {
     Map mdataGenerate = Map<String, dynamic>();
 
     try {
       debugPrint('dd678ccccccccccccccccccccccccccc111');
       final response = await AuthRepo.getInboxSingleDetails(formId); //23 formid
-      Map<String, dynamic> data =
-          jsonDecode(AaaEncryption.decryptAESaaa(response.data));
+      Map<String, dynamic> data = jsonDecode(AaaEncryption.decryptAESaaa(response.data));
 
       //Map<String, dynamic> datas = json.decode(data['formJson']);
       Map<String, dynamic> datasControl = json.decode(data['controllist']);
@@ -92,18 +72,18 @@ class _TaskTabState extends State<TaskTab> {
         for (var entry in mdata.entries) {
           item['fields'].forEach((field) {
             if (entry.key.toString() == field['id']) {
-              /*        mdataGenerate.putIfAbsent(
-                  field['label'].toString(), () => checkIsArray(entry.value));*/
+              */ /*        mdataGenerate.putIfAbsent(
+                  field['label'].toString(), () => checkIsArray(entry.value));*/ /*
             }
             //controller.filedsnew.
           });
         }
       });
-      debugPrint('r11234556eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-/*      setState(() {
+      // debugPrint('r11234556eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+*/ /*      setState(() {
         isLoading.value = false;
         controller.filedsnew = mdataGenerate;
-      });*/
+      });*/ /*
 
       if (response.statusCode == 200) {
       } else {
@@ -127,12 +107,12 @@ class _TaskTabState extends State<TaskTab> {
     } finally {
       //isLoading.value = false;
     }
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
-    getTaskList();
+    // getTaskList();
     //controller.
   }
 
@@ -149,9 +129,9 @@ class _TaskTabState extends State<TaskTab> {
             itemBuilder: (context, index) {
               // filedatas item = controller.folderDatas.elementAt(index);
               return TaskList(
-                cMenu: controller.folderDatas[index],
-                iPosition: index,
-              );
+                  /* cMenu: controller.folderDatas[index],
+                iPosition: index,*/
+                  );
               // return Text(
               //     controller.folderDatas[index]['Foldername'].toString());
             },

@@ -1,40 +1,54 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:ez/config/theme.dart';
-import 'package:ez/controllers/taskmaincontroller.dart';
-import 'package:ez/widgets/textsmallthin.dart';
+//import 'package:ez/controllers/taskmaincontroller.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api/auth_repo.dart';
-import '../layouts/auth/widgets/fab.dart';
+import '../controllers/dashmaincontroller.dart';
+import '../controllers/session_controller.dart';
+import '../controllers/treeboxlistviewcontroller.dart';
+import '../layouts/search/controller/searchlayout_controller.dart';
+import '../models/MenuInbox.dart';
 import '../models/popup/controllers/popupfullpagecontroller.dart';
-import '../models/popup/popupfullpage_inbox.dart';
+import '../models/popup/form/controllers/panel_controller.dart';
 import '../utils/InboxDetails.dart';
-
 import '../utils/format_date_time.dart';
-
 import '../utils/helper/aes_encryption.dart';
-import '../utils/helper/safe_area.dart';
+
 import 'CustomWidget.dart';
 //Creating a class user to store the data;
 
 class ListViewSearch extends StatefulWidget {
+  String sWorkflowId;
+  String sType = '';
+  String sProcessId = '';
+  MenuInbox miSelectedData;
+  ListViewSearch({required this.sWorkflowId, required this.sType, required this.miSelectedData});
   ListViewSearchState createState() => ListViewSearchState();
 }
 
 class ListViewSearchState extends State<ListViewSearch> {
-  TextEditingController controller = new TextEditingController();
+  //TextEditingController controller = new TextEditingController();
+
   List<InboxDetails> _searchResult = [];
   List<InboxDetails> _inboxDetailss = [];
   List<InboxDetails> _inboxDetailss_temp = [];
-  final String url = 'https://jsonplaceholder.typicode.com/users';
-  TaskMainController controllertask = new TaskMainController();
+
   final controllerpopup = Get.put(PopupFullPageController());
+  final dbcontroller = Get.put(DashMainController());
+  final controllers = Get.put(SearchlayoutController());
+  final controllerSession = Get.find<SessionController>();
+  final controller = Get.put(TreeInboxListviewController());
+  final controllerPanel = Get.put(PanelController());
+  final store = GetStorage();
+
   final isLoading = true.obs;
+  String sUserId = '';
 
   var arr = [
     'assets/images/logo/user/user.png',
@@ -46,28 +60,33 @@ class ListViewSearchState extends State<ListViewSearch> {
   Future<Null> getInboxDetailsNew() async {
     _inboxDetailss = [];
     String payloadenc = '{"currentPage": 1, "itemsPerPage": 20}';
-
+/*    //print('jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)));*/
+    print(widget.sType + '  wwwwwww1 ' + widget.sWorkflowId);
     final responses = await AuthRepo.getInboxListForFolder(
-        '7', jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)));
-
+        widget.sWorkflowId, jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)), widget.sType);
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
     Map<String, dynamic> valueMap = json.decode(dec);
+    _inboxDetailss_temp = [];
 
     valueMap['data'].forEach((item) {
-      setState(() {
-        _inboxDetailss = [];
-      });
-
-      print('lgggggggggggggggggggggggggtt ' + _inboxDetailss.length.toString());
       item['value'].forEach((items) {
-        setState(() {
-          _inboxDetailss.add(InboxDetails.fromJson(items));
-        });
-      });
-      setState(() {
-        isLoading.value = false;
+        _inboxDetailss_temp.add(InboxDetails.fromJson(items));
       });
     });
+
+    if (this.mounted) {
+      setState(() {
+        isLoading.value = false;
+        _inboxDetailss.addAll(_inboxDetailss_temp);
+      });
+    }
+
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    sUserId = pre.getString('userid')!;
+    // String UserData = pre.getString('Userdata').toString();
+    findUserGroupsList(pre.getString('Userdata').toString());
+    //fot to show  Fab Button
+    if (controller.iCurrentSelect.toString().contains('_0')) CheckFabDisplay(sUserId);
   }
 
   @override
@@ -76,15 +95,22 @@ class ListViewSearchState extends State<ListViewSearch> {
     _inboxDetailss = [];
     _inboxDetailss_temp = [];
 
-    //getInboxDetails();
-    print('lgggggggggggggggggggggggggwwwwwwwwww ');
+    controllerpopup.sWorkFlowId = widget.sWorkflowId;
+    // ////print(''12345rrrr4- ' + dbcontroller.iCurrentSelect.toString());
+
+    dbcontroller.iCurrentSelect = 'listview'.obs;
+    // ////print(''12345rrrr5 ' + dbcontroller.iCurrentSelect.toString());
+
+    setState(() {
+      controllerpopup.bFab = false;
+    });
+
     getInboxDetailsNew();
   }
 
   @override
   Widget build(BuildContext context) {
-    final safeArea = calcSafeArea();
-    double safeAreaHeight = safeArea['height']!;
+    ////print(''lllll');
     return Obx(() => isLoading.value
         ? ListView.builder(
             shrinkWrap: true,
@@ -105,129 +131,234 @@ class ListViewSearchState extends State<ListViewSearch> {
                   ));
             },
           ) /*Center(child: Container(child: Text('Loading...')))*/
-        : ListView.builder(
-            //physics: NeverScrollableScrollPhysics(),
-            //scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _inboxDetailss.length,
-            itemBuilder: (context, index) {
-              print('ccccccccccccccccccccccccccccc');
-              return Container(
-                  // color: Colors.yellow,
-                  margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: ListTile(
-                    onTap: () {
-                      PopupFullPageController.iSelectedIndex = index;
-                      controllerpopup.sRaisedAt =
-                          _inboxDetailss.elementAt(index).raisedAt;
-                      controllerpopup.srequesno =
-                          _inboxDetailss.elementAt(index).requestNo;
-                      /*                          Navigator.of(context)
-                                      .push(PopupFullpageInbox());*/
-                      Get.offAllNamed('/inboxpage');
-                    },
-                    title: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 12,
-                            child: Container(
-                                alignment: Alignment.topLeft,
-                                margin: EdgeInsets.all(2),
-                                child: ClipOval(
-                                  child: SizedBox.fromSize(
-                                    size: Size.fromRadius(15), // Image radius
-                                    child: Image.asset(
-                                        arr[new Random().nextInt(4)],
-//                                                'assets/images/logo/user/user.png',
-                                        fit: BoxFit.fill),
-                                  ),
-                                ))),
-                        Expanded(
-                            flex: 80,
-                            child: Container(
-                                padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    //141  55,16,16
-                                    // name
-                                    Text(
-                                        _inboxDetailss[index].stage +
-                                            ' - ' +
-                                            _inboxDetailss[index].requestNo,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: _inboxDetailss[index].bread
-                                            ? TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w300)
-                                            : TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 21,
-                                                fontWeight: FontWeight.w600)),
-                                    // ...
-                                    //SizedBox(height: 2),
-                                    // email
-                                    Text(_inboxDetailss[index].raisedBy,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: _inboxDetailss[index].bread
-                                            ? TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w300)
-                                            : TextStyle(
-                                                color: Colors.black87,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600)),
-                                    Text(
-                                        _inboxDetailss[index]
-                                                    .lastAction
-                                                    .toString() ==
-                                                'null'
-                                            ? '-'
-                                            : _inboxDetailss[index]
-                                                .lastAction
-                                                .toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w300)),
-                                    // ...
-                                  ],
-                                ))),
-                        Expanded(
-                            flex: 20,
-                            child: Container(
-                                //color: Colors.green,
-                                padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
-                                child: Text(
-                                    textAlign: TextAlign.end,
-                                    /*getCurrentDate(),*/
-                                    timeFormate(
-                                        _inboxDetailss[index].raisedAt.trim()),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: _inboxDetailss[index].bread
-                                        ? TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w300)
-                                        : TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 21,
-                                            fontWeight: FontWeight.w600))))
-                      ],
-                    ),
-                  ));
-            },
-          ));
+        : loadListview(context));
   }
 
-  onTabSelected(int i) {
-    debugPrint('ggggggg88888    ' + i.toString());
-    //PopupFullpageInbox(C);
+  Widget loadListview(BuildContext context) {
+    controllerPanel.sFormId = widget.miSelectedData.wFormId;
+    controllerpopup.sFormId = widget.miSelectedData.wFormId;
+
+    controllerPanel.repositoryId = widget.miSelectedData.repositoryId;
+    controllerpopup.repositoryId = widget.miSelectedData.repositoryId;
+
+    //controllerPanel.formbuttonList = ['sang', 'raja'];
+    ////print(''');
+    return Scaffold(
+        body: Container(
+            child: ListView.builder(
+          //physics: NeverScrollableScrollPhysics(),
+          //scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: _inboxDetailss.length,
+          itemBuilder: (context, index) {
+            return Container(
+                // color: Colors.yellow,
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: ListTile(
+                  onTap: () {
+                    PopupFullPageController.iSelectedIndex = index;
+                    //transaction_createdAt
+                    controllerpopup.sRaisedAt = _inboxDetailss.elementAt(index).raisedAt;
+                    controllerpopup.transaction_createdAt =
+                        _inboxDetailss.elementAt(index).transaction_createdAt;
+                    controllerpopup.srequesno = _inboxDetailss.elementAt(index).requestNo;
+                    controllerpopup.sFormId =
+                        _inboxDetailss.elementAt(index).formEntryId.toString();
+                    controllerpopup.sFormEntryId =
+                        _inboxDetailss.elementAt(index).formEntryId.toString();
+                    controllerpopup.sProcessId =
+                        _inboxDetailss.elementAt(index).processId.toString();
+                    controllerpopup.sActivityId =
+                        _inboxDetailss.elementAt(index).activityId.toString();
+                    controllerpopup.sTransactionId =
+                        _inboxDetailss.elementAt(index).transactionId.toString();
+
+                    String sTemp = jsonEncode(widget.miSelectedData.flowJson)
+                        .replaceAll('\\\\"', '"')
+                        .replaceAll('\\\"', '"')
+                        .replaceAll('\\"', '"');
+
+                    if (sTemp.length > 25) {
+                      sTemp = sTemp.substring(1, sTemp.length - 1);
+                      controllerpopup.mFormJSon = jsonDecode(sTemp.substring(1, sTemp.length - 1));
+                    }
+                    openPopupForm();
+                  },
+                  title: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          flex: 12,
+                          child: Container(
+                              alignment: Alignment.topLeft,
+                              margin: EdgeInsets.all(2),
+                              child: ClipOval(
+                                child: SizedBox.fromSize(
+                                  size: Size.fromRadius(15), // Image radius
+                                  child: Image.asset(arr[new Random().nextInt(4)],
+//                                                'assets/images/logo/user/user.png',
+                                      fit: BoxFit.fill),
+                                ),
+                              ))),
+                      Expanded(
+                          flex: 80,
+                          child: Container(
+                              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  //141  55,16,16
+                                  // name
+                                  Text(
+                                      _inboxDetailss[index]
+                                          .requestNo /*+
+                                          ' - ' +
+                                          _inboxDetailss[index].requestNo*/
+                                      ,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: _inboxDetailss[index].bread
+                                          ? TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w300)
+                                          : TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 21,
+                                              fontWeight: FontWeight.w600)),
+                                  // ...
+                                  //SizedBox(height: 2),
+                                  // email
+                                  Text(
+                                      _inboxDetailss[index]
+                                          .stage /*_inboxDetailss[index].raisedBy*/,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: _inboxDetailss[index].bread
+                                          ? TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w300)
+                                          : TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600)),
+                                  Text(
+                                      _inboxDetailss[index].lastAction.toString() == 'null'
+                                          ? '-'
+                                          : 'Last Action : ' +
+                                              _inboxDetailss[index].lastAction.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w300)),
+                                  // ...
+                                ],
+                              ))),
+                      Expanded(
+                          flex: 20,
+                          child: Container(
+                              //color: Colors.green,
+                              padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                              child: Text(
+                                  textAlign: TextAlign.end,
+                                  /*getCurrentDate(),*/
+                                  timeFormate(_inboxDetailss[index].transaction_createdAt.trim()),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: _inboxDetailss[index].bread
+                                      ? TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w300)
+                                      : TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.w600))))
+                    ],
+                  ),
+                ));
+          },
+        )),
+        //yyyyyyy
+        floatingActionButton: Visibility(
+            visible: controllerpopup.bFab,
+            child: FloatingActionButton.extended(
+              backgroundColor: Colors.blueAccent.shade200,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30.0))),
+              label: Text('Initiate'),
+              icon: Icon(Icons.start),
+              onPressed: () => {openForm()},
+            )));
+  }
+
+  CheckFabDisplay(String sUserid) {
+    ////print(''CheckFabDisplay1');
+    String sTemp = jsonEncode(widget.miSelectedData.flowJson)
+        .replaceAll('\\\\"', '"')
+        .replaceAll('\\\"', '"')
+        .replaceAll('\\"', '"');
+    sTemp = sTemp.substring(1, sTemp.length - 1);
+
+    Map<String, dynamic> mFJ = jsonDecode(sTemp.substring(1, sTemp.length - 1));
+
+    for (int i = 0; i < mFJ['blocks'].length; i++) {
+      findBlockId(mFJ['blocks'][i]['settings'], mFJ['blocks'][i]['id']);
+      if (mFJ['blocks'][i]['type'] == 'START') {
+        List<dynamic> slist = mFJ['blocks'][i]['settings']['users'];
+        for (int j = 0; j < slist.length; j++) {
+          if (slist[j].toString() == sUserid) {
+            setState(() {
+              controllerpopup.bFab = true;
+            });
+          }
+        }
+      }
+    }
+  }
+
+  openForm() {
+    ////print(''openForm');
+    controllerPanel.sFormId = widget.miSelectedData.wFormId;
+    controllerPanel.repositoryId = widget.miSelectedData.repositoryId;
+    controllerPanel.formbuttonList = ['sang', 'raja'];
+    Navigator.pushNamed(context, "formviewinitiate");
+  }
+
+  openPopupForm() {
+    print('openPopupForm');
+
+    Navigator.pushNamed(context, "inboxpage");
+  }
+
+  findUserGroupsList(String dd) {
+    final responseMap = jsonDecode(AaaEncryption.decryptAESaaa(dd));
+    final infoList = responseMap['groups'];
+    controllerPanel.userGroupList = infoList.map((info) => info['id']).toList();
+  }
+
+  findBlockId(var auserList, String sBlockId) {
+    bool bpresent = false;
+
+    bpresent = auserList['users'].contains(sUserId);
+
+    if (!bpresent && auserList['groups'].length > 0 && controllerPanel.userGroupList.length > 0) {
+      for (int i = 0; i < auserList['groups'].length; i++) {
+/*        for (int j = 0; j < controllerPanel.userGroupList.length; j++) {
+          if (auserList['groups'][i].toString() == controllerPanel.userGroupList[j].toString()) {
+            bpresent = true;
+            break;
+          }*/
+        bpresent = controllerPanel.userGroupList.contains(auserList['groups'][i].toString());
+        if (bpresent) break;
+      }
+    }
+
+    if (bpresent) {
+      print('ggggggggggggggggggggg');
+      print(sBlockId);
+    } else {
+      print('ggggggggggggggggggggg1');
+    }
   }
 }

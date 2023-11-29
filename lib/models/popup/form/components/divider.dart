@@ -26,13 +26,13 @@ class _DividersState extends State<Dividers> {
       case 'SOLID':
         return Container(
             margin: EdgeInsets.only(
-              top: 5,
+              top: 35,
               bottom: 5,
             ),
             child: Divider(
-              height: 2,
+              height: 1,
               color: Colors.grey.shade300,
-              thickness: 2,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
             ));
@@ -130,8 +130,7 @@ class DrawDashhorizontalline extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     for (double i = -165; i < 165; i = i + 15) {
       // 15 is space between dots
-      if (i % 3 == 0)
-        canvas.drawLine(Offset(i, 0.0), Offset(i + 10, 0.0), _paint);
+      if (i % 3 == 0) canvas.drawLine(Offset(i, 0.0), Offset(i + 10, 0.0), _paint);
     }
   }
 

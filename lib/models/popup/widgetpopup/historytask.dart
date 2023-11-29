@@ -4,12 +4,15 @@ import 'package:another_stepper/another_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stepper_list_view/stepper_list_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/auth_repo.dart';
 import '../../../utils/helper/aes_encryption.dart';
+import '../controllers/popupfullpagecontroller.dart';
 
 class HistoryTask extends StatefulWidget {
   const HistoryTask({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class HistoryTask extends StatefulWidget {
 }
 
 class _HistoryTaskState extends State<HistoryTask> {
+  final controllerpopup = Get.put(PopupFullPageController());
   /*final _stepperData = List.generate(
       5,
       (index) => index != 4
@@ -61,28 +65,31 @@ class _HistoryTaskState extends State<HistoryTask> {
   void initState() {
     print('getHistoryDetails File tttfffffffffffffffffff');
     super.initState();
+    setState(() {
+      _stepperData = null;
+    });
     getHistoryDetails();
-    //controller.
   }
 
   void getHistoryDetails() async {
+    //368
     SharedPreferences pre = await SharedPreferences.getInstance();
-    print('1ccccccccccccccccccccccccccc');
-    final responses = await AuthRepo.getHistoryList('7', '1082');
+    print('1ccccccccccccccccccccccccccc'); //7904622924
+    final responses =
+        await AuthRepo.getHistoryList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
     print('2ccccccccccccccccccccccccccc');
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-    print('31ccccccccccccccccccccccccccc');
-    print(dec);
-    print('31wwwwccccccccccccccccccccccccccc');
+
     print(pre.getString('username'));
     var tagObjsJson = jsonDecode(dec) as List;
     setState(() {
       _stepperData = List.generate(
           tagObjsJson.length,
-          (index) => index != tagObjsJson.length - 1
+          (index) => index != tagObjsJson.length
               ? StepperItemData(
                   id: '$index',
                   content: ({
+                    //
                     'STAGE': tagObjsJson.elementAt(index)['stage'],
                     'ACTION_USER': tagObjsJson.elementAt(index)['actionUser'],
                     'PROCESSED_ON': tagObjsJson.elementAt(index)['processedOn'],
@@ -94,14 +101,13 @@ class _HistoryTaskState extends State<HistoryTask> {
                       "Portfolio": "https://subhashdev121.github.io/subhash/#/",
                     }
                   }),
-                  avatar:
-                      'http://52.172.32.88/ezofis-web/img/mark-white.2f046300.png',
+                  avatar: 'http://52.172.32.88/ezofis-web/img/mark-white.2f046300.png',
                 )
               : StepperItemData(
                   id: '$index',
                   content: ({
                     'STAGE': 'Completed',
-                    'ACTION_USER': 'arun@ezofis.com',
+                    'ACTION_USER': 'aruncomplete@ezofis.com',
                     'PROCESSED_ON': '20-Jun-2023 08:14 PM',
                     'PROCESSED_BY': 'arun@ezofis.com',
                     'RECEIVED_ON': '19-MAY-2023\n08:14 PM',
@@ -111,8 +117,7 @@ class _HistoryTaskState extends State<HistoryTask> {
                       "Portfolio": "https://subhashdev121.github.io/subhash/#/",
                     }
                   }),
-                  avatar:
-                      'http://52.172.32.88/ezofis-web/img/mark-white.2f046300.png',
+                  avatar: 'http://52.172.32.88/ezofis-web/img/mark-white.2f046300.png',
                 )).toList();
     });
 
@@ -183,9 +188,7 @@ class _HistoryTaskState extends State<HistoryTask> {
                                       flex: 1,
                                       child: Container(
                                           child: Row(children: [
-                                        Text(
-                                            stepData.content['ACTION_USER'] ??
-                                                '',
+                                        Text(stepData.content['ACTION_USER'] ?? '',
                                             overflow: TextOverflow.ellipsis),
                                       ]))),
                                   /*Expanded(
@@ -224,11 +227,7 @@ class _HistoryTaskState extends State<HistoryTask> {
                                   Text(
                                     'STATUS is ',
                                   ),
-                                  Text(
-                                      '\'' +
-                                              stepData.content['Status'] +
-                                              '\'' ??
-                                          '',
+                                  Text('\'' + stepData.content['Status'] + '\'' ?? '',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: Colors.black,

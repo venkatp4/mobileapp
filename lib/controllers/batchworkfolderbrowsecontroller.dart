@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:ez/controllers/ticket_controller.dart';
+import 'package:file_picker/file_picker.dart'; //
+import 'package:filesize/filesize.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../models/nodule.dart';
+import '../models/popup/models/selected_file.dart';
 import '../utils/format_date_time.dart';
 import '../utils/nodule_type.dart';
 import '../utils/testjsonvalues.dart';
@@ -29,6 +32,15 @@ class BatchWorkFolderBrowseController extends GetxController {
   final scanopen = false.obs;
 
   double containerHeight = 0;
+
+/*
+  final repositories = <Repository>[].obs;
+  final repositoryStats = <int, RepositoryStats>{}.obs;
+  final selectedRepository = Repository.empty().obs;
+*/
+
+  final showSelectedFiles = false.obs;
+  final selectedFiles = <SelectedFile>[].obs;
 
   TicketController ticketController = new TicketController();
   // onInit
@@ -63,8 +75,7 @@ class BatchWorkFolderBrowseController extends GetxController {
   // onBreadcrumbTap
 
   void onBreadcrumbTap(Nodule breadcrumb) {
-    final index = breadcrumbs
-        .indexWhere((_breadcrumb) => breadcrumb.id == _breadcrumb.id);
+    final index = breadcrumbs.indexWhere((_breadcrumb) => breadcrumb.id == _breadcrumb.id);
     if (index == breadcrumbs.length - 1) {
       return;
     }
@@ -98,7 +109,42 @@ class BatchWorkFolderBrowseController extends GetxController {
 
   void onUpload() {
     showbottomup.value = false;
+    selectFiles();
     debugPrint('onFabPlus onUpload');
+  }
+
+  Future selectFiles() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    if (result != null) {
+      selectedFiles.clear();
+
+      selectedFiles.value = result.files
+          .map((file) => SelectedFile(
+                name: file.name,
+                size: formatFileSize(file.size),
+                type: file.extension ?? '',
+                file: file,
+              ))
+          .toList();
+      showSelectedFiles.value = true;
+/*      for (var file in selectedFiles) {
+        void setUploadProgress(int uploaded, int total) {
+          uploadProgress[file.name] = uploaded / total;
+        }
+
+*/ /*        await uploadFile(
+          file.name,
+          file.file.path ?? '',
+          file.size,
+          setUploadProgress,
+        );*/ /*
+      }*/
+      selectedFiles.clear();
+    }
+  }
+
+  String formatFileSize(int size) {
+    return filesize(size);
   }
 
   void onScan() {
@@ -177,8 +223,7 @@ class BatchWorkFolderBrowseController extends GetxController {
     nodules.clear();
 
     if (result['nodules'] != null) {
-      result['nodules']
-          .forEach((dynamic nodule) => nodules.add(Nodule.fromJson(nodule)));
+      result['nodules'].forEach((dynamic nodule) => nodules.add(Nodule.fromJson(nodule)));
 
       rowFrom.value = result['pagination']['rowFrom'] ?? 0;
       rowTo.value = result['pagination']['rowTo'] ?? 0;
@@ -241,8 +286,7 @@ class BatchWorkFolderBrowseController extends GetxController {
       if (sortBy == 'Items Count') {
         nodules.sort((a, b) => a.itemsCount.compareTo(b.itemsCount));
       } else if (sortBy == 'Last Modified') {
-        nodules.sort((a, b) =>
-            parseDateTime(a.modifiedAt).compareTo(parseDateTime(b.modifiedAt)));
+        nodules.sort((a, b) => parseDateTime(a.modifiedAt).compareTo(parseDateTime(b.modifiedAt)));
       } else {
         nodules.sort((a, b) => a.name.compareTo(b.name));
       }
@@ -258,8 +302,7 @@ class BatchWorkFolderBrowseController extends GetxController {
   // next
 
   void next() {
-    getNodules(nodule.value.id,
-        from: rowFrom.value + itemsPerPage, to: rowTo.value + itemsPerPage);
+    getNodules(nodule.value.id, from: rowFrom.value + itemsPerPage, to: rowTo.value + itemsPerPage);
   }
 
   // ...
@@ -267,8 +310,7 @@ class BatchWorkFolderBrowseController extends GetxController {
   // previous
 
   void previous() {
-    getNodules(nodule.value.id,
-        from: rowFrom.value - itemsPerPage, to: rowTo.value - itemsPerPage);
+    getNodules(nodule.value.id, from: rowFrom.value - itemsPerPage, to: rowTo.value - itemsPerPage);
   }
 
   void fabProcess() {

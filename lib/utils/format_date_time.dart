@@ -52,8 +52,7 @@ String getDateOnly(String sDate) {
   //DateTime dt = DateTime.parse('2020-01-02 03:04:05');
 /*  String cdate =
       DateFormat("dd-MM-yyyy").format(DateTime.parse('2020-12-02 03:04:05'));// 21-Apr-2023 01:55 AM*/
-  String cdate =
-      DateFormat("dd-MMMM-yyyy hh:mm a").format(DateTime.parse(sDate));
+  String cdate = DateFormat("dd-MMMM-yyyy hh:mm a").format(DateTime.parse(sDate));
   debugPrint('cccccc2 ' + cdate);
   return cdate;
 }
@@ -69,9 +68,9 @@ getCurrentDate() {
 
 String timeFormate(String time) {
   //time = '2023-05-30T14:36:58.58Z';
-
+  print('time ttttttttttttttttq ' + time);
   DateTime dt1 = DateTime.parse(time);
-
+//
   return timeAgoCustom(dt1);
 }
 
@@ -79,29 +78,28 @@ String timeAgoCustom(DateTime d) {
   // <-- Custom method Time Show  (Display Example  ==> 'Today 7:00 PM')     // WhatsApp Time Show Status Shimila
   Duration diff = DateTime.now().difference(d);
 
-  debugPrint('---- ' +
-      d.toString() +
-      ', ' +
-      DateTime.now().toString() +
-      ' ' +
-      diff.toString());
+  debugPrint('---- ' + d.toString() + ', ' + DateTime.now().toString() + ' dd ' + diff.toString());
   if (diff.inDays > 365)
-    return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "Yr" : "Yrs"}";
+    return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "Yr Ago" : "Yrs Ago"}";
   if (diff.inDays > 30)
-    return "${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() == 1 ? "Mon" : "Mons"}";
+    return "${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() == 1 ? "Mon Ago" : "Mons Ago"}";
   if (diff.inDays > 7)
-    return "${(diff.inDays / 7).floor()} ${(diff.inDays / 7).floor() == 1 ? "Wk" : "Wks"}";
-  if (diff.inDays > 0) return "${DateFormat('EEE').format(d)}";
-  if (diff.inHours > 0) return "${DateFormat('jm').format(d)}";
+    return "${(diff.inDays / 7).floor()} ${(diff.inDays / 7).floor() == 1 ? "Wk Ago" : "Wks Ago"}";
+  if (diff.inDays > 0) return "${diff.inDays}" + ' Day Ago';
+  if (diff.inHours > 0) return "${diff.inHours}" + ' Hour Ago';
+  // if (diff.inDays > 0) return "${DateFormat('EEE').format(d)}";
+  //if (diff.inHours > 0) return "${DateFormat('jm').format(d)}";
   if (diff.inMinutes > 0)
-    return "${diff.inMinutes} ${diff.inMinutes == 1 ? "Min" : "Mins"}";
+    return "${diff.inMinutes} ${diff.inMinutes == 1 ? "Min Ago" : "Mins Ago"}";
   return "${diff.inMinutes} ";
   return "Just Now";
 }
 
 /*String timeAgoSinceDate({bool numericDates = true}) {
   DateFormat("dd-MM-yyyy").format(DateTime.parse('2020-12-02 03:04:05'));
-  DateTime date = this.createdTime.toLocal();
+
+  //Duration diff = DateTime.now().difference(d);
+  DateTime date = DateTime.now();
   final date2 = DateTime.now().toLocal();
   final difference = date2.difference(date);
 

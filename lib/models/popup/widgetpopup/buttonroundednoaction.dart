@@ -16,22 +16,21 @@ class ButtonRoundedNoAction extends StatelessWidget {
       onPressed: null,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(color),
-        padding: MaterialStateProperty.all(
+/*        padding: MaterialStateProperty.all(
           EdgeInsets.symmetric(
             horizontal: 5,
             vertical: 1,
           ),
-        ),
+        ),*/
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
           ),
         ),
       ),
       child: Text(
         label,
-        style: TextStyle(
-            color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+        style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
       ),
     );
   }

@@ -9,13 +9,16 @@ import 'package:get/get_core/src/get_main.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart'; //karthi
 
 import '../../../api/auth_repo.dart';
 import '../../../utils/file_fns.dart';
 import '../../../utils/helper/aes_encryption.dart';
 import '../../comments.dart';
 import '../controllers/commentcontroller.dart';
+import '../controllers/popupfullpagecontroller.dart';
+import '../form/components/divider.dart';
+import '../form/components/radio_button_input.dart';
 
 class CommenttList extends StatefulWidget {
   @override //
@@ -24,41 +27,47 @@ class CommenttList extends StatefulWidget {
 
 class _CommenttListState extends State<CommenttList> {
   double safeAreaHeight = 0;
-  TextEditingController commentController = TextEditingController();
+  TextEditingController commentTextController = TextEditingController();
   //SharedPreferences pre=null;
-  final controller = Get.put(CommentController());
+  CommentController controllerComments = Get.put(CommentController());
+  final controllerpopup = Get.put(PopupFullPageController());
   ScrollController _scrollController = ScrollController();
   bool _needsScroll = false;
   int iSelectedFileCount = 0;
+  dynamic showto = 1;
+  //dynamic showTO = 1;
+  String sPostJsonComments = '';
+  bool bResponse = false;
 
   @override
   void initState() {
     super.initState();
-
+/*    setState(() {
+      controllers.dataMessageList = [];
+    });*/
     getCommentsDetails();
     WidgetsBinding.instance.addPostFrameCallback((_) => scrolldown());
   }
 
   void getCommentsDetails() async {
     SharedPreferences pre = await SharedPreferences.getInstance();
-    print('1ccccccccccccccccccccccccccc');
-    final responses = await AuthRepo.getCommentsList('7', '1082');
+    // print('1cccccccccccccccccccccccccccw');
+    final responses =
+        await AuthRepo.getCommentsList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
     print('2ccccccccccccccccccccccccccc');
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-    print('31ccccccccccccccccccccccccccc');
+/*    print('31ccccccccccccccccccccccccccct');
     print(dec);
-    print('31wwwwccccccccccccccccccccccccccc');
-    print(pre.getString('username'));
+    print('31wwwwcccccccccccccccccccccccccccrt');
+    print(pre.getString('userid'));*/
 
     var tagObjsJson = jsonDecode(dec) as List;
     List<commentsdatas> tagObjs = tagObjsJson
-        .map((tagJson) => commentsdatas.fromJson(tagJson, pre.getInt('id')))
+        .map((tagJson) => commentsdatas.fromJson(tagJson, pre.getString('userid')))
         .toList();
     setState(() {
-      controller.dataMessageList = tagObjs;
+      controllerComments.dataMessageList = tagObjs;
     });
-
-    debugPrint('678ccccccccccccccccccccccccccc');
   }
 
   @override
@@ -74,18 +83,16 @@ class _CommenttListState extends State<CommenttList> {
                       flex: 8,
                       child: ListView.builder(
                         controller: _scrollController,
-                        itemCount: controller.dataMessageList.length,
+                        itemCount: controllerComments.dataMessageList.length,
                         itemBuilder: (context, index) {
-                          commentsdatas item =
-                              controller.dataMessageList.elementAt(index);
+                          commentsdatas item = controllerComments.dataMessageList.elementAt(index);
                           return ListTile(
                               //contentPadding: EdgeInsets.only(left: 30.0, right: 0.0),
                               title: Container(
                             margin: EdgeInsets.all(0),
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0))),
+                                borderRadius: BorderRadius.all(Radius.circular(5.0))),
                             child: Row(children: [
                               Expanded(
                                   child: Container(
@@ -96,55 +103,92 @@ class _CommenttListState extends State<CommenttList> {
                                       ? Row(
                                           children: [
                                             Expanded(
+                                                flex: 2,
+                                                child: Container(
+                                                  width: double.infinity,
+                                                )),
+                                            Expanded(
+                                                flex: 8,
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  child: Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Container(
+                                                          padding: EdgeInsets.all(5),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.teal,
+                                                              borderRadius: BorderRadius.only(
+                                                                  topRight: Radius.circular(10.0),
+                                                                  topLeft: Radius.circular(10.0),
+                                                                  bottomLeft:
+                                                                      Radius.circular(10.0))),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(
+                                                                item.Comments,
+                                                                // maxLines: 2,
+                                                                overflow: TextOverflow.clip,
+                                                                style: TextStyle(
+                                                                    fontWeight: FontWeight.w400,
+                                                                    color: Colors.white,
+                                                                    fontSize: 18),
+                                                              ),
+                                                              Wrap(
+                                                                  alignment: WrapAlignment.start,
+                                                                  children: [
+                                                                    Text(
+                                                                      item.sCreatedAt,
+//                                                                      '20-Jul-2023 03.35PM',ew
+                                                                      maxLines: 1,
+                                                                      style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color: Colors.white54,
+                                                                          fontSize: 10),
+                                                                    )
+                                                                  ])
+                                                            ],
+                                                          ))),
+                                                )),
+                                          ],
+                                        )
+                                      : Row(
+                                          children: [
+                                            Expanded(
                                                 flex: 8,
                                                 child: Wrap(
-                                                  alignment:
-                                                      WrapAlignment.start,
+                                                  alignment: WrapAlignment.start,
                                                   children: [
                                                     Container(
-                                                        padding:
-                                                            EdgeInsets.all(5),
+                                                        padding: EdgeInsets.all(5),
                                                         decoration: BoxDecoration(
-                                                            color:
-                                                                Colors.black87,
+                                                            color: Colors.black87,
                                                             borderRadius: BorderRadius.only(
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        10.0),
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        10.0),
-                                                                bottomRight: Radius
-                                                                    .circular(
-                                                                        10.0))),
+                                                                topRight: Radius.circular(10.0),
+                                                                topLeft: Radius.circular(10.0),
+                                                                bottomRight:
+                                                                    Radius.circular(10.0))),
                                                         child: Column(
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
+                                                              CrossAxisAlignment.end,
                                                           children: [
                                                             Text(
-                                                              item.sComments,
+                                                              item.Comments,
                                                               maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .clip,
+                                                              overflow: TextOverflow.clip,
                                                               style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: Colors
-                                                                      .white,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  color: Colors.white,
                                                                   fontSize: 18),
                                                             ),
                                                             Text(
                                                               '19-Jul-2023 03.35PM',
                                                               maxLines: 1,
                                                               style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Colors
-                                                                      .white54,
+                                                                  fontWeight: FontWeight.w500,
+                                                                  color: Colors.white54,
                                                                   fontSize: 10),
                                                             )
                                                           ],
@@ -157,81 +201,6 @@ class _CommenttListState extends State<CommenttList> {
                                                   width: double.infinity,
                                                 ))
                                           ],
-                                        )
-                                      : Row(
-                                          children: [
-                                            Expanded(
-                                                flex: 2,
-                                                child: Container(
-                                                  width: double.infinity,
-                                                )),
-                                            Expanded(
-                                                flex: 8,
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  child: Align(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: Container(
-                                                          padding:
-                                                              EdgeInsets.all(5),
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  Colors.teal,
-                                                              borderRadius: BorderRadius.only(
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          10.0),
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          10.0),
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          10.0))),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                item.sComments,
-                                                                // maxLines: 2,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .clip,
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        18),
-                                                              ),
-                                                              Wrap(
-                                                                  alignment:
-                                                                      WrapAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    //
-                                                                    Text(
-                                                                      item.sCreatedAt,
-//                                                                      '20-Jul-2023 03.35PM',ew
-                                                                      maxLines:
-                                                                          1,
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          color: Colors
-                                                                              .white54,
-                                                                          fontSize:
-                                                                              10),
-                                                                    )
-                                                                  ])
-                                                            ],
-                                                          ))),
-                                                )),
-                                          ],
                                         ),
                                   //               SizedBox(height: 10),
                                 ],
@@ -240,6 +209,14 @@ class _CommenttListState extends State<CommenttList> {
                           ));
                         },
                       )),
+                  Dividers(sType: 'SOLID'),
+                  RadioButtonInput(
+                    initialValue: 'Internal (Private)',
+                    isDisabled: false,
+                    options: controllerComments.radioFields.split(','),
+                    onChanged: (value) =>
+                        controllerComments.onFormFieldChanged(value, controllerComments.Initial),
+                  ),
                   Container(
                     margin: EdgeInsets.all(5),
                     height: 60,
@@ -249,7 +226,7 @@ class _CommenttListState extends State<CommenttList> {
                         borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: TextField(
                         scrollPadding: const EdgeInsets.only(bottom: 32.0),
-                        controller: commentController,
+                        controller: commentTextController,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black54,
@@ -259,48 +236,31 @@ class _CommenttListState extends State<CommenttList> {
                         maxLines: 4,
                         minLines: 4,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 2),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 MdiIcons.send,
                                 color: Colors.black54,
                               ),
                               onPressed: () {
-/*                                commentsdatas(
-                                    {required this.sProcessId,
-                                      required this.sTransactionId,
-                                      required this.sComments,
-                                      required this.sExternalCommentsby,
-                                      required this.sCreatedAt,
-                                      required this.sCreatedByEmail,
-                                      required this.bIsDeleted});*/
+                                if (commentTextController.text.trim().length > 0) {
+                                  print('sssssssssssscsssss123');
+                                  print(controllerComments.showTo.toString());
 
-                                if (commentController.text.trim().length > 0) {
-                                  commentsdatas items = commentsdatas(
-                                      sComments: commentController.text.trim(),
-                                      sCreatedAt: '',
-                                      sCreatedByEmail: '',
-                                      sExternalCommentsby: '',
-                                      sProcessId: '',
-                                      sTransactionId: '',
-                                      bIsDeletes: false);
-                                  /*commentsdatas items = commentsdatas(
-                                      commentController.text.trim(), false);*/
-                                  setState(() {
-                                    controller.dataMessageList.add(items);
-                                    commentController.text = '';
-                                    scrolldown();
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                  });
+                                  sPostJsonComments = '{"comments":"' +
+                                      commentTextController.text +
+                                      '","showTo":' +
+                                      controllerComments.showTo.toString() +
+                                      '}';
+
+                                  postCommentApi(controllerpopup.sWorkFlowId,
+                                      controllerpopup.sProcessId, controllerpopup.sTransactionId);
                                 }
                               },
                             ),
                             hintText: "Enter Remarks",
                             focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.blue)))),
+                                borderSide: BorderSide(width: 1, color: Colors.blue)))),
                   )
                 ],
               )
@@ -310,8 +270,51 @@ class _CommenttListState extends State<CommenttList> {
   scrolldown() {
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 1),
-          curve: Curves.fastOutSlowIn);
+          duration: const Duration(milliseconds: 1), curve: Curves.fastOutSlowIn);
+    });
+  }
+
+  void postCommentApi(String sWorkflowId, String sProcessId, String sTransactionId) async {
+    String payloadenc = sPostJsonComments;
+    final responses = await AuthRepo.postComments(sWorkflowId, sProcessId, sTransactionId,
+        json.encode(AaaEncryption.EncryptDatatest(payloadenc)));
+    String dec = AaaEncryption.decryptAESaaa(responses.toString());
+    print('eeeeeeeee1');
+    if (responses.statusCode == 200 || responses.statusCode == 201) {
+      commentsdatas items = commentsdatas(
+          Comments: commentTextController.text.trim(),
+          sCreatedAt: 'justnow',
+          sCreatedByEmail: '',
+          sExternalCommentsby: '',
+          sProcessId: '',
+          sTransactionId: '',
+          showTo: controllerComments.showTo,
+          bIsMe: true,
+          bIsDeletes: false);
+      setState(() {
+        scrolldown();
+        FocusManager.instance.primaryFocus?.unfocus();
+        controllerComments.dataMessageList.add(items);
+        commentTextController.text = '';
+        getCommentsDetailsCount();
+        //if (controllerComments.bResponse) getCommentsDetails();
+      });
+    } else {
+      setState(() {
+        scrolldown();
+        FocusManager.instance.primaryFocus?.unfocus();
+        commentTextController.text = '';
+      });
+    }
+    print(dec);
+  }
+
+  void getCommentsDetailsCount() async {
+    final responses =
+        await AuthRepo.getCommentsList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
+    List lComments = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
+    setState(() {
+      controllerpopup.iMsgCount = lComments.length;
     });
   }
 }

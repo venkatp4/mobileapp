@@ -26,7 +26,7 @@ class MainDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 5, 5, 10),
+            padding: EdgeInsets.fromLTRB(0, 15, 5, 5),
             child: IconButton(
               icon: Icon(
                 MdiIcons.arrowLeft,

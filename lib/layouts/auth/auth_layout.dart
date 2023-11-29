@@ -27,14 +27,14 @@ class AuthLayout extends StatelessWidget {
       body: SafeContainer(
           child: Container(
         width: mediaQuery.size.width,
-        height: mediaQuery.size.height,
+        height: mediaQuery.size.height + 20,
         decoration: const BoxDecoration(
+            color: Colors.red,
             image: DecorationImage(
-                image: AssetImage("assets/images/background/back.jpeg"),
-                fit: BoxFit.cover)),
+                image: AssetImage("assets/images/background/back.jpeg"), fit: BoxFit.cover)),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

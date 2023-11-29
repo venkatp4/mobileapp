@@ -10,8 +10,8 @@ class TaskFormRepo {
     print(sFormId);
     print(payload);
     //http://52.172.32.88/eZenterpriseAPI/api/form/3065/uniqueColumnValues
-    return Api().clientWithHeader().post<dynamic>(
-        'form/' + sFormId + '/' + 'uniqueColumnValues',
-        data: payload);
+    return Api()
+        .clientWithHeader()
+        .post<dynamic>('form/' + sFormId + '/' + 'uniqueColumnValues', data: payload);
   }
 }

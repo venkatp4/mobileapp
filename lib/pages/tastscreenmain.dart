@@ -90,17 +90,13 @@ class _TaskScreenMainState extends State<TaskScreenMain> {
                   iCurrentSelect == 'Connect'
                       ? Column(
                           children: [
-                            BatchWorkBlue(
-                                sFolderName: 'From Templetes', iSelected: 0),
+                            BatchWorkBlue(sFolderName: 'From Templetes', iSelected: 0),
                             SizedBox(height: 20),
-                            BatchWorkPurple(
-                                sFolderName: 'Workspace', iSelected: 0),
+                            BatchWorkPurple(sFolderName: 'Workspace', iSelected: 0),
                             SizedBox(height: 20),
-                            BatchWorkBlue(
-                                sFolderName: 'From Templetes', iSelected: 0),
+                            BatchWorkBlue(sFolderName: 'From Templetes', iSelected: 0),
                             SizedBox(height: 20),
-                            BatchWorkPurple(
-                                sFolderName: 'Workspace', iSelected: 0),
+                            BatchWorkPurple(sFolderName: 'Workspace', iSelected: 0),
                             SizedBox(height: 20),
                           ],
                         )
@@ -117,16 +113,14 @@ class _TaskScreenMainState extends State<TaskScreenMain> {
                   //////////////////////////////////////
                   iCurrentSelect == 'Explore'
                       ? Column(children: [
-                          BatchWorkBlue(
-                              sFolderName: 'Manufacturings', iSelected: 0),
+                          BatchWorkBlue(sFolderName: 'Manufacturings', iSelected: 0),
                           // /BatchWork(sFolderName: 'Manufacturing'),
                           SizedBox(height: 20),
                           BatchWorkPurple(
                             sFolderName: 'Legal',
                             iSelected: 0,
                           ), //headset
-                          BatchWorkBlue(
-                              sFolderName: 'Manufacturing', iSelected: 0),
+                          BatchWorkBlue(sFolderName: 'Manufacturing', iSelected: 0),
                           SizedBox(height: 20),
                           BatchWorkPurple(sFolderName: 'Legal', iSelected: 0)
                         ])

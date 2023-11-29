@@ -20,7 +20,7 @@ class SearchLayout extends StatelessWidget {
   final List<Widget> children;
   final controllers = Get.put(SearchlayoutController());
   String image = '';
-  String title = 'sdsds';
+  String title = 'ABC';
   bool innerBoxIsScrolled = true;
   final List<Widget> wpersistentFooterButtons;
 
@@ -30,11 +30,11 @@ class SearchLayout extends StatelessWidget {
     double dheight = mediaQuery.size.height * .09;
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: BrowseViewBottomBar(),
-        drawer: MainDrawer(),
-        persistentFooterButtons: [
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: BrowseViewBottomBar(),
+      drawer: MainDrawer(),
+      persistentFooterButtons: [
 /*        Container(
           alignment: AlignmentDirectional.centerEnd,
           padding: const EdgeInsets.all(0), //<-- this
@@ -46,44 +46,41 @@ class SearchLayout extends StatelessWidget {
             children: [...wpersistentFooterButtons],
           ),
         ),*/
-          Container(
-              color: Colors.black12,
-              child: Column(
-                children: [...wpersistentFooterButtons],
-              ))
-        ],
-        body: SafeArea(
-            child: Container(
-                color: Colors.white,
-                child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverOverlapAbsorber(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            context),
-                        sliver: SliverAppBar(
-                          automaticallyImplyLeading: false,
-                          backgroundColor: Colors.black12,
-                          //backgroundColor: Colors.grey.withOpacity(.9),
-                          pinned: true,
-                          /*         floating: true,
+        Container(
+            color: Colors.black12,
+            child: Column(
+              children: [...wpersistentFooterButtons],
+            ))
+      ],
+      body: SafeArea(
+          child: Container(
+              color: Colors.white,
+              child: NestedScrollView(
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverOverlapAbsorber(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      sliver: SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        backgroundColor: Colors.black12,
+                        //backgroundColor: Colors.grey.withOpacity(.9),
+                        pinned: true,
+                        /*         floating: true,
                 stretch: true,*/
-                          expandedHeight: dheight,
-                          flexibleSpace: !innerBoxIsScrolled
-                              ? TopBarDesign(
-                                  height: double.infinity,
-                                )
-                              : Container(
-                                  margin: EdgeInsets.fromLTRB(0, 7, 0, 7),
-                                  child: TextInputSearchableSearch(
-                                      title: "",
-                                      type: TextInputType.text,
-                                      onChange:
-                                          tabbarController.onSearchTextChanged,
-                                      placeholder: "Search"),
-                                  // Expanded(...)
-                                  /*Container(
+                        expandedHeight: dheight,
+                        flexibleSpace: !innerBoxIsScrolled
+                            ? TopBarDesign(
+                                height: double.infinity,
+                              )
+                            : Container(
+                                margin: EdgeInsets.fromLTRB(0, 7, 0, 7),
+                                child: TextInputSearchableSearch(
+                                    title: "",
+                                    type: TextInputType.text,
+                                    onChange: tabbarController.onSearchTextChanged,
+                                    placeholder: "Search"),
+                                // Expanded(...)
+                                /*Container(
                           height: double.infinity,
                           width: 20,
                           color: Colors.black.withOpacity(0.5),
@@ -94,27 +91,25 @@ class SearchLayout extends StatelessWidget {
                                       tabbarController.onSearchTextChanged,
                                   placeholder: "Search")*/ /*
                         )*/
-                                ),
-                        ),
+                              ),
                       ),
-                    ];
-                  },
-                  body: Builder(builder: (BuildContext context) {
-                    return Expanded(
-                        child: Container(
-                            height: double.infinity,
-                            //SingleChildScrollView
-                            margin: EdgeInsets.only(
-                                top: mediaQuery.size.height * .071),
-                            child: Column(
-                              //crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ...children,
-                              ],
-                            )));
+                    ),
+                  ];
+                },
+                body: Builder(builder: (BuildContext context) {
+                  return Container(
+                      height: double.infinity,
+                      //SingleChildScrollView
+                      margin: EdgeInsets.only(top: mediaQuery.size.height * .071),
+                      child: Column(
+                        //crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ...children,
+                        ],
+                      ));
 
-                    /* SliverList(
+                  /* SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return Padding(
@@ -132,8 +127,17 @@ class SearchLayout extends StatelessWidget {
                   childCount: 20,
                 ),
               )*/
-                  }),
-                ))));
+                }),
+              ))),
+      /*     floatingActionButton: Obx(() => Visibility(
+          visible: controllers.bFabVisible.value,
+          child: FloatingActionButton(
+            onPressed: () {
+              print('fab ');
+            },
+            child: Icon(Icons.add),
+          ))),*/
+    );
   }
 
   justcal() {

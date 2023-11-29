@@ -11,11 +11,14 @@ class SessionController extends GetxController {
   final token = ''.obs;
   final key = ''.obs;
   final iv = ''.obs;
+  final userid = 0.obs;
   final twoFactorAuthendication = ''.obs;
   final store = GetStorage();
+  var userdata = '';
 
   @override
   Future onInit() async {
+    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     await getSession();
     super.onInit();
   }
@@ -28,6 +31,10 @@ class SessionController extends GetxController {
     iv.value = session.iv;
     key.value = session.key;
     twoFactorAuthendication.value = session.twoFactorAuthentication;
+  }
+
+  void initUserDetails(UserDetails data) {
+    userid.value = data.id;
   }
 
   // ...
@@ -55,6 +62,10 @@ class SessionController extends GetxController {
       store.write('userdetails', json.encode(data));
       //store.write('userdetails', json.encode(Userdata));
       store.save();
+
+      final session = store.read('session') ?? '';
+      userdata = store.read('userdetails') ?? '';
+      final _session = Session.fromJson(json.decode(session));
     } catch (e) {
       print(e);
     }
@@ -66,10 +77,16 @@ class SessionController extends GetxController {
     try {
       //final prefs = await SharedPreferences.getInstance();
       final session = store.read('session') ?? '';
+      final userdetailsdata = store.read('userdetails') ?? '';
 
       if (session != '') {
         final _session = Session.fromJson(json.decode(session));
         initSession(_session);
+        // assign user details
+        if (userdetailsdata != '') {
+          Userdata.value = UserDetails.fromJson(userdetailsdata);
+          initUserDetails(Userdata.value);
+        }
       }
     } catch (e) {
       debugPrint('get -------');

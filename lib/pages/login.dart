@@ -38,8 +38,7 @@ class LoginPage extends StatelessWidget {
     safeAreaHeight = safeArea['height']!;
     safeAreaWidth = safeArea['width']!;
 
-    debugPrint(
-        safeAreaHeight.toString() + 'h  login b' + safeAreaWidth.toString());
+    debugPrint(safeAreaHeight.toString() + 'h  login b' + safeAreaWidth.toString());
     return AuthLayout(
         // title
         title: 'Login',
@@ -58,12 +57,14 @@ class LoginPage extends StatelessWidget {
                 hasError: controller.hasEmailError.value,
                 onChange: controller.onEmailChanged,
                 placeholder: "Email"),
+
             //Size Space
             const SizedBox(height: 10),
             //Password
             TextInputsPassword(
                 title: "Password".tr,
                 type: TextInputType.text,
+                hasError: controller.hasPasswordError.value,
                 onChange: controller.password,
                 placeholder: "Password"),
             //Size Space
@@ -111,8 +112,7 @@ class LoginPage extends StatelessWidget {
                     Container(
                         margin: EdgeInsets.fromLTRB(2, 0, 5, 0),
                         child: ButtonImg(
-                            sAssetImgPath: 'assets/images/files/google.png',
-                            sUrlLink: 'google')),
+                            sAssetImgPath: 'assets/images/files/google.png', sUrlLink: 'google')),
                     Container(
                         margin: EdgeInsets.fromLTRB(5, 0, 2, 0),
                         child: ButtonImg(

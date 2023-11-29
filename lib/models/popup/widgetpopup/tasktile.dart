@@ -26,14 +26,15 @@ class TaskTile extends StatelessWidget {
         SizedBox(
           height: 115, // constrain height
           child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+            physics: NeverScrollableScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             itemCount: Detials.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
                     print('yyyyyyyyyyyyyy ' + index.toString());
-                    Get.offAllNamed('/formview');
+                    Navigator.pushNamed(context, "formview");
+                    //Get.offAllNamed('/formview');
+                    //Get.offAllNamed('/formviewtab');
                   },
                   child: Detials.keys.elementAt(index) != 'Buttons'
                       ? Container(
@@ -46,8 +47,7 @@ class TaskTile extends StatelessWidget {
                               Expanded(
                                   flex: 25,
                                   child: Text(
-                                    StringUtils.toPascalCase(
-                                        Detials.keys.elementAt(index)),
+                                    StringUtils.toPascalCase(Detials.keys.elementAt(index)),
                                     style: const TextStyle(
                                         color: Colors.black38,
                                         fontSize: 14,
@@ -62,10 +62,7 @@ class TaskTile extends StatelessWidget {
                                           fontWeight: FontWeight.w500))),
                               Expanded(
                                   flex: 70,
-                                  child: Text(
-                                      Detials.values
-                                          .elementAt(index)
-                                          .toString(),
+                                  child: Text(Detials.values.elementAt(index).toString(),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           color: Colors.black87,
@@ -84,14 +81,10 @@ class TaskTile extends StatelessWidget {
                                   margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
                                   //  margin: EdgeInsets.all(2),
                                   child: ButtonRoundedNoAction(
-                                      color: findColors(Detials.values
-                                          .elementAt(index)
-                                          .split(',')
-                                          .elementAt(0)),
-                                      label: Detials.values
-                                          .elementAt(index)
-                                          .split(',')
-                                          .elementAt(0))),
+                                      color: findColors(
+                                          Detials.values.elementAt(index).split(',').elementAt(0)),
+                                      label:
+                                          Detials.values.elementAt(index).split(',').elementAt(0))),
                               Container(
                                   // margin: EdgeInsets.all(2),
                                   margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
@@ -100,10 +93,8 @@ class TaskTile extends StatelessWidget {
                                           .elementAt(index)
                                           .split(',')
                                           .elementAt(1)),
-                                      label: Detials.values
-                                          .elementAt(index)
-                                          .split(',')
-                                          .elementAt(1)))
+                                      label:
+                                          Detials.values.elementAt(index).split(',').elementAt(1)))
                             ])));
             },
           ),

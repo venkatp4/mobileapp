@@ -66,7 +66,6 @@ class _DropDownMainAPIState extends State<DropDownMainAPI> {
   void initState() {
     modelValue = widget.initialValue;
     textController.text = modelValue;
-
     super.initState();
   }
 

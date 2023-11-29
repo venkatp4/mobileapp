@@ -5,6 +5,12 @@ import 'api.dart';
 class WorkflowRepo {
   const WorkflowRepo();
 
+  static Future<Response> getlistByUserId() {
+    print(' getlistByUserId');
+
+    return Api().clientWithHeader().get<dynamic>('workflow/listByUserId'); //7  or 6
+  }
+
 /*  static Future<Response<List>> getWorkflows(Map<String, String> payload) {
     return Api().client().post<List>('/Mobile/getWorkflows', data: payload);
   }

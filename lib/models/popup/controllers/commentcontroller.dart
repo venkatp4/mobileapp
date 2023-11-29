@@ -12,10 +12,14 @@ import '../../comments.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class CommentController extends GetxController {
-  final controllerpopup = Get.put(PopupFullPageController());
+  //final controllerpopup = Get.put(PopupFullPageController());
   int iSelecteFileCount = 0;
 
   String sMessage = '';
+  final formFieldsModel = <String, dynamic>{}.obs;
+  String radioFields = 'Internal (Private),External (Public)';
+  String Initial = 'Internal (Private)';
+  dynamic showTo = 1;
 
   /*List dataMessageList = <commentsdatas>[
     new commentsdatas("Message first", true),
@@ -44,6 +48,23 @@ class CommentController extends GetxController {
     var filtered = dataFileListNew.where((e) => e.selected == true);
     return filtered.length;
   }
+
+  void onFormFieldChanged(dynamic value, String fieldName) {
+    formFieldsModel[fieldName] = value;
+  }
+
+/*  void postCommentApi(String sWorkflowId, String sProcessId, String sTransactionId) async {
+    //String payloadenc = sPostJsonComments;
+    final responses = await AuthRepo.postComments(sWorkflowId, sProcessId, sTransactionId,
+        json.encode(AaaEncryption.EncryptDatatest(sPostJsonComments)));
+    String dec = AaaEncryption.decryptAESaaa(responses.toString());
+    print('eeeeeeeee1');
+    if (responses.statusCode == 200 || responses.statusCode == 201) {
+      bResponse = true;
+    } else
+      bResponse = false;
+    print(dec);
+  }*/
 
 /*  void getCommentsDetails() async {
     debugPrint('1ccccccccccccccccccccccccccc');

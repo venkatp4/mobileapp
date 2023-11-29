@@ -168,7 +168,7 @@ class ProcesslayoutController extends GetxController {
   }
 
   void toggleDrawers(BuildContext context) {
-    debugPrint('toggle controller');
+    debugPrint('toggle controllerdd');
     if (!Scaffold.of(context).isDrawerOpen)
       Scaffold.of(context).openDrawer();
     else

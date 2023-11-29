@@ -1,3 +1,4 @@
+import 'package:ez/controllers/auth_controller.dart';
 import 'package:ez/controllers/session_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,9 @@ import 'ExampleSearchBar.dart';
 class TopBarDesign extends StatelessWidget implements PreferredSizeWidget {
   var tabbarController = TopBarController();
   SearchlayoutController controller = SearchlayoutController();
-  SessionController sessionController = SessionController();
+  //SessionController sessionController = SessionController();
+  //final sessionCtrl = Get.put(SessionController());
+  final authcontroller = Get.put(AuthController());
 
   final double height;
 
@@ -24,6 +27,10 @@ class TopBarDesign extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(authcontroller.userdata);
+    print('uuu1 ' + authcontroller.userdata['avatar'].toString().length.toString());
+    print(ModalRoute.of(context)?.settings.name);
+
     return Container(
         color: Color.fromRGBO(0, 191, 255, 1), //00bfff
         height: double.infinity,
@@ -36,14 +43,10 @@ class TopBarDesign extends StatelessWidget implements PreferredSizeWidget {
                   height: double.infinity,
                   //margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
                   constraints: BoxConstraints(
-                      maxWidth: 60.0,
-                      minWidth: 60.0,
-                      maxHeight: 50.0,
-                      minHeight: 50.0),
+                      maxWidth: 60.0, minWidth: 60.0, maxHeight: 50.0, minHeight: 50.0),
                   child: ClipRRect(
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(25),
-                          bottomRight: Radius.circular(25)),
+                          topRight: Radius.circular(25), bottomRight: Radius.circular(25)),
                       child: Container(
                           color: Colors.purple,
                           padding: EdgeInsets.fromLTRB(10, 10, 15, 10),
@@ -63,18 +66,19 @@ class TopBarDesign extends StatelessWidget implements PreferredSizeWidget {
                     child: Row(children: [
                       Container(
                           //margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          child: Obx(() => tabbarController.sProfileImage == ''
+                          child: authcontroller.userdata['avatar'].toString().length < 15
                               ? CircleAvatar(
                                   radius: 25, //radius is 50
-                                  backgroundImage: AssetImage(
-                                      'assets/images/background/useravaathar.png'),
+                                  backgroundImage:
+                                      AssetImage('assets/images/background/useravaathar.png'),
                                   //image url
                                 )
                               : CircleAvatar(
                                   radius: 25, //radius is 50
                                   backgroundImage: NetworkImage(
-                                      'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/yzvorwwd042nwikbs0xb'), //image url
-                                ))),
+                                      // NetworkImage(authcontroller.userdata['avathar']),
+                                      authcontroller.userdata['avatar'].toString()), //image url
+                                )),
                       Container(
                           //color: Colors.red,
                           alignment: Alignment.centerRight,

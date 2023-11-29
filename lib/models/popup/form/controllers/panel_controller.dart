@@ -55,6 +55,14 @@ class PanelController extends GetxController {
   final formFields = <TicketFormField>[].obs;
   final formFieldsModel = <String, dynamic>{}.obs;
 
+  int itabselected = 0;
+  String Initial = 'YES';
+  String sFormId = '';
+  String repositoryId = '';
+  List<String> formbuttonList = <String>[].obs;
+  List<dynamic> userGroupList = <dynamic>[].obs;
+  List<dynamic> blockId = <dynamic>[].obs;
+
   /// dynamic list
 
   @override
@@ -63,6 +71,11 @@ class PanelController extends GetxController {
   void onEmailChanged(String value) {
     email.value = value;
     print(email.value);
+  }
+
+  Future login() async {
+    isLoading.value = true;
+    error.value = '';
   }
 
   // ...
@@ -130,24 +143,16 @@ class PanelController extends GetxController {
     error.value = '';
   }
 
-  Future<List<String>> getDropDownValues(String sFormId, String columnId,
-      int iPanel, int indexwidget, bool bTextField) async {
+  Future<List<String>> getDropDownValues(
+      String sFormId, String columnId, int iPanel, int indexwidget, bool bTextField) async {
     try {
       // columnId = 'JghKAtOm3pRdVcOJp0bZt';
       var temp;
-      final payload = {
-        'column': columnId,
-        'keyword': '',
-        'rowFrom': 0,
-        'rowTo': 0
-      };
+      final payload = {'column': columnId, 'keyword': '', 'rowFrom': 0, 'rowTo': 0};
 
       final response = await TaskFormRepo.getDropDownValues(
-          sFormId,
-          jsonEncode(
-              AaaEncryption.EncryptDatatest(jsonEncode(payload)))); //23 formid
-      temp = jsonDecode(AaaEncryption.decryptAESaaa(response.data))
-          as List<dynamic>;
+          sFormId, jsonEncode(AaaEncryption.EncryptDatatest(jsonEncode(payload)))); //23 formid
+      temp = jsonDecode(AaaEncryption.decryptAESaaa(response.data)) as List<dynamic>;
       // setState(() {
       if (temp.length > 0) {
         //temp.clear();

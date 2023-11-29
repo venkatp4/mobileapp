@@ -9,7 +9,8 @@ class TextInputsPassword extends StatefulWidget {
   final Function(String)? onChange;
   final TextInputType? type;
   final bool? isFull;
-  final erroroccur = false;
+  // final erroroccur = false;
+  final bool hasError;
 
   TextInputsPassword(
       {this.title,
@@ -17,6 +18,7 @@ class TextInputsPassword extends StatefulWidget {
       this.onChange,
       this.defaultValue = "",
       this.errortext,
+      this.hasError = false,
       this.isFull = false,
       this.type = TextInputType.text});
 
@@ -62,9 +64,7 @@ class TextInputsPasswordState extends State<TextInputsPassword> {
                 });
               },
               icon: Icon(
-                _obscureText
-                    ? Icons.remove_red_eye_outlined
-                    : Icons.lock_outlined,
+                _obscureText ? Icons.remove_red_eye_outlined : Icons.lock_outlined,
               )),
           //suffixIcon: Icon(Icons.lock),
           focusColor: Colors.white,

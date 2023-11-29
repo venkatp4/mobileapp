@@ -12,46 +12,27 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import 'controllers/popupfullpagecontroller.dart';
 
-class PopupFullpageInbox extends ModalRoute<int> {
-  //controllerpopup = TaskMainController();
+class PopupFullpageInbox extends StatefulWidget {
+  PopupFullpageInboxState createState() => PopupFullpageInboxState();
+}
+
+class PopupFullpageInboxState extends State<PopupFullpageInbox> {
   final controllerpopup = Get.put(PopupFullPageController());
-  //final controller = Get.put(AttcaheFileController());
-  @override
-  Duration get transitionDuration => Duration(milliseconds: 500);
 
   @override
-  bool get opaque => false;
-
-  @override
-  bool get barrierDismissible => false;
-
-  @override
-  Color get barrierColor => Colors.black.withOpacity(0.5);
-
-  @override
-  String? get barrierLabel => null;
-
-  @override
-  bool get maintainState => true;
-
-  @override
-  Widget buildPage(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) {
-    // This makes sure that text and other content follows the material style
+  Widget build(BuildContext context) {
+    // TODO: implement build
     return _buildOverlayContent(context);
   }
 
   Widget _buildOverlayContent(BuildContext context) {
+    //tn72ca9901
     return Container(
         // margin: EdgeInsets.all(10),
         margin: EdgeInsets.fromLTRB(1, 1, 1, 50),
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(20.0))),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -62,8 +43,7 @@ class PopupFullpageInbox extends ModalRoute<int> {
                       decoration: BoxDecoration(
                           color: Colors.cyanAccent,
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0))),
+                              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0))),
                       width: double.infinity,
                       child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -72,22 +52,20 @@ class PopupFullpageInbox extends ModalRoute<int> {
                           children: <Widget>[
                             DefaultTextStyle(
                                 maxLines: 3,
-                                style:
-                                    TextStyle(decoration: TextDecoration.none),
+                                style: TextStyle(decoration: TextDecoration.none),
                                 child: TextNormalPop(
-                                    sLabel: controllerpopup.InboxDataNew[
-                                            PopupFullPageController
-                                                .iSelectedIndex]['requesno']
+                                    sLabel: controllerpopup
+                                        .InboxDataNew[PopupFullPageController.iSelectedIndex]
+                                            ['requesno']
                                         .toString()
                                         .toString())),
                             DefaultTextStyle(
                                 maxLines: 3,
-                                style:
-                                    TextStyle(decoration: TextDecoration.none),
+                                style: TextStyle(decoration: TextDecoration.none),
                                 child: TextNormalPop(
-                                    sLabel: controllerpopup.InboxDataNew[
-                                            PopupFullPageController
-                                                .iSelectedIndex]['requesno']
+                                    sLabel: controllerpopup
+                                        .InboxDataNew[PopupFullPageController.iSelectedIndex]
+                                            ['requesno']
                                         .toString()
                                         .toString())),
                             SizedBox(
@@ -103,12 +81,11 @@ class PopupFullpageInbox extends ModalRoute<int> {
                               ),
                               DefaultTextStyle(
                                   maxLines: 2,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.none),
+                                  style: TextStyle(decoration: TextDecoration.none),
                                   child: TextSmallPop(
-                                      sLabel: controllerpopup.InboxDataNew[
-                                              PopupFullPageController
-                                                  .iSelectedIndex]['raisedat']
+                                      sLabel: controllerpopup
+                                          .InboxDataNew[PopupFullPageController.iSelectedIndex]
+                                              ['raisedat']
                                           .toString()
                                           .toString()))
                             ]),
@@ -159,66 +136,13 @@ class PopupFullpageInbox extends ModalRoute<int> {
                                             color: Colors.black45,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 20),
-                                        child: Text(
-                                            new Random().nextInt(7).toString() +
-                                                ' Days Ago'),
+                                        child:
+                                            Text(new Random().nextInt(7).toString() + ' Days Ago.'),
                                         maxLines: 2,
                                       )))),
                         ],
                       ))),
               Divider(color: Colors.grey, height: 1),
-              /*Expanded(
-                  flex: 14,
-                  child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 2),
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20.0),
-                              bottomRight: Radius.circular(20.0))),
-                      child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Center(
-                              child: Wrap(
-                            children: <Widget>[
-                              buttonGenerate(
-                                  'Initate ',
-                                  Colors.green,
-                                  Icon(
-                                    MdiIcons.arrowRight,
-                                    color: Colors.green,
-                                  )),
-                              buttonGenerate(
-                                  'Submit',
-                                  Colors.deepOrangeAccent,
-                                  Icon(
-                                    MdiIcons.gestureTap,
-                                    color: Colors.deepOrangeAccent,
-                                  )),
-                              buttonGenerate(
-                                  'Forward',
-                                  Colors.orange,
-                                  Icon(
-                                    MdiIcons.share,
-                                    color: Colors.orange,
-                                  )),
-                              buttonGenerate(
-                                  'Complete',
-                                  Colors.purple,
-                                  Icon(
-                                    MdiIcons.check,
-                                    color: Colors.purple,
-                                  )),
-                              buttonGenerate(
-                                  'Close',
-                                  Colors.red,
-                                  Icon(
-                                    MdiIcons.close,
-                                    color: Colors.red,
-                                  )),
-                            ],
-                          )))))*/
             ],
           ),
         ));
@@ -232,8 +156,7 @@ class PopupFullpageInbox extends ModalRoute<int> {
             textStyle: TextStyle(color: clr),
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24.0),
-                side: BorderSide(width: 2, color: clr)),
+                borderRadius: BorderRadius.circular(24.0), side: BorderSide(width: 2, color: clr)),
           ),
           onPressed: () => {},
           icon: icn,

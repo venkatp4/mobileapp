@@ -19,12 +19,13 @@ class AuthController extends GetxController {
   var isConnected = true.obs;
   var token = "".obs;
   var route = "".obs;
+  Map<String, dynamic> userdata = {};
 
   @override
   void onInit() {
     super.onInit();
-    connectivitySubscription = _connectivity.onConnectivityChanged
-        .listen((ConnectivityResult result) async {
+    connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) async {
       await getConnectivity();
     });
     route.value = "";
@@ -76,17 +77,19 @@ class AuthController extends GetxController {
     AaaEncryption.sToken = pre.getString('token').toString();
 
     if (AaaEncryption.sToken.length > 4) {
+      print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
       String ss = pre.getString('Userdata').toString();
-
-      Map<String, dynamic> data = jsonDecode(AaaEncryption.decryptAESaaa(ss));
-      pre.setInt('userid', data['id']);
-      pre.setString('username', data['firstName'] + " " + data['lastName']);
-      pre.setString('email', data['email']);
+      userdata = jsonDecode(AaaEncryption.decryptAESaaa(ss));
+      pre.setString('userid', userdata['id']);
+      pre.setString('username', userdata['firstName'] + " " + userdata['lastName']);
+      pre.setString('email', userdata['email']);
       pre.commit();
       //sessionController.setSessionuser(data);
       final sessionController = Get.find<SessionController>();
-      sessionController.setSessionuser(data);
+      sessionController.setSessionuser(userdata);
       print(ss);
+      print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu1');
+
       print('yyyyyyyyyy');
       Get.offAndToNamed("/home");
     } else
