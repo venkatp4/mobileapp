@@ -51,15 +51,11 @@ class _CommenttListState extends State<CommenttList> {
 
   void getCommentsDetails() async {
     SharedPreferences pre = await SharedPreferences.getInstance();
-    // print('1cccccccccccccccccccccccccccw');
+
     final responses =
         await AuthRepo.getCommentsList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
-    print('2ccccccccccccccccccccccccccc');
+
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-/*    print('31ccccccccccccccccccccccccccct');
-    print(dec);
-    print('31wwwwcccccccccccccccccccccccccccrt');
-    print(pre.getString('userid'));*/
 
     var tagObjsJson = jsonDecode(dec) as List;
     List<commentsdatas> tagObjs = tagObjsJson
@@ -244,9 +240,6 @@ class _CommenttListState extends State<CommenttList> {
                               ),
                               onPressed: () {
                                 if (commentTextController.text.trim().length > 0) {
-                                  print('sssssssssssscsssss123');
-                                  print(controllerComments.showTo.toString());
-
                                   sPostJsonComments = '{"comments":"' +
                                       commentTextController.text +
                                       '","showTo":' +
@@ -279,7 +272,6 @@ class _CommenttListState extends State<CommenttList> {
     final responses = await AuthRepo.postComments(sWorkflowId, sProcessId, sTransactionId,
         json.encode(AaaEncryption.EncryptDatatest(payloadenc)));
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-    print('eeeeeeeee1');
     if (responses.statusCode == 200 || responses.statusCode == 201) {
       commentsdatas items = commentsdatas(
           Comments: commentTextController.text.trim(),
@@ -297,6 +289,7 @@ class _CommenttListState extends State<CommenttList> {
         controllerComments.dataMessageList.add(items);
         commentTextController.text = '';
         getCommentsDetailsCount();
+        getCommentsDetails();
         //if (controllerComments.bResponse) getCommentsDetails();
       });
     } else {
@@ -306,7 +299,6 @@ class _CommenttListState extends State<CommenttList> {
         commentTextController.text = '';
       });
     }
-    print(dec);
   }
 
   void getCommentsDetailsCount() async {
@@ -314,7 +306,7 @@ class _CommenttListState extends State<CommenttList> {
         await AuthRepo.getCommentsList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
     List lComments = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
     setState(() {
-      controllerpopup.iMsgCount = lComments.length;
+      controllerpopup.iMsgCount.value = lComments.length;
     });
   }
 }

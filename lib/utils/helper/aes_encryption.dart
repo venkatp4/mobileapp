@@ -18,24 +18,18 @@ class AaaEncryption {
   static decryptAESaaa(String encrptedString) {
     final encrypter = Encrypter(AES(KeyVal, mode: AESMode.cbc));
     var decrypted = encrypter.decrypt64(encrptedString, iv: IvVal);
-
-    print(decrypted);
     return decrypted;
   }
 
   static EncryptData(String plaintext) {
     final encrypter = Encrypter(AES(KeyVal, mode: AESMode.cbc));
     Encrypted encrypted = encrypter.encrypt(plaintext, iv: IvVal);
-    print('encrypt');
-    print(encrypted.base64);
     return encrypted.base64;
   }
 
   static EncryptDatatest(final plaintext) {
     final encrypter = Encrypter(AES(KeyVal, mode: AESMode.cbc));
     Encrypted encrypted = encrypter.encrypt(plaintext, iv: IvVal);
-/*    print('encrypt');
-    print(encrypted.base64);*/
     return encrypted.base64;
   }
 

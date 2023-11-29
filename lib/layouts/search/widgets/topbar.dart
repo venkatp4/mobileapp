@@ -27,9 +27,9 @@ class TopBarDesign extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(authcontroller.userdata);
+/*    print(authcontroller.userdata);
     print('uuu1 ' + authcontroller.userdata['avatar'].toString().length.toString());
-    print(ModalRoute.of(context)?.settings.name);
+    print(ModalRoute.of(context)?.settings.name);*/
 
     return Container(
         color: Color.fromRGBO(0, 191, 255, 1), //00bfff

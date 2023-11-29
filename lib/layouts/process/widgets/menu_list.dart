@@ -17,9 +17,6 @@ class MenuList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('3--------------------------------------------');
-    debugPrint('3--------------------------------------------yy ' +
-        menus.length.toString());
     return ListView.builder(
       itemCount: 1,
       itemBuilder: (context, int i) {
@@ -30,8 +27,7 @@ class MenuList extends StatelessWidget {
               label: 'Edit Profiles',
               icon: MdiIcons.squareEditOutline,
               color: Colors.black,
-              onTap: () =>
-                  controller.gototoast('/editprofile', 'Edit Profile', context),
+              onTap: () => controller.gototoast('/editprofile', 'Edit Profile', context),
             ),
             MenuTile(
               label: 'E-mail',
@@ -45,8 +41,7 @@ class MenuList extends StatelessWidget {
               color: Colors.black,
 /*              onTap: () =>
                   controller.gototoast('/password', 'Password', context),*/
-              onTap: () =>
-                  controller.gototoast('/otpscreen', 'Password', context),
+              onTap: () => controller.gototoast('/otpscreen', 'Password', context),
             ),
             Divider(
               color: Colors.black12,
@@ -57,22 +52,19 @@ class MenuList extends StatelessWidget {
               label: 'Notification',
               icon: MdiIcons.bellOutline,
               color: Colors.black,
-              onTap: () => controller.gototoast(
-                  '/notification', 'Notification', context),
+              onTap: () => controller.gototoast('/notification', 'Notification', context),
             ),
             MenuTile(
               label: 'Language',
               icon: MdiIcons.web,
               color: Colors.black,
-              onTap: () =>
-                  controller.gototoast('/languages', 'Languages', context),
+              onTap: () => controller.gototoast('/languages', 'Languages', context),
             ),
             MenuTile(
               label: 'Shortcut',
               icon: MdiIcons.pin,
               color: Colors.black,
-              onTap: () =>
-                  controller.gototoast('/shortcut', 'ShortCut', context),
+              onTap: () => controller.gototoast('/shortcut', 'ShortCut', context),
             ),
             MenuTile(
               label: 'Theme',
@@ -89,8 +81,7 @@ class MenuList extends StatelessWidget {
               label: 'Help & Support',
               icon: MdiIcons.plus,
               color: Colors.black,
-              onTap: () =>
-                  controller.gototoast('/help', 'Help & Support', context),
+              onTap: () => controller.gototoast('/help', 'Help & Support', context),
             ),
             MenuTile(
               label: 'Logout',
@@ -117,56 +108,10 @@ class MenuList extends StatelessWidget {
       },
     );
   }
-/*
-  Widget buildmenu(BuildContext context, final innermenus) {
-    debugPrint('Inner  ' + innermenus.length.toString());
-    return MenuTile(
-      label: innermenus[0].label,
-      icon: controller.activeRoute.value == innermenus[0].route
-          ? innermenus[0].activeIcon
-          : innermenus[0].icon,
-      color: controller.activeRoute.value == innermenus[0].route
-          ? Colors.black
-          : Colors.black,
-      isActive: controller.activeRoute.value == innermenus[0].route,
-      onTap: () => controller.goto(innermenus[0].route),
-    );
-  }*/
 
-/*  Widget buildmenu(BuildContext context, final innermenus) {
-    debugPrint('Inner');
-    debugPrint(innermenus.toString());
-    debugPrint('44============--------------------------------------------');
-    return ListView.builder(
-      itemCount: 1, // innermenus.length,
-      itemBuilder: (_, int j) {
-        debugPrint('1============--------------------------------------------');
-        debugPrint(
-            innermenus.length.toString() + '--------- ' + j.toString() + " ");
-        final menu = innermenus[j];
-        debugPrint('2============--------------------------------------------');
-        return MenuTile(
-          label: menu.label,
-          icon: controller.activeRoute.value == menu.route
-              ? menu.activeIcon
-              : menu.icon,
-          color: controller.activeRoute.value == menu.route
-              ? Colors.black
-              : Colors.black,
-          isActive: controller.activeRoute.value == menu.route,
-          onTap: () => controller.goto(menu.route),
-        );
-      },
-    );
-  }*/
-
-  goto(String route) {
-    //toggleDrawer();
-    // Get.toNamed(route);
-  }
+  goto(String route) {}
 
   final menus = [
-    // MenuHeading(label: 'one'),
     Menu(
       label: 'Edit Profiles',
       icon: MdiIcons.squareEditOutline,

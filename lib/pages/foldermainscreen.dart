@@ -88,9 +88,7 @@ class _FolderMainScreenState extends State<FolderMainScreen> {
                         )
                       : Container(),
 
-                  iCurrentSelect == 'Browse'
-                      ? BatchWorkBrowseFolder()
-                      : Container(),
+                  iCurrentSelect == 'Browse' ? BatchWorkBrowseFolder() : Container(),
 
                   //////////////////////////////////////
                   iCurrentSelect == 'Trash' ? Column(children: []) : Container()
@@ -103,21 +101,18 @@ class _FolderMainScreenState extends State<FolderMainScreen> {
   }
 
   tabFunctionCommect() {
-    debugPrint('BBBB1 44 tabFunctionCommect');
     setState(() {
       iCurrentSelect = 'Folders'.obs;
     });
   }
 
   tabFunctionBrowse() {
-    debugPrint('BBBB1 44 tabFunctionBrowse');
     setState(() {
       iCurrentSelect = 'Browse'.obs;
     });
   }
 
   tabFunctionTrashr() {
-    debugPrint('BBBB1 44 tabFunctionTrashr');
     setState(() {
       iCurrentSelect = 'Trash'.obs;
     });

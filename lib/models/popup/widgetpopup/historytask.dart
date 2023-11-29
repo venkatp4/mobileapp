@@ -63,7 +63,6 @@ class _HistoryTaskState extends State<HistoryTask> {
   var _stepperData;
   @override
   void initState() {
-    print('getHistoryDetails File tttfffffffffffffffffff');
     super.initState();
     setState(() {
       _stepperData = null;
@@ -74,13 +73,10 @@ class _HistoryTaskState extends State<HistoryTask> {
   void getHistoryDetails() async {
     //368
     SharedPreferences pre = await SharedPreferences.getInstance();
-    print('1ccccccccccccccccccccccccccc'); //7904622924
+
     final responses =
         await AuthRepo.getHistoryList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
-    print('2ccccccccccccccccccccccccccc');
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-
-    print(pre.getString('username'));
     var tagObjsJson = jsonDecode(dec) as List;
     setState(() {
       _stepperData = List.generate(
@@ -120,9 +116,6 @@ class _HistoryTaskState extends State<HistoryTask> {
                   avatar: 'http://52.172.32.88/ezofis-web/img/mark-white.2f046300.png',
                 )).toList();
     });
-
-    //var tagObjsJson = jsonDecode(dec) as List;
-    debugPrint('678ccccccccccccccccccccccccccc');
   }
 
   @override

@@ -60,8 +60,7 @@ class ListViewSearchState extends State<ListViewSearch> {
   Future<Null> getInboxDetailsNew() async {
     _inboxDetailss = [];
     String payloadenc = '{"currentPage": 1, "itemsPerPage": 20}';
-/*    //print('jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)));*/
-    print(widget.sType + '  wwwwwww1 ' + widget.sWorkflowId);
+
     final responses = await AuthRepo.getInboxListForFolder(
         widget.sWorkflowId, jsonEncode(AaaEncryption.EncryptDatatest(payloadenc)), widget.sType);
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
@@ -96,11 +95,7 @@ class ListViewSearchState extends State<ListViewSearch> {
     _inboxDetailss_temp = [];
 
     controllerpopup.sWorkFlowId = widget.sWorkflowId;
-    // ////print(''12345rrrr4- ' + dbcontroller.iCurrentSelect.toString());
-
     dbcontroller.iCurrentSelect = 'listview'.obs;
-    // ////print(''12345rrrr5 ' + dbcontroller.iCurrentSelect.toString());
-
     setState(() {
       controllerpopup.bFab = false;
     });
@@ -141,8 +136,6 @@ class ListViewSearchState extends State<ListViewSearch> {
     controllerPanel.repositoryId = widget.miSelectedData.repositoryId;
     controllerpopup.repositoryId = widget.miSelectedData.repositoryId;
 
-    //controllerPanel.formbuttonList = ['sang', 'raja'];
-    ////print(''');
     return Scaffold(
         body: Container(
             child: ListView.builder(
@@ -156,7 +149,7 @@ class ListViewSearchState extends State<ListViewSearch> {
                 margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                 child: ListTile(
                   onTap: () {
-                    PopupFullPageController.iSelectedIndex = index;
+                    controllerpopup.iSelectedIndex = index;
                     //transaction_createdAt
                     controllerpopup.sRaisedAt = _inboxDetailss.elementAt(index).raisedAt;
                     controllerpopup.transaction_createdAt =
@@ -172,6 +165,7 @@ class ListViewSearchState extends State<ListViewSearch> {
                         _inboxDetailss.elementAt(index).activityId.toString();
                     controllerpopup.sTransactionId =
                         _inboxDetailss.elementAt(index).transactionId.toString();
+                    //controllerpopup.iSelectedIndex=
 
                     String sTemp = jsonEncode(widget.miSelectedData.flowJson)
                         .replaceAll('\\\\"', '"')
@@ -293,7 +287,6 @@ class ListViewSearchState extends State<ListViewSearch> {
   }
 
   CheckFabDisplay(String sUserid) {
-    ////print(''CheckFabDisplay1');
     String sTemp = jsonEncode(widget.miSelectedData.flowJson)
         .replaceAll('\\\\"', '"')
         .replaceAll('\\\"', '"')
@@ -318,7 +311,6 @@ class ListViewSearchState extends State<ListViewSearch> {
   }
 
   openForm() {
-    ////print(''openForm');
     controllerPanel.sFormId = widget.miSelectedData.wFormId;
     controllerPanel.repositoryId = widget.miSelectedData.repositoryId;
     controllerPanel.formbuttonList = ['sang', 'raja'];
@@ -326,8 +318,6 @@ class ListViewSearchState extends State<ListViewSearch> {
   }
 
   openPopupForm() {
-    print('openPopupForm');
-
     Navigator.pushNamed(context, "inboxpage");
   }
 
@@ -355,10 +345,7 @@ class ListViewSearchState extends State<ListViewSearch> {
     }
 
     if (bpresent) {
-      print('ggggggggggggggggggggg');
       print(sBlockId);
-    } else {
-      print('ggggggggggggggggggggg1');
-    }
+    } else {}
   }
 }

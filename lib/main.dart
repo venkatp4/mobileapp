@@ -45,7 +45,7 @@ void initialize() {
   Get.put<FolderMainController>(FolderMainController());
   Get.put<WebMainController>(WebMainController());
   Get.put<CommentController>(CommentController());
-  Get.put<MultiSelectMainController>(MultiSelectMainController());
+  //Get.put<MultiSelectMainController>(MultiSelectMainController());
 }
 
 void main() async {

@@ -58,13 +58,8 @@ class FormMainTabState extends State<FormMainTab> with TickerProviderStateMixin 
     //datas=widget.datas;
     mdataGenerate = widget.formdatas;
     datastest = controllerpopup.mFormJSon;
-    print('');
     datas = widget.formdatas['formJson'];
-    print('');
     datas = json.decode(widget.formdatas['formJson']);
-    print('');
-
-    //datas = json.decode(conrtrollerpopup.sFormJSon);
     Category.getWidget(datas);
     //getComponentDetails(sFormId); //3061 23  27s 3065
   }
@@ -81,9 +76,6 @@ class FormMainTabState extends State<FormMainTab> with TickerProviderStateMixin 
         isLoading.value = false;
         mdataGenerate = data;
         datas = json.decode(data['formJson']);
-        print('99999999999999999999999999999999999999999991');
-        print(mdataGenerate['layout'].toString());
-
         myTabController = new TabController(
             vsync: this, length: Category.getWidget(mdataGenerate).length, initialIndex: 0);
       });
@@ -196,11 +188,6 @@ class FormMainTabState extends State<FormMainTab> with TickerProviderStateMixin 
 
   Widget loadWidgets(int iPanel, int indexwidget, String widgetType) {
     print(datas['panels'][iPanel]['fields'][indexwidget]['label'] + " ==  " + widgetType);
-/*    print(datas['panels'][iPanel]['fields'][indexwidget]['settings']
-        ['validation']['fieldRule']);
-    print(datas['panels'][iPanel]['fields'][indexwidget]['settings']
-        ['validation']['contentRule']);
-    print('-------------------------------------');*/
     Widget child = Container();
     switch (widgetType) {
       case 'LABEL':
@@ -318,13 +305,9 @@ class FormMainTabState extends State<FormMainTab> with TickerProviderStateMixin 
         break;
       // Option - DropDown
       case 'SINGLE_SELECT':
-        print('sssssssssssssssssssssssss');
-        print(
-            datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']['optionsType']);
         child = DropdownOptions(iPanel, indexwidget);
         break;
       case 'MULTIPLE_CHOICE':
-        print('MULTIPLE_CHOICE');
         child = CheckBoxInput(
           initialValue: '',
           //controller.formFieldsModel[field.name],
@@ -444,137 +427,9 @@ class FormMainTabState extends State<FormMainTab> with TickerProviderStateMixin 
     return child;
   }
 
-/*  Future getDropDownValues(
-      String columnId, int iPanel, int indexwidget, bool bTextField) async {
-    try {
-      // columnId = 'JghKAtOm3pRdVcOJp0bZt';
-      final payload = {
-        'column': columnId,
-        'keyword': '',
-        'rowFrom': 0,
-        'rowTo': 0
-      };
-
-      final response = await TaskFormRepo.getDropDownValues(
-          sFormId,
-          jsonEncode(
-              AaaEncryption.EncryptDatatest(jsonEncode(payload)))); //23 formid
-      var temp = jsonDecode(AaaEncryption.decryptAESaaa(response.data))
-          as List<dynamic>;
-     // setState(() {
-        if (temp.length > 0) {
-          controller.temp.clear();
-          controller.datadropString.clear();
-          // For show Textfield
-          if (bTextField) {
-            controller.temp.add('');//tbx152015
-          }
-          // add data from api call
-          for (int i = 0; i < temp.length; i++) {
-            controller.temp.add(temp[i].toString());
-          }
-          controller.datadropString = controller.temp;
-        }
-        setState(() {
-          controller.datadropString = controller.temp;
-        });
-    //  });
-      print(controller.datadropString.toString());
-      print(controller.datadropString.length);
-      if (response.statusCode == 200) {
-      } else {
-        throw 'invalid status code';
-      }
-    } on DioError catch (e) {
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {
-        error.value = 'Unauthorized Login';
-      }
-      if (statusCode == 402) {
-        error.value = 'license expired';
-      } else if (statusCode == 404) {
-        error.value = 'email not found';
-      } else if (statusCode == 409) {
-        error.value = 'incorrect password';
-      } else {
-        rethrow;
-      }
-    } catch (e) {
-      print(e);
-    } finally {}
-  }*/
-
-/*  Future<List<String>> getDropDownValues(
-      String columnId, int iPanel, int indexwidget, bool bTextField) async {
-    try {
-      // columnId = 'JghKAtOm3pRdVcOJp0bZt';
-      final payload = {
-        'column': columnId,
-        'keyword': '',
-        'rowFrom': 0,
-        'rowTo': 0
-      };
-
-      final response = await TaskFormRepo.getDropDownValues(
-          sFormId,
-          jsonEncode(
-              AaaEncryption.EncryptDatatest(jsonEncode(payload)))); //23 formid
-      var temp = jsonDecode(AaaEncryption.decryptAESaaa(response.data))
-      as List<dynamic>;
-      // setState(() {
-      if (temp.length > 0) {
-        controller.temp.clear();
-        controller.datadropString.clear();
-        // For show Textfield
-        if (bTextField) {
-          controller.temp.add('');//tbx152015
-        }
-        // add data from api call
-        for (int i = 0; i < temp.length; i++) {
-          controller.temp.add(temp[i].toString());
-        }
-        controller.datadropString = controller.temp;
-
-       // final data = jsonDecode(response.body);
-        return List<String>.from(temp);
-      }
-      setState(() {
-        controller.datadropString = controller.temp;
-      });
-      //  });
-      print(controller.datadropString.toString());
-      print(controller.datadropString.length);
-      if (response.statusCode == 200) {
-      } else {
-        throw Exception('Failed to load data from API 1');
-        throw 'invalid status code';
-      }
-    } on DioError catch (e) {
-      throw Exception('Failed to load data from API 1');
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {
-        error.value = 'Unauthorized Login';
-      }
-      if (statusCode == 402) {
-        error.value = 'license expired';
-      } else if (statusCode == 404) {
-        error.value = 'email not found';
-      } else if (statusCode == 409) {
-        error.value = 'incorrect password';
-      } else {
-        rethrow;
-      }
-    } catch (e) {
-      print(e);
-      throw Exception('Failed to load data from API 1');
-    } finally { throw Exception('Failed to load data from API 1');}
-  }*/
-
   //TextInputType
   TextInputType getInputType(String sKeyboardType) {
     TextInputType keyboardType = TextInputType.text;
-    print('++++==================');
-    print(sKeyboardType);
     switch (sKeyboardType) {
       case 'TEXT':
         keyboardType = TextInputType.text;
@@ -589,8 +444,7 @@ class FormMainTabState extends State<FormMainTab> with TickerProviderStateMixin 
         keyboardType = TextInputType.name;
         break;
     }
-    /* print(keyboardType);
-    print('++++1==================');*/
+
     return keyboardType;
   }
 

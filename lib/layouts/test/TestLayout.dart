@@ -14,13 +14,11 @@ class TestLayout extends StatefulWidget {
   final List<Widget> wpersistentFooterButtons;
   //final String sFolderName;
 
-  const TestLayout(
-      {required this.wpersistentFooterButtons, required this.children});
+  const TestLayout({required this.wpersistentFooterButtons, required this.children});
 
   @override
   _TestLayoutState createState() => _TestLayoutState(
-      children: this.children,
-      wpersistentFooterButtons: this.wpersistentFooterButtons);
+      children: this.children, wpersistentFooterButtons: this.wpersistentFooterButtons);
 }
 
 class _TestLayoutState extends State<TestLayout> {
@@ -32,10 +30,7 @@ class _TestLayoutState extends State<TestLayout> {
     super.initState();
   }
 
-  _TestLayoutState(
-      {Key? key,
-      required this.children,
-      required this.wpersistentFooterButtons});
+  _TestLayoutState({Key? key, required this.children, required this.wpersistentFooterButtons});
 
   var tabbarController = TopBarController();
 
@@ -74,19 +69,10 @@ class _TestLayoutState extends State<TestLayout> {
             child: Container(
                 color: Colors.white,
                 child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    debugPrint(
-                        'bbbbbbbbbbbbbb1 ' + innerBoxIsScrolled.toString());
-/*                    setState(() {
-                      controller.innerBoxIsScrolled.value = innerBoxIsScrolled;
-                      debugPrint('bbbbbbbbbbbbbb23 ' +
-                          controller.innerBoxIsScrolled.value.toString());
-                    });*/
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
                       SliverOverlapAbsorber(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            context),
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                         sliver: SliverAppBar(
                           automaticallyImplyLeading: false,
                           backgroundColor: Colors.black12,
@@ -105,8 +91,7 @@ class _TestLayoutState extends State<TestLayout> {
                                   child: TextInputSearchableSearch(
                                       title: "",
                                       type: TextInputType.text,
-                                      onChange:
-                                          tabbarController.onSearchTextChanged,
+                                      onChange: tabbarController.onSearchTextChanged,
                                       placeholder: "Search"),
                                 ),
                         ),
@@ -116,8 +101,7 @@ class _TestLayoutState extends State<TestLayout> {
                   body: Builder(builder: (BuildContext context) {
                     return Container(
                         height: double.infinity,
-                        margin:
-                            EdgeInsets.only(top: mediaQuery.size.height * .071),
+                        margin: EdgeInsets.only(top: mediaQuery.size.height * .071),
                         child: Column(
                           //crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.start,

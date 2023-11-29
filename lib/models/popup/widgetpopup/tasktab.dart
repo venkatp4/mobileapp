@@ -47,73 +47,11 @@ class _TaskTabState extends State<TaskTab> {
         tmap["Buttons"] = elementEntry[element];
       });
     });
-    //var tagObjsJson = jsonDecode(dec) as List;
-/*    List<filedatas> tagObjs =
-    tagObjsJson.map((tagJson) => filedatas.fromJson(tagJson)).toList();
-    setState(() {
-      controller.dataFileListNew = tagObjs;
-    });*/
-    debugPrint('678ccccccccccccccccccccccccccc');
   }
-
-/*  Future getFieldValues(String formId, Map<String, dynamic> mdata) async {
-    Map mdataGenerate = Map<String, dynamic>();
-
-    try {
-      debugPrint('dd678ccccccccccccccccccccccccccc111');
-      final response = await AuthRepo.getInboxSingleDetails(formId); //23 formid
-      Map<String, dynamic> data = jsonDecode(AaaEncryption.decryptAESaaa(response.data));
-
-      //Map<String, dynamic> datas = json.decode(data['formJson']);
-      Map<String, dynamic> datasControl = json.decode(data['controllist']);
-      debugPrint('dd678ccccccccccccccccccccccccccc111');
-
-      datasControl['panels'].forEach((item) {
-        for (var entry in mdata.entries) {
-          item['fields'].forEach((field) {
-            if (entry.key.toString() == field['id']) {
-              */ /*        mdataGenerate.putIfAbsent(
-                  field['label'].toString(), () => checkIsArray(entry.value));*/ /*
-            }
-            //controller.filedsnew.
-          });
-        }
-      });
-      // debugPrint('r11234556eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-*/ /*      setState(() {
-        isLoading.value = false;
-        controller.filedsnew = mdataGenerate;
-      });*/ /*
-
-      if (response.statusCode == 200) {
-      } else {
-        throw 'invalid status code';
-      }
-    } on DioError catch (e) {
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {}
-      if (statusCode == 402) {
-        // error.value = 'license expired';
-      } else if (statusCode == 404) {
-        // error.value = 'email not found';
-      } else if (statusCode == 409) {
-        // error.value = 'incorrect password';
-      } else {
-        rethrow;
-      }
-    } catch (e) {
-      print(e);
-      //error.value = 'error logging in';
-    } finally {
-      //isLoading.value = false;
-    }
-  }*/
 
   @override
   void initState() {
     super.initState();
-    // getTaskList();
-    //controller.
   }
 
   @override

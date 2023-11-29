@@ -19,14 +19,6 @@ class Api extends GetxController {
   }
 
   clientLogin(String sUserEmail) {
-/*    var headers = {
-      "Accept": "application/json",
-      "Token": AaaEncryption.sToken,
-      "Content-Type": "application/json"
-    };
-    var url = 'http://52.172.32.88/CoreAPI/api/user/1';
-    final response = await http.get(Uri.parse(url), headers: headers);*/
-
     return Dio(
       BaseOptions(baseUrl: 'http://52.172.32.88/CoreAPI/api/', headers: {
         "Accept": "application/json;text/html",
@@ -37,8 +29,6 @@ class Api extends GetxController {
   }
 
   Dio clientWithHeader() {
-/*    print('clientWithHeader');
-    print(AaaEncryption.sToken);*/
     var dtemp = Dio(BaseOptions(
         // baseUrl: 'http://52.172.32.88/eZenterpriseAPI/api/',
         baseUrl: 'http://52.172.32.88/CoreAPI/api/',
@@ -52,8 +42,6 @@ class Api extends GetxController {
   }
 
   Dio clientWithHeaderFile() {
-/*    print('clientWithHeader');
-    print(AaaEncryption.sToken);*/
     var dtemp = Dio(BaseOptions(
         // baseUrl: 'http://52.172.32.88/eZenterpriseAPI/api/',
         baseUrl: 'http://52.172.32.88/CoreAPI/api/',
@@ -65,27 +53,4 @@ class Api extends GetxController {
 
     return dtemp;
   }
-
-//Orginal
-/*  Dio clientWithHeader() {
-    print('clientWithHeader');
-    print(AaaEncryption.sToken);
-    var dtemp = Dio(BaseOptions(
-      // baseUrl: 'http://52.172.32.88/eZenterpriseAPI/api/',
-      baseUrl: 'http://52.172.32.88/CoreAPI/api/',
-      headers: {
-        "Accept": "application/json",
-        "Token": AaaEncryption.sToken,
-        "Content-Type": "application/json"
-      },
-    ));
-    return dtemp;
-  }*/
-
-//dio.options.headers["authorization"] = "token ${token}";
-/*  Dio versionclient() {
-    return Dio(
-      BaseOptions(baseUrl: 'https://cloud.ezofis.com/EZOFISAPI/v1'),
-    );
-  }*/
 }

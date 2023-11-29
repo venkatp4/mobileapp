@@ -31,41 +31,34 @@ class AttachFiles extends StatefulWidget {
   _AttachFilesState createState() => _AttachFilesState();
 }
 
-class _AttachFilesState extends State<AttachFiles> {
+class _AttachFilesState extends State<AttachFiles> with AutomaticKeepAliveClientMixin {
   final controller = Get.put(AttcaheFileController());
   final controllerpopup = Get.put(PopupFullPageController());
   int iSelectedFileCount = 0;
 
-/*  @override
-  void initState() {
-    super.initState();
-    getFileDetails();
-    //controller.
-  }*/
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     getFileDetails();
   }
 
-  void getFileDetails() async {
+  getFileDetails() async {
     final responses =
         await AuthRepo.getFileList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
     var tagObjsJson = jsonDecode(dec) as List;
     List<filedatas> tagObjs = tagObjsJson.map((tagJson) => filedatas.fromJson(tagJson)).toList();
-    setState(() {
-      controller.dataFileListNew = tagObjs;
-
-      //dataFileListNew
-      //https://stackoverflow.com/questions/44841729/how-to-upload-images-to-server-in-flutter
-    });
+    controller.dataFileListNew = tagObjs;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     //var sTextdatadesc = sReturnStatus();
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -78,8 +71,8 @@ class _AttachFilesState extends State<AttachFiles> {
                   title: GestureDetector(
                       onTap: () {
                         setState(() {
-                          item.selected = !item.selected;
-                          if (item.selected) controller.dataFileListNew[index] = item;
+                          item.selected.value = !item.selected.value;
+                          if (item.selected.value) controller.dataFileListNew[index] = item;
 
                           controller.iSelecteFileCount =
                               controller.getSelectedFileCount(controller.dataFileListNew);
@@ -89,7 +82,7 @@ class _AttachFilesState extends State<AttachFiles> {
                         setState(() {
                           //list[index].isSelected = true;
                           controller.iSelecteFileCount = 0;
-                          item.selected = true;
+                          item.selected.value = true;
                           controller.iSelecteFileCount =
                               controller.getSelectedFileCount(controller.dataFileListNew);
                         });
@@ -98,7 +91,7 @@ class _AttachFilesState extends State<AttachFiles> {
                       child: Container(
                           key: UniqueKey(),
                           padding: EdgeInsets.all(5),
-                          decoration: !item.selected
+                          decoration: !item.selected.value
                               ? BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.all(Radius.circular(5.0)))
@@ -206,7 +199,8 @@ class _AttachFilesState extends State<AttachFiles> {
                       ))
                   : SizedBox(), //button first
 
-              controller.iSelecteFileCount > 1
+              // Merge file dont delete
+              /*       controller.iSelecteFileCount > 1
                   ? Container(
                       margin: EdgeInsets.all(5),
                       child: FloatingActionButton.small(
@@ -216,7 +210,7 @@ class _AttachFilesState extends State<AttachFiles> {
                         child: Icon(color: Colors.white, Icons.merge),
                         onPressed: () => {},
                       ))
-                  : SizedBox(), // button second
+                  : SizedBox(), // button second*/
 
               controller.iSelecteFileCount == 0
                   ? Container(
@@ -229,7 +223,6 @@ class _AttachFilesState extends State<AttachFiles> {
                         onPressed: () => {onUpload()},
                       ))
                   : SizedBox(), // button third
-
               // Add more buttons here
             ],
           ),
@@ -260,61 +253,17 @@ class _AttachFilesState extends State<AttachFiles> {
   }
 
   void onUpload() async {
-    if (await controller.selectedUploadedFiles()) {
-      print('sssssssssssssss');
+    var res = await controller.selectedUploadedFiles();
+
+    if (res) {
       MotionToastWidget().displaySuccessMotionToast('File Uploaded Sucessfully.', context);
-      getFileDetailsCount();
-      getFileDetails();
+      await Future.delayed(Duration(seconds: 4));
+      await getFileDetails();
+      await getFileDetailsCount();
     } else {
-      print('sssssssssssssssveee');
       MotionToastWidget().displayErrorMotionToast('File Not Uploaded.', context);
     }
-    debugPrint('onFabPlus onUpload');
   }
-
-/*  void selectedUploadedFiles() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-    if (result != null) {
-      this.selectedFiles.clear();
-
-      selectedFiles.value = result.files
-          .map((file) => SelectedFileUpload(
-              name: file.name,
-              size: formatFileSize(file.size),
-              type: file.extension ?? '',
-              file: file.path,
-              workflowId: controllerpopup.sWorkFlowId,
-              repositoryId: controllerpopup.repositoryId,
-              processId: controllerpopup.sProcessId,
-              transactionId: controllerpopup.sTransactionId,
-              fields: ''))
-          .toList();
-
-      showSelectedFiles.value = true;
-
-      dii.FormData formData = new dii.FormData.fromMap({
-        'name': selectedFiles[0].name,
-        'size': selectedFiles[0].size,
-        'type': selectedFiles[0].type,
-        'file': await dii.MultipartFile.fromFile(selectedFiles[0].file),
-        'workflowId': controllerpopup.sWorkFlowId,
-        'repositoryId': controllerpopup.repositoryId,
-        'processId': controllerpopup.sProcessId,
-        'transactionId': controllerpopup.sTransactionId,
-        'fields': ''
-      });
-
-      final responses = await AuthRepo.postAttachment(formData);
-      String dec = AaaEncryption.decryptAESaaa(responses.toString());
-
-      final statusCode = responses.statusCode;
-
-      if (statusCode != 200) {
-        return true;
-      }
-      return false;
-    }
-  }*/
 
   Future<void> deleteFiles() async {
     bool res = await controller.DeleteMultipleFiles(context);
@@ -325,87 +274,16 @@ class _AttachFilesState extends State<AttachFiles> {
     }
   }
 
-  void getFileDetailsCount() async {
+  getFileDetailsCount() async {
     final responses =
         await AuthRepo.getFileList(controllerpopup.sWorkFlowId, controllerpopup.sProcessId);
     List lFiles = jsonDecode(AaaEncryption.decryptAESaaa(responses.toString())) as List;
     setState(() {
-      controllerpopup.iFilecount = lFiles.length;
+      controllerpopup.iFilecount.value = lFiles.length;
     });
   }
-
-/*  Future selectFiles() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
-    if (result != null) {
-      controller.selectedFiles.clear();
-
-      controller.selectedFiles.value = result.files
-          .map((file) => SelectedFile(
-                name: file.name,
-                size: formatFileSize(file.size),
-                type: file.extension ?? '',
-                file: file,
-              ))
-          .toList();
-      controller.showSelectedFiles.value = true;
-
-*/ /*      for (var file in selectedFiles) {
-        void setUploadProgress(int uploaded, int total) {
-          uploadProgress[file.name] = uploaded / total;
-        }
-
-        await uploadFile(
-          file.name,
-          file.file.path ?? '',
-          file.size,
-          setUploadProgress,
-        );
-      }*/ /*
-      //selectedFiles.clear();
-    }
-  }*/
 
   String formatFileSize(int size) {
     return filesize(size);
-  }
-
-  void _displayErrorMotionToast() {
-    MotionToast.error(
-      title: const Text(
-        'Error',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      description: const Text('Please enter your name'),
-      position: MotionToastPosition.top,
-      barrierColor: Colors.black.withOpacity(0.3),
-      width: 300,
-      height: 80,
-      dismissable: false,
-    ).show(context);
-  }
-
-  void _displaySuccessMotionToast(String Msgs, BuildContext ctx) {
-    MotionToast toast = MotionToast.success(
-        title: const Text(
-          'Sucess',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        description: Text(
-          Msgs,
-          style: TextStyle(fontSize: 12),
-        ),
-        layoutOrientation: ToastOrientation.rtl,
-        animationType: AnimationType.fromRight,
-        borderRadius: 5,
-        dismissable: true,
-        height: 50,
-        width: 300);
-
-    toast.show(ctx);
-    Future.delayed(Duration(seconds: 4)).then((value) {
-      toast.dismiss();
-    });
   }
 }

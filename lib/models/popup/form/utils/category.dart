@@ -20,7 +20,6 @@ import '../components/time_input.dart';
 import '../controllers/panel_controller.dart';
 
 class Category {
-  //Map mdataGenerate = Map<String, dynamic>();
   Map datas = Map<String, dynamic>();
   Widget child = Container();
   final controller = Get.put(PanelController());
@@ -31,7 +30,6 @@ class Category {
     try {
       Map<dynamic, dynamic> datas = json.decode(data['formJson']);
       for (int i = 0; i < datas['panels'].length; i++) {
-        print(datas['panels'][i]['settings']['title'].toString());
         list.add(Container(
             // color: Color(0xFFcbd5e1),
             padding: EdgeInsets.all(10),
@@ -51,10 +49,8 @@ class Category {
     // final controller = Get.put(PanelController());
     List<Widget> list = [];
     try {
-      print('bbbbbbbbbbbbbbbbb');
       datas = json.decode(data['formJson']);
       for (int i = 0; i < datas['panels'].length; i++) {
-        print(datas['panels'][i]['settings']['title'].toString());
         list.add(Container(
           child: ListView.builder(
             physics: NeverScrollableScrollPhysics(),
@@ -205,13 +201,9 @@ class Category {
         break;
       // Option - DropDown
       case 'SINGLE_SELECT':
-        print('sssssssssssssssssssssssss');
-        print(
-            datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']['optionsType']);
         child = DropdownOptions(iPanel, indexwidget);
         break;
       case 'MULTIPLE_CHOICE':
-        print('MULTIPLE_CHOICE');
         child = CheckBoxInput(
           initialValue: '',
           //controller.formFieldsModel[field.name],
@@ -231,19 +223,6 @@ class Category {
         );
         break;
       case 'SINGLE_CHOICE':
-        print('sssssssssssssssssss');
-        print(datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']
-                ['customOptions']
-            .toString()
-            .split(','));
-        print(datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']
-                ['customOptions']
-            .toString()
-            .split(',')[0]);
-        print(datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']
-                ['customOptions']
-            .toString()
-            .split(',')[0]);
         child = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -283,11 +262,6 @@ class Category {
   ) {
     //finny
     child = Container();
-/*    print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
-    print(datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']
-        ['optionsType']);
-    print(datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']
-        ['allowToAddNewOptions']);*/
 
     if (datas['panels'][iPanel]['fields'][indexwidget]['settings']['specific']['optionsType'] ==
         'CUSTOM') {
@@ -372,137 +346,10 @@ class Category {
     return child;
   }
 
-/*  Future getDropDownValues(
-      String columnId, int iPanel, int indexwidget, bool bTextField) async {
-    try {
-      // columnId = 'JghKAtOm3pRdVcOJp0bZt';
-      final payload = {
-        'column': columnId,
-        'keyword': '',
-        'rowFrom': 0,
-        'rowTo': 0
-      };
-
-      final response = await TaskFormRepo.getDropDownValues(
-          sFormId,
-          jsonEncode(
-              AaaEncryption.EncryptDatatest(jsonEncode(payload)))); //23 formid
-      var temp = jsonDecode(AaaEncryption.decryptAESaaa(response.data))
-          as List<dynamic>;
-     // setState(() {
-        if (temp.length > 0) {
-          controller.temp.clear();
-          controller.datadropString.clear();
-          // For show Textfield
-          if (bTextField) {
-            controller.temp.add('');//tbx152015
-          }
-          // add data from api call
-          for (int i = 0; i < temp.length; i++) {
-            controller.temp.add(temp[i].toString());
-          }
-          controller.datadropString = controller.temp;
-        }
-        setState(() {
-          controller.datadropString = controller.temp;
-        });
-    //  });
-      print(controller.datadropString.toString());
-      print(controller.datadropString.length);
-      if (response.statusCode == 200) {
-      } else {
-        throw 'invalid status code';
-      }
-    } on DioError catch (e) {
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {
-        error.value = 'Unauthorized Login';
-      }
-      if (statusCode == 402) {
-        error.value = 'license expired';
-      } else if (statusCode == 404) {
-        error.value = 'email not found';
-      } else if (statusCode == 409) {
-        error.value = 'incorrect password';
-      } else {
-        rethrow;
-      }
-    } catch (e) {
-      print(e);
-    } finally {}
-  }*/
-
-/*  Future<List<String>> getDropDownValues(
-      String columnId, int iPanel, int indexwidget, bool bTextField) async {
-    try {
-      // columnId = 'JghKAtOm3pRdVcOJp0bZt';
-      final payload = {
-        'column': columnId,
-        'keyword': '',
-        'rowFrom': 0,
-        'rowTo': 0
-      };
-
-      final response = await TaskFormRepo.getDropDownValues(
-          sFormId,
-          jsonEncode(
-              AaaEncryption.EncryptDatatest(jsonEncode(payload)))); //23 formid
-      var temp = jsonDecode(AaaEncryption.decryptAESaaa(response.data))
-      as List<dynamic>;
-      // setState(() {
-      if (temp.length > 0) {
-        controller.temp.clear();
-        controller.datadropString.clear();
-        // For show Textfield
-        if (bTextField) {
-          controller.temp.add('');//tbx152015
-        }
-        // add data from api call
-        for (int i = 0; i < temp.length; i++) {
-          controller.temp.add(temp[i].toString());
-        }
-        controller.datadropString = controller.temp;
-
-       // final data = jsonDecode(response.body);
-        return List<String>.from(temp);
-      }
-      setState(() {
-        controller.datadropString = controller.temp;
-      });
-      //  });
-      print(controller.datadropString.toString());
-      print(controller.datadropString.length);
-      if (response.statusCode == 200) {
-      } else {
-        throw Exception('Failed to load data from API 1');
-        throw 'invalid status code';
-      }
-    } on DioError catch (e) {
-      throw Exception('Failed to load data from API 1');
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {
-        error.value = 'Unauthorized Login';
-      }
-      if (statusCode == 402) {
-        error.value = 'license expired';
-      } else if (statusCode == 404) {
-        error.value = 'email not found';
-      } else if (statusCode == 409) {
-        error.value = 'incorrect password';
-      } else {
-        rethrow;
-      }
-    } catch (e) {
-      print(e);
-      throw Exception('Failed to load data from API 1');
-    } finally { throw Exception('Failed to load data from API 1');}
-  }*/
-
   //TextInputType
   TextInputType getInputType(String sKeyboardType) {
     TextInputType keyboardType = TextInputType.text;
-    print('++++==================');
-    print(sKeyboardType);
+
     switch (sKeyboardType) {
       case 'TEXT':
         keyboardType = TextInputType.text;
@@ -517,8 +364,7 @@ class Category {
         keyboardType = TextInputType.name;
         break;
     }
-    /* print(keyboardType);
-    print('++++1==================');*/
+
     return keyboardType;
   }
 }

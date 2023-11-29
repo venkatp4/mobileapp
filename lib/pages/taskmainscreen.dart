@@ -32,11 +32,7 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
 
   Future<bool> _onWillPop() async {
     final cont = Get.put(BrowseViewController());
-/*    if (iCurrentSelect != 'Open') {
-      setState(() {
-        iCurrentSelect = 'Open'.obs;
-      });
-    } else*/
+
     cont.tabFunction(1);
     return true;
   }
@@ -109,21 +105,18 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
   }
 
   tabFunctionCommect() {
-    debugPrint('BBBB1 44 tabFunctionCommect');
     setState(() {
       iCurrentSelect = 'Overall'.obs;
     });
   }
 
   tabFunctionBrowse() {
-    debugPrint('BBBB1 44 tabFunctionBrowse');
     setState(() {
       iCurrentSelect = 'Close'.obs;
     });
   } //7.5  55
 
   tabFunctionExplorer() {
-    debugPrint('BBBB1 44 rr tabFunctionExplorer');
     setState(() {
       iCurrentSelect = 'Open'.obs;
     });

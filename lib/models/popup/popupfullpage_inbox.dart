@@ -37,7 +37,7 @@ class PopupFullpageInboxState extends State<PopupFullpageInbox> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
-                  flex: 15,
+                  flex: 10,
                   child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -55,8 +55,7 @@ class PopupFullpageInboxState extends State<PopupFullpageInbox> {
                                 style: TextStyle(decoration: TextDecoration.none),
                                 child: TextNormalPop(
                                     sLabel: controllerpopup
-                                        .InboxDataNew[PopupFullPageController.iSelectedIndex]
-                                            ['requesno']
+                                        .InboxDataNew[controllerpopup.iSelectedIndex]['requesno']
                                         .toString()
                                         .toString())),
                             DefaultTextStyle(
@@ -64,8 +63,7 @@ class PopupFullpageInboxState extends State<PopupFullpageInbox> {
                                 style: TextStyle(decoration: TextDecoration.none),
                                 child: TextNormalPop(
                                     sLabel: controllerpopup
-                                        .InboxDataNew[PopupFullPageController.iSelectedIndex]
-                                            ['requesno']
+                                        .InboxDataNew[controllerpopup.iSelectedIndex]['requesno']
                                         .toString()
                                         .toString())),
                             SizedBox(
@@ -84,8 +82,7 @@ class PopupFullpageInboxState extends State<PopupFullpageInbox> {
                                   style: TextStyle(decoration: TextDecoration.none),
                                   child: TextSmallPop(
                                       sLabel: controllerpopup
-                                          .InboxDataNew[PopupFullPageController.iSelectedIndex]
-                                              ['raisedat']
+                                          .InboxDataNew[controllerpopup.iSelectedIndex]['raisedat']
                                           .toString()
                                           .toString()))
                             ]),

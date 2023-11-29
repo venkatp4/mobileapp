@@ -36,7 +36,6 @@ class _DashMainScreenState extends State<DashMainScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    print('12345rrrr1== ' + dbcontroller.iCurrentSelect.toString());
     if (dbcontroller.iCurrentSelect == 'treeinbox') {
       setState(() {
         dbcontroller.iCurrentSelect = 'dashboard'.obs;
@@ -84,7 +83,6 @@ class _DashMainScreenState extends State<DashMainScreen> {
 
   checkDrawerOpens(BuildContext context) {
     if (Scaffold.of(context).isDrawerOpen) {
-      debugPrint('toggle controller opn');
       Scaffold.of(context).closeDrawer();
     } else {
       debugPrint('toggle controller else');
@@ -169,7 +167,7 @@ class _DashMainScreenState extends State<DashMainScreen> {
   }
 
   void inboxfn() {
-/*    debugPrint('inboxfn');
+/*
     setState(() {
       dbcontroller.iCurrentSelect = 'inboxfn'.obs;
       controller.bFabVisible = false.obs;
@@ -178,16 +176,12 @@ class _DashMainScreenState extends State<DashMainScreen> {
 
   void taskfn() {
     setState(() {
-      print('12345rrrr==23' + dbcontroller.iCurrentSelect.toString());
       dbcontroller.iCurrentSelect = 'taskfn'.obs;
-      print('12345rrrr ' + dbcontroller.iCurrentSelect.toString());
       controller.bFabVisible = false.obs;
     });
   }
 
   void backfn() {
-    debugPrint('dashboard');
-
     setState(() {
       dbcontroller.iCurrentSelect = 'dashboard'.obs;
     });

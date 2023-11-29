@@ -28,8 +28,8 @@ class _MultiSelectMainState extends State<MultiSelectMain> {
   @override
   void initState() {
     super.initState();
-    print('init multi');
-    controller.fetchStaff().then((value) => {print('rrrttttttttttt')});
+
+    controller.fetchStaff().then((value) => {print('fetchStaff')});
   }
 
   void _showMultiSelect() async {

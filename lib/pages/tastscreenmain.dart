@@ -45,9 +45,6 @@ class _TaskScreenMainState extends State<TaskScreenMain> {
 
   @override
   Widget build(BuildContext context) {
-    final safeArea = calcSafeArea();
-    double safeAreaHeight = safeArea['height']!;
-    debugPrint('lllllllll ' + safeAreaHeight.toString());
     return WillPopScope(
         onWillPop: _onWillPop,
         child: SearchLayout(wpersistentFooterButtons: [
@@ -132,21 +129,18 @@ class _TaskScreenMainState extends State<TaskScreenMain> {
   }
 
   tabFunctionCommect() {
-    debugPrint('BBBB1 44ee tabFunctionCommect');
     setState(() {
       iCurrentSelect = 'Connect'.obs;
     });
   }
 
   tabFunctionBrowse() {
-    debugPrint('BBBB1 44wq tabFunctionBrowse');
     setState(() {
       iCurrentSelect = 'Browse'.obs;
     });
   }
 
   tabFunctionExplorer() {
-    debugPrint('BBBB1 44fg ty tabFunctionExplorer');
     setState(() {
       iCurrentSelect = 'Explore'.obs;
     });

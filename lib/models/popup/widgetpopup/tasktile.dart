@@ -31,48 +31,37 @@ class TaskTile extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                   onTap: () {
-                    print('yyyyyyyyyyyyyy ' + index.toString());
                     Navigator.pushNamed(context, "formview");
-                    //Get.offAllNamed('/formview');
-                    //Get.offAllNamed('/formviewtab');
                   },
                   child: Detials.keys.elementAt(index) != 'Buttons'
                       ? Container(
-                          // padding: EdgeInsets.all(2),
-                          //  margin: EdgeInsets.fromLTRB(1, 1, 5, 1),
-                          child: Row(
-                              /*          mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,*/
-                              children: [
-                              Expanded(
-                                  flex: 25,
-                                  child: Text(
-                                    StringUtils.toPascalCase(Detials.keys.elementAt(index)),
-                                    style: const TextStyle(
-                                        color: Colors.black38,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                  )),
-                              Expanded(
-                                  flex: 5,
-                                  child: Text(' : ',
-                                      style: const TextStyle(
-                                          color: Colors.black38,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500))),
-                              Expanded(
-                                  flex: 70,
-                                  child: Text(Detials.values.elementAt(index).toString(),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500))),
-                            ]))
+                          child: Row(children: [
+                          Expanded(
+                              flex: 25,
+                              child: Text(
+                                StringUtils.toPascalCase(Detials.keys.elementAt(index)),
+                                style: const TextStyle(
+                                    color: Colors.black38,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              )),
+                          Expanded(
+                              flex: 5,
+                              child: Text(' : ',
+                                  style: const TextStyle(
+                                      color: Colors.black38,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500))),
+                          Expanded(
+                              flex: 70,
+                              child: Text(Detials.values.elementAt(index).toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500))),
+                        ]))
                       : Container(
-                          //color: Colors.yellow,
-                          //padding: EdgeInsets.all(1),
-//                      margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,

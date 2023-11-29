@@ -8,7 +8,6 @@ import '../models/MenuInbox.dart';
 import '../utils/helper/aes_encryption.dart';
 
 class TreeInboxListviewController extends GetxController {
-  //final controller = Get.find<BrowseViewController>();
   RxString iCurrentSelect = 'dashboard'.obs;
   List<MenuInbox> data = [];
   late MenuInbox miList;
@@ -18,31 +17,11 @@ class TreeInboxListviewController extends GetxController {
     final dtemp = AaaEncryption.decryptAESaaa(response.data);
 
     List datas = json.decode(dtemp);
-    //print(datas.length);
-    // print(MenuInbox.dataList.toString());
+
     data = [];
     datas.forEach((element) {
-      // print('jjjjjjjjjj1');
       data.add(MenuInbox.fromJson(element));
-      //data.add(MenuInbox(name: '', subMenu: ''));
-      //MenuInbox
     });
-
-    /*  print(data.length);
-    print('jjjjjjjjjj2');*/
     return data;
-    //return datas;
-/*    print(dec);
-    print('31wwwwccccccccccccccccccccccccccc');
-    print(pre.getString('username'));
-
-    var tagObjsJson = jsonDecode(dec) as List;
-    List<commentsdatas> tagObjs =
-        tagObjsJson.map((tagJson) => commentsdatas.fromJson(tagJson, pre.getInt('id'))).toList();
-*/ /*    setState(() {
-      controller.dataMessageList = tagObjs;
-    });*/ /*
-
-    debugPrint('678ccccccccccccccccccccccccccc');*/
   }
 }

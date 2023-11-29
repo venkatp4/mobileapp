@@ -42,14 +42,10 @@ class _TopBarDesignState extends State<TopBarDesign> {
                   height: double.infinity,
                   //margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
                   constraints: BoxConstraints(
-                      maxWidth: 60.0,
-                      minWidth: 60.0,
-                      maxHeight: 50.0,
-                      minHeight: 50.0),
+                      maxWidth: 60.0, minWidth: 60.0, maxHeight: 50.0, minHeight: 50.0),
                   child: ClipRRect(
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(25),
-                          bottomRight: Radius.circular(25)),
+                          topRight: Radius.circular(25), bottomRight: Radius.circular(25)),
                       child: Container(
                           color: Colors.purple,
                           padding: EdgeInsets.fromLTRB(10, 10, 15, 10),
@@ -73,8 +69,8 @@ class _TopBarDesignState extends State<TopBarDesign> {
                           child: Obx(() => tabbarController.sProfileImage == ''
                               ? CircleAvatar(
                                   radius: 25, //radius is 50
-                                  backgroundImage: AssetImage(
-                                      'assets/images/background/useravaathar.png'),
+                                  backgroundImage:
+                                      AssetImage('assets/images/background/useravaathar.png'),
                                   //image url
                                 )
                               : CircleAvatar(
@@ -119,24 +115,5 @@ class _TopBarDesignState extends State<TopBarDesign> {
         ]));
   }
 
-/*  void showOverlay(BuildContext context) async {
-    OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-      builder: (context) => Material(
-        //Use a Material Widget
-        child: TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Enter text',
-          ),
-        ),
-      ),
-    );
-
-    overlayState.insert(overlayEntry);
-  }*/
-
-  justPrint() {
-    debugPrint('on tab+++++');
-  }
+  justPrint() {}
 }

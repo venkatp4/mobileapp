@@ -37,8 +37,6 @@ class _RadioButtonInputState extends State<RadioButtonInput> {
     setState(() {
       selectedOption = option;
       widget.onChanged(option);
-      print('rrrrrrrrrrrrrrrrrr');
-      print(selectedOption.toString());
       controllerComments.showTo = selectedOption.toString() == 'Internal (Private)' ? 0 : 1;
     });
   }

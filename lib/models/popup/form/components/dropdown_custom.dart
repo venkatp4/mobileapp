@@ -7,9 +7,7 @@ class DropDownCustom extends StatefulWidget {
   final String sInputSeperator;
   final void Function(String) onChanged;
   const DropDownCustom(
-      {required this.sInput,
-      required this.sInputSeperator,
-      required this.onChanged});
+      {required this.sInput, required this.sInputSeperator, required this.onChanged});
 
   @override
   _DropDownCustomState createState() => _DropDownCustomState();
@@ -58,7 +56,6 @@ class _DropDownCustomState extends State<DropDownCustom> {
                       widget.onChanged(newValue!); // not worked
                       setState(() {
                         dropdownvalue = newValue!;
-                        print('Drop Down fgt123 ' + dropdownvalue.toString());
                       });
                     }
                     // onChanged: widget.onChanged,

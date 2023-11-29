@@ -55,7 +55,6 @@ class _DropDownAPIState extends State<DropDownAPI> {
                       widget.onChanged(newValue!); // not worked
                       setState(() {
                         dropdownvalue = newValue!;
-                        print('Drop Down fgt123d ' + dropdownvalue.toString());
                       });
                     }
                     // onChanged: widget.onChanged,

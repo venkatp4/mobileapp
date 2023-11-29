@@ -16,18 +16,10 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {print('ppppppppp')}, //appLayoutController.goto('/profile'),
+      onTap: () => {}, //appLayoutController.goto('/profile'),
       child: Row(
         children: [
           SizedBox(width: 10),
-          // avatar
-          /*     CircleAvatar(
-              foregroundImage:
-                  AssetImage('assets/images/background/useravaathar.png'),
-              backgroundImage:
-                  NetworkImage(sessionController.Userdata.value.profileUrl),
-              radius: 24,
-            ),*/
           Container(
               //margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: authcontroller.userdata['avatar'].toString().length < 15

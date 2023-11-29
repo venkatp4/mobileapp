@@ -100,7 +100,6 @@ class MenuInbox {
       required this.initiatedBy});
 
   MenuInbox.fromJson(Map<String, dynamic> json) {
-    // print('mmmmmmmmmmmmmmmmmmmmmmmm');
     name = json['name'];
     id = json['id'].toString();
     wFormId = NullAware(json['wFormId']);
@@ -142,7 +141,6 @@ class MenuInbox {
   }
 
   String NullAware(var vtemp) {
-    print(vtemp);
     if (vtemp == null)
       return '';
     else
@@ -150,7 +148,6 @@ class MenuInbox {
   }
 
   dynamic NullAwareFJ(var vtemp) {
-    print(vtemp); /////////////////21-11
     if (vtemp == null)
       return '';
     else

@@ -94,11 +94,9 @@ class _WebMainScreenState extends State<WebMainScreen> {
                     iCurrentSelect == 'Browse'
                         ? Column(
                             children: [
-                              BatchWorkWebService(
-                                  sFolderName: 'Service Portal', iSelected: 0),
+                              BatchWorkWebService(sFolderName: 'Service Portal', iSelected: 0),
                               SizedBox(height: 10),
-                              BatchWorkPurple(
-                                  sFolderName: 'Legal', iSelected: 0),
+                              BatchWorkPurple(sFolderName: 'Legal', iSelected: 0),
                               /*       SizedBox(height: 20),
                               BatchWorkWeb(
                                 sFolderName: 'Legal',
@@ -108,9 +106,7 @@ class _WebMainScreenState extends State<WebMainScreen> {
                         : Container(),
 
                     //////////////////////////////////////
-                    iCurrentSelect == 'Explore'
-                        ? Column(children: [])
-                        : Container()
+                    iCurrentSelect == 'Explore' ? Column(children: []) : Container()
                     ///////////////////////////////////////////
                   ])),
           SizedBox(height: 20),
@@ -118,21 +114,18 @@ class _WebMainScreenState extends State<WebMainScreen> {
   }
 
   tabFunctionCommect() {
-    debugPrint('BBBB1 44 tabFunctionCommect');
     setState(() {
       iCurrentSelect = 'Connect'.obs;
     });
   }
 
   tabFunctionBrowse() {
-    debugPrint('BBBB1 44 tabFunctionBrowse');
     setState(() {
       iCurrentSelect = 'Browse'.obs;
     });
   }
 
   tabFunctionExplorer() {
-    debugPrint('BBBB1 44 tabFunctionExplorer');
     setState(() {
       iCurrentSelect = 'Explore'.obs;
     });

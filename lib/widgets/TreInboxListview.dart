@@ -120,8 +120,6 @@ class _TreeInboxListviewState extends State<TreeInboxListview> {
   }
 
   Widget _buildList(MenuInbox list) {
-    // print('12345rrrr3 ' + dbcontroller.iCurrentSelect.toString());
-    //print('12345rrrr '+dbcontroller.iCurrentSelect.toString());
     if (list.subMenu.isEmpty)
       return Builder(builder: (context) {
         return Container(
@@ -140,22 +138,15 @@ class _TreeInboxListviewState extends State<TreeInboxListview> {
                       onTap: () {
                         if (!list.name.contains('(0)')) {
                           setState(() {
-                            print('===============');
-                            print(dbcontroller.iCurrentSelect);
                             dbcontroller.iCurrentSelect = 'listview'.obs;
-                            print(dbcontroller.iCurrentSelect);
+
                             sessionCtrl.getSession();
                             controller.miList = list;
-                            debugPrint(sessionCtrl.userid.value.toString() +
-                                ' ' +
-                                list.name +
-                                ' ddddddt ' +
-                                list.id.toString());
+
                             sessionCtrl.userid.value.toString();
                             controllersearch.bFabVisible = true.obs;
-                            print(controllersearch.bFabVisible);
+
                             controller.iCurrentSelect = list.id.toString().obs;
-                            print(controller.iCurrentSelect.toString());
                           });
                         }
                       },

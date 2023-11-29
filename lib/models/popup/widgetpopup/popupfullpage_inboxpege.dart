@@ -58,15 +58,10 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
 
     valueMap['data'].forEach((item) {
       item['value'].forEach((items) {
-/*        print('llllllllllllllllllllll1---');
-        print(controller.filedsnew.length);*/
         if (controller.filedsnew.length == 0) {
           getInboxSingleDetails(
               items['formData']['formId'].toString(), items['formData']['fields']);
-        } /*else {
-          print('llllllllllllllllllllll1--- else');
-          getInboxSingleDetails(controllerpopup.sFormId, items['formData']['fields']);
-        }*/
+        }
       });
     });
   }
@@ -81,17 +76,19 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
       isLoading.value = false;
       Map<String, dynamic> datas = json.decode(data['formJson']);
 
+      int itemp = 0;
+
       datas['panels'].forEach((item) {
         for (var entry in mdata.entries) {
           item['fields'].forEach((field) {
             if (entry.key.toString() == field['id']) {
               mdataGenerate.putIfAbsent(field['label'].toString(), () => checkIsArray(entry.value));
             }
-            //controller.filedsnew.
           });
+          itemp++;
         }
       });
-      debugPrint('r11234556eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+
       setState(() {
         isLoading.value = false;
         controller.filedsnew = mdataGenerate;
@@ -124,8 +121,7 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
   }
 
   String checkIsArray(dynamic dVal) {
-/*    if (dVal is List) print('ttttttttttttttttt List');
-    if (dVal is Array) print('ttttttttttttttttt array');*/
+    //print('222222222222222222222222222222');
     String stemp = dVal.toString().replaceAll('\n', '').replaceAll('\r', '');
     return stemp.trim().length > 0 ? stemp : '-';
   }

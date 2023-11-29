@@ -87,12 +87,10 @@ class BatchWorkFolderBrowseController extends GetxController {
 
   // bredcrum Home sang
   void onBreadcrumbHome() {
-    debugPrint('Home=====');
-    // not need this if condition
     if (breadcrumbs.length == 1) {
       return;
     }
-    debugPrint('Home===== 1 ');
+
     breadcrumbs.removeRange(1, breadcrumbs.length);
     nodule.value = breadcrumbs.last;
     getNodules(nodule.value.noduleId);
@@ -103,14 +101,11 @@ class BatchWorkFolderBrowseController extends GetxController {
       showbottomup.value = false;
     else
       showbottomup.value = true;
-
-    debugPrint('onFabPlus  - upload12');
   }
 
   void onUpload() {
     showbottomup.value = false;
     selectFiles();
-    debugPrint('onFabPlus onUpload');
   }
 
   Future selectFiles() async {
@@ -127,18 +122,7 @@ class BatchWorkFolderBrowseController extends GetxController {
               ))
           .toList();
       showSelectedFiles.value = true;
-/*      for (var file in selectedFiles) {
-        void setUploadProgress(int uploaded, int total) {
-          uploadProgress[file.name] = uploaded / total;
-        }
 
-*/ /*        await uploadFile(
-          file.name,
-          file.file.path ?? '',
-          file.size,
-          setUploadProgress,
-        );*/ /*
-      }*/
       selectedFiles.clear();
     }
   }
@@ -166,10 +150,8 @@ class BatchWorkFolderBrowseController extends GetxController {
   // ...
   // onNoduleTap
   void onNoduleTap(Nodule _nodule) {
-    debugPrint('onNoduleTap ');
     nodule.value = _nodule;
     if (nodule.value.type == NoduleType.File) {
-      debugPrint('onNoduleTap 1----');
       Get.toNamed('/file', parameters: {
         'repositoryId': nodule.value.repositoryId.toString(),
         'fileId': nodule.value.id.toString(),
@@ -182,15 +164,14 @@ class BatchWorkFolderBrowseController extends GetxController {
       nodules.clear();
       return;
     }
-    debugPrint('onNoduleTap 4');
+
     getNodules(nodule.value.noduleId);
-    debugPrint('onNoduleTap 5');
+    ;
   }
 
   // ...
   // onNoduleLongPress
   void onNoduleLongPress(Nodule _nodule) {
-    debugPrint('onNoduleLongPress');
     if (_nodule.type == NoduleType.File) {
       nodule.value = _nodule;
       selectedFile.value = _nodule.id;
@@ -206,7 +187,6 @@ class BatchWorkFolderBrowseController extends GetxController {
   // ...
   // getNodules
   Future getNodules(int noduleId, {int? from, int? to}) async {
-    debugPrint('Home===== getNodules');
     isLoading.value = true;
 
     final payload = <String, dynamic>{
@@ -216,7 +196,7 @@ class BatchWorkFolderBrowseController extends GetxController {
         'rowTo': to ?? itemsPerPage,
       },
     };
-    debugPrint('onNoduleTap 4' + noduleId.toString());
+
     //final result = await repositoryController.getNodules(payload);   // orginal source
     final result = tempFunction(noduleId);
 
@@ -233,46 +213,36 @@ class BatchWorkFolderBrowseController extends GetxController {
   }
 
   Map<dynamic, dynamic> tempFunction(int iNoduleId) {
-    debugPrint('onNoduleTap 4e ' + iNoduleId.toString());
-
     try {
       Map<dynamic, dynamic> ff = jsonDecode(testJsonStaticValues.sRepositoris);
     } catch (e) {
-      debugPrint('onNoduleTap 4eeeeeeeeeeeeeee ');
       print(e);
     }
-    debugPrint('onNoduleTap 4dsdsd ' + iNoduleId.toString());
+
     switch (iNoduleId.toString()) {
       case '0':
-        debugPrint('onNoduleTap 4 ==  ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sRepositoris);
 
       case '984':
-        debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFolder1);
 
       case '1219':
-        debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFolder2);
       case '985':
-        debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFolder2);
       case '987':
-        debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFolder2);
 
       case '990':
-        debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFileName);
       case '988':
-        debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFileName);
 
       /*     case 'file':
         debugPrint('onNoduleTap 4 == ' + iNoduleId.toString());
         return jsonDecode(testJsonStaticValues.sFileName);*/
     }
-    debugPrint('onNoduleTap 4ff ' + iNoduleId.toString());
+
     return jsonDecode(testJsonStaticValues.sRepositoris);
   }
 
@@ -314,6 +284,6 @@ class BatchWorkFolderBrowseController extends GetxController {
   }
 
   void fabProcess() {
-    debugPrint('Pressed FAB plus');
+    debugPrint('Pressed FAB plus fabProcess');
   }
 }

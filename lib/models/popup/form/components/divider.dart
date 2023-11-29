@@ -16,8 +16,6 @@ class _DividersState extends State<Dividers> {
   @override
   void initState() {
     super.initState();
-    print('dddddddddddddddddddddddd');
-    print(widget.sType);
   }
 
   @override

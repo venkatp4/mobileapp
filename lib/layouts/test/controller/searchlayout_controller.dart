@@ -86,10 +86,9 @@ class TestlayoutController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    debugPrint(
-        'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
-    connectivitySubscription = _connectivity.onConnectivityChanged
-        .listen((ConnectivityResult result) async {
+
+    connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) async {
       await authController.getConnectivity();
     });
   }
@@ -162,25 +161,21 @@ class TestlayoutController extends GetxController {
   }
 
   void goto(String route) {
-    debugPrint('rrrrrrrrrrr ' + route);
     Get.toNamed(route);
   }
 
   void gototoast(String route, String sMsg, BuildContext ctx) {
     //22 55 14 16
     toggleDrawers(ctx);
-    debugPrint('logout' + route);
+
     switch (route) {
       case '/logout':
-        debugPrint('logout');
         showAlertDialog(ctx, 'Do You Want to Logout?');
         break;
       case '/otpscreen':
-        debugPrint('otpscreen');
         Get.offAllNamed('/otpscreen');
         break;
       default:
-        debugPrint('logout default');
         ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
           content: Text(sMsg + ' is Selected'),
         ));
@@ -189,7 +184,6 @@ class TestlayoutController extends GetxController {
   }
 
   void toggleDrawers(BuildContext context) {
-    debugPrint('toggle controller');
     if (!Scaffold.of(context).isDrawerOpen)
       Scaffold.of(context).openDrawer();
     else

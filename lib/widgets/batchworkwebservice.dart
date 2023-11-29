@@ -16,8 +16,7 @@ class BatchWorkWebService extends StatefulWidget {
   final String sFolderName;
   final int iSelected; //hpgreenener
 
-  const BatchWorkWebService(
-      {required this.sFolderName, required this.iSelected});
+  const BatchWorkWebService({required this.sFolderName, required this.iSelected});
 
   @override
   _BatchWorkWebServiceState createState() =>
@@ -29,8 +28,7 @@ class _BatchWorkWebServiceState extends State<BatchWorkWebService> {
   final String sFolderName;
   int iSelected;
 
-  _BatchWorkWebServiceState(
-      {Key? key, required this.sFolderName, required this.iSelected});
+  _BatchWorkWebServiceState({Key? key, required this.sFolderName, required this.iSelected});
   @override
   void initState() {
     super.initState();
@@ -47,8 +45,7 @@ class _BatchWorkWebServiceState extends State<BatchWorkWebService> {
     // TODO: implement build
     return Container(
         padding: EdgeInsets.all(9),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Container(
@@ -82,16 +79,14 @@ class _BatchWorkWebServiceState extends State<BatchWorkWebService> {
                         child: ConnectSingleItemWebService(
                             iIndexPosition: 0,
                             label: 'Finance',
-                            discriptions:
-                                'Team Colobration for account payable and receivable ',
+                            discriptions: 'Team Colobration for account payable and receivable ',
                             color: Colors.blue,
                             isSelected: controller.iSelected.value == 0)),
                     Container(
                         child: ConnectSingleItemWebService(
                             iIndexPosition: 1,
                             label: 'Customer Boarding.', //1053 322
-                            discriptions:
-                                'On boarding workflow for retail and commercial',
+                            discriptions: 'On boarding workflow for retail and commercial',
                             color: Colors.orange,
                             isSelected: controller.iSelected.value == 1)),
                     Container(
@@ -123,7 +118,6 @@ class _BatchWorkWebServiceState extends State<BatchWorkWebService> {
                         /*        _currentIndex = index;
                             iSelected = index;*/
                         controller.iSelected.value = index;
-                        debugPrint('Selected fff ' + _currentIndex.toString());
                       });
                     },
                   ),

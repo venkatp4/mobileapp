@@ -40,7 +40,6 @@ DateTime parseDateTime(String dateString) {
 }
 
 String formatDateTime(String dateString) {
-  debugPrint('cccccc1 dateString ' + dateString);
   final dateTime = parseDateTime(dateString);
   final time = TimeOfDay.fromDateTime(dateTime);
 
@@ -48,37 +47,27 @@ String formatDateTime(String dateString) {
 }
 
 String getDateOnly(String sDate) {
-  debugPrint('cccccc1 ' + sDate);
   //DateTime dt = DateTime.parse('2020-01-02 03:04:05');
 /*  String cdate =
       DateFormat("dd-MM-yyyy").format(DateTime.parse('2020-12-02 03:04:05'));// 21-Apr-2023 01:55 AM*/
   String cdate = DateFormat("dd-MMMM-yyyy hh:mm a").format(DateTime.parse(sDate));
-  debugPrint('cccccc2 ' + cdate);
+
   return cdate;
 }
 
 getCurrentDate() {
-  debugPrint('dddd ' + DateFormat('dd-MMM-yyyy').format(DateTime.now()));
-  debugPrint(DateTime.now().toString());
-  debugPrint(new DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(DateTime.now()));
-
-  ///  2023-05-30T14:36:58.58Z
   return DateFormat('yyyy-MM-dd').format(DateTime.now());
 }
 
 String timeFormate(String time) {
-  //time = '2023-05-30T14:36:58.58Z';
-  print('time ttttttttttttttttq ' + time);
   DateTime dt1 = DateTime.parse(time);
-//
+
   return timeAgoCustom(dt1);
 }
 
 String timeAgoCustom(DateTime d) {
-  // <-- Custom method Time Show  (Display Example  ==> 'Today 7:00 PM')     // WhatsApp Time Show Status Shimila
   Duration diff = DateTime.now().difference(d);
 
-  debugPrint('---- ' + d.toString() + ', ' + DateTime.now().toString() + ' dd ' + diff.toString());
   if (diff.inDays > 365)
     return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "Yr Ago" : "Yrs Ago"}";
   if (diff.inDays > 30)
@@ -91,7 +80,7 @@ String timeAgoCustom(DateTime d) {
   //if (diff.inHours > 0) return "${DateFormat('jm').format(d)}";
   if (diff.inMinutes > 0)
     return "${diff.inMinutes} ${diff.inMinutes == 1 ? "Min Ago" : "Mins Ago"}";
-  return "${diff.inMinutes} ";
+  return "${diff.inMinutes} Min Ago";
   return "Just Now";
 }
 

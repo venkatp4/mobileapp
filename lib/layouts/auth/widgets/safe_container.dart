@@ -14,7 +14,6 @@ class SafeContainer extends StatelessWidget {
 
     final safeAreaHeight = safeArea['height'];
     final safeAreaWidth = safeArea['width'];
-    debugPrint(safeAreaHeight.toString() + 'h   b' + safeAreaWidth.toString());
 
     return Container(
       // padding: const EdgeInsets.all(24),

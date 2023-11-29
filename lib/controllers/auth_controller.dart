@@ -65,7 +65,7 @@ class AuthController extends GetxController {
         readlocalData();
       }
     } on Exception catch (e) {
-      print('---------------: ${e.toString()}');
+      print('${e.toString()}');
     }
   }
 
@@ -77,7 +77,6 @@ class AuthController extends GetxController {
     AaaEncryption.sToken = pre.getString('token').toString();
 
     if (AaaEncryption.sToken.length > 4) {
-      print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
       String ss = pre.getString('Userdata').toString();
       userdata = jsonDecode(AaaEncryption.decryptAESaaa(ss));
       pre.setString('userid', userdata['id']);
@@ -87,10 +86,7 @@ class AuthController extends GetxController {
       //sessionController.setSessionuser(data);
       final sessionController = Get.find<SessionController>();
       sessionController.setSessionuser(userdata);
-      print(ss);
-      print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu1');
 
-      print('yyyyyyyyyy');
       Get.offAndToNamed("/home");
     } else
       Get.offAndToNamed("/loginscreen");

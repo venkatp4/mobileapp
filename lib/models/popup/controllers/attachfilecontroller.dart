@@ -17,27 +17,6 @@ class AttcaheFileController extends GetxController {
   int iSelecteFileCount = 0;
   //final tabitems = ['Home', 'Attachemnts', 'Comments', 'Task', 'History'];
 
-/*  List dataFileList = [
-    {
-      "name": "dev.pdf",
-      "description": "Inversments \u2022 DATE \u2022 E-mail \u2022 ",
-      "Status": "FAILED",
-      "selected": false
-    },
-    {
-      "name": "123.pdf",
-      "description": "Inversments \u2022 DATE \u2022 E-mail \u2022 ",
-      "Status": "INDEXED",
-      "selected": false
-    },
-    {
-      "name": "123.pdf",
-      "description": "Inversments \u2022 DATE \u2022 E-mail \u2022 ",
-      "Status": "PARTIALLY_INDEXED ",
-      "selected": false
-    }
-  ].obs;*/
-
   List dataFileListNew = <filedatas>[].obs;
 
   final showSelectedFiles = false.obs;
@@ -86,6 +65,7 @@ class AttcaheFileController extends GetxController {
       final statusCode = responses.statusCode;
 
       if (statusCode == 200) {
+        print('sucess');
         return true;
       }
       return false;
@@ -106,7 +86,7 @@ class AttcaheFileController extends GetxController {
     print('DeleteMultipleFiles');
     for (int i = 0; i < dataFileListNew.length; i++) {
       filedatas fd = dataFileListNew[i];
-      if (fd.selected) {
+      if (fd.selected.value) {
         final responses = await AuthRepo.postDeleteFiles(fd.repositoryId, fd.id.toString());
         if (AaaEncryption.decryptAESaaa(responses.toString()) == 'success')
           MotionToastWidget().displaySuccessMotionToast('File Deleted Sucessfully.', ctx);
@@ -138,7 +118,7 @@ class filedatas {
   String Status = '';
   String createdByEmail = '';
   String createdAt = '';
-  bool selected = false;
+  RxBool selected = false.obs;
 
   filedatas(this.id, this.name, this.repositoryId, this.Status, this.description, this.selected,
       this.createdByEmail, this.createdAt);
@@ -151,6 +131,6 @@ class filedatas {
     createdByEmail = json['createdByEmail'];
     createdAt = json['createdAt'];
     Status = 'UPLOADED'; //json['comments'];
-    selected = false;
+    selected.value = false;
   }
 }

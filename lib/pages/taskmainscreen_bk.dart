@@ -90,9 +90,7 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
                     //////////////////////////////////////
                     iCurrentSelect == 'List' ? Container() : Container(),
 
-                    iCurrentSelect == 'High Priority'
-                        ? Container()
-                        : Container(),
+                    iCurrentSelect == 'High Priority' ? Container() : Container(),
 
                     //////////////////////////////////////
                     iCurrentSelect == 'Completed'
@@ -114,21 +112,18 @@ class _TaskMainScreenState extends State<TaskMainScreen> {
   }
 
   tabFunctionCommect() {
-    debugPrint('BBBB1 44 tabFunctionCommect');
     setState(() {
       iCurrentSelect = 'List'.obs;
     });
   }
 
   tabFunctionBrowse() {
-    debugPrint('BBBB1 44 tabFunctionBrowse');
     setState(() {
       iCurrentSelect = 'High Priority'.obs;
     });
   } //7.5  55
 
   tabFunctionExplorer() {
-    debugPrint('BBBB1 44 rr tabFunctionExplorer');
     setState(() {
       iCurrentSelect = 'Completed'.obs;
     });

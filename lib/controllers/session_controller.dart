@@ -18,7 +18,6 @@ class SessionController extends GetxController {
 
   @override
   Future onInit() async {
-    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     await getSession();
     super.onInit();
   }
@@ -26,7 +25,6 @@ class SessionController extends GetxController {
   // ...
   // initSession
   void initSession(Session session) {
-    debugPrint('get ------- set init');
     token.value = session.token;
     iv.value = session.iv;
     key.value = session.key;
@@ -44,8 +42,6 @@ class SessionController extends GetxController {
     try {
       final session = Session.fromJson(data);
       initSession(session);
-      debugPrint('get ------- set');
-      // final prefs = await SharedPreferences.getInstance();
       store.write('session', json.encode(session));
       store.save();
     } catch (e) {
@@ -55,10 +51,8 @@ class SessionController extends GetxController {
 
   setSessionuser(Map<String, dynamic> data) async {
     try {
-      //final session = Session.fromJson(data);
-      debugPrint('session');
       Userdata.value = UserDetails.fromJson(data);
-      debugPrint('session');
+
       store.write('userdetails', json.encode(data));
       //store.write('userdetails', json.encode(Userdata));
       store.save();
@@ -75,7 +69,6 @@ class SessionController extends GetxController {
   // getSession
   Future<void> getSession() async {
     try {
-      //final prefs = await SharedPreferences.getInstance();
       final session = store.read('session') ?? '';
       final userdetailsdata = store.read('userdetails') ?? '';
 
@@ -89,38 +82,10 @@ class SessionController extends GetxController {
         }
       }
     } catch (e) {
-      debugPrint('get -------');
       print(e);
     }
   }
 
   // deleet Session
   void deleteSession() {}
-
-  // ...
-
-  // clearSession
-/*
-  Future<void> clearSession() async {
-    token.value = '';
-    user.value = User.empty();
-
-    try {
-      //final prefs = await SharedPreferences.getInstance();
-      //await store.remove('domain');
-      await store.remove('session');
-      //await store.remove('domainmy');
-      await store.remove('sessionmy');
-    } catch (e) {
-      print(e);
-    }
-  }*/
-
-/*  void logoutuser() {
-    debugPrint('logoutuser');
-    clearSession();
-    Get.offAllNamed('/login');
-  }*/
-
-// ...
 }

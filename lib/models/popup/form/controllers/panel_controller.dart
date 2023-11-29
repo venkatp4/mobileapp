@@ -44,9 +44,6 @@ class PanelController extends GetxController {
   final error = ''.obs;
 
   final List<dynamic> datadrop = List.empty().obs;
-  //final List<String> datadropString = [].obs as List<String>;
-
-  //final List datadropString = <datadropString>[].obs;
 
   List<String> datadropString = <String>[].obs;
   List<String> temp = <String>[].obs;
@@ -70,7 +67,6 @@ class PanelController extends GetxController {
   // onEmailChanged
   void onEmailChanged(String value) {
     email.value = value;
-    print(email.value);
   }
 
   Future login() async {
@@ -87,25 +83,21 @@ class PanelController extends GetxController {
   //  // onNumberChange
   void onNumberChanged(String value) {
     number.value = value;
-    print(number.value);
   }
 
   //  // ontextChange
   void onTextChanged(String value) {
     text.value = value;
-    print(text.value);
   }
 
   //  // onMultilineChange
   void onMultilineChanged(String value) {
     multiline.value = value;
-    print(multiline.value);
   }
 
   //  // onMultilineChange
   void onDateChanged(String value) {
     date.value = value;
-    print(date.value);
   }
 
   void onTimeChanged(String value) {
@@ -117,12 +109,10 @@ class PanelController extends GetxController {
 
   void ondateandtime_DateChanged(String value) {
     dateandtime_date.value = value;
-    print(dateandtime_date.value);
   }
 
   void ondateandtime_TimeChanged(String value) {
     dateandtime_time.value = value;
-    print(dateandtime_date.value);
   }
 
   // on form field changed
@@ -169,10 +159,7 @@ class PanelController extends GetxController {
         // final data = jsonDecode(response.body);
         return List<String>.from(datadropString);
       }
-      //  });
-      print('hhhhhhhhhhhhhhhhhhhhhhhhhhhh1');
-      print(datadropString.toString());
-      print(datadropString.length);
+
       if (response.statusCode == 200) {
       } else {
         throw Exception('Failed to load data from API 1');
@@ -180,19 +167,6 @@ class PanelController extends GetxController {
       }
     } on DioError catch (e) {
       throw Exception('Failed to load data from API 1');
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {
-        error.value = 'Unauthorized Login';
-      }
-      if (statusCode == 402) {
-        error.value = 'license expired';
-      } else if (statusCode == 404) {
-        error.value = 'email not found';
-      } else if (statusCode == 409) {
-        error.value = 'incorrect password';
-      } else {
-        rethrow;
-      }
     } catch (e) {
       print(e);
       throw Exception('Failed to load data from API 1');
@@ -200,8 +174,4 @@ class PanelController extends GetxController {
       throw Exception('Failed to load data from API 2');
     }
   }
-
-// ...
-  // login
-  // ...
 }
