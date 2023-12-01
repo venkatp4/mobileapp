@@ -29,6 +29,7 @@ class PopupFullpageInboxState extends State<PopupFullpageInbox> {
     //tn72ca9901
     return Container(
         // margin: EdgeInsets.all(10),
+
         margin: EdgeInsets.fromLTRB(1, 1, 1, 50),
         child: Container(
           decoration: BoxDecoration(

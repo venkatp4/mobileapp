@@ -115,6 +115,7 @@ class _BatchWorkWebServiceState extends State<BatchWorkWebService> {
                     viewportFraction: 0.8,
                     onPageChanged: (index, reason) {
                       setState(() {
+                        //
                         /*        _currentIndex = index;
                             iSelected = index;*/
                         controller.iSelected.value = index;

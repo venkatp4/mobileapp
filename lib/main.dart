@@ -22,7 +22,6 @@ import 'controllers/taskcontroller.dart';
 import 'controllers/taskmaincontroller.dart';
 import 'controllers/webmaincontroller.dart';
 //import 'package:local_auth/local_auth.dart';
-import 'models/popup/controllers/MultiSelectMainController.dart';
 import 'models/popup/controllers/commentcontroller.dart';
 
 void initialize() {
@@ -45,7 +44,6 @@ void initialize() {
   Get.put<FolderMainController>(FolderMainController());
   Get.put<WebMainController>(WebMainController());
   Get.put<CommentController>(CommentController());
-  //Get.put<MultiSelectMainController>(MultiSelectMainController());
 }
 
 void main() async {
@@ -92,9 +90,11 @@ class MyApp extends StatelessWidget {
         //allowFontScaling: true,
         builder: (_, child) => GetMaterialApp(
             theme: ThemeData(
-                primarySwatch: Colors.blue,
+                //primarySwatch: Colors.grey.shade100,
+
                 fontFamily: 'Outfit',
-                accentColor: Colors.purple,
+                colorScheme: ColorScheme.fromSwatch()
+                    .copyWith(secondary: Colors.purple, background: Colors.white),
                 dividerColor: Colors.white),
             navigatorKey: Catcher.navigatorKey,
             title: 'EZOFIS V5',

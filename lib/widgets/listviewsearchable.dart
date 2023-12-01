@@ -96,9 +96,6 @@ class ListViewSearchState extends State<ListViewSearch> {
 
     controllerpopup.sWorkFlowId = widget.sWorkflowId;
     dbcontroller.iCurrentSelect = 'listview'.obs;
-    setState(() {
-      controllerpopup.bFab = false;
-    });
 
     getInboxDetailsNew();
   }
@@ -165,17 +162,11 @@ class ListViewSearchState extends State<ListViewSearch> {
                         _inboxDetailss.elementAt(index).activityId.toString();
                     controllerpopup.sTransactionId =
                         _inboxDetailss.elementAt(index).transactionId.toString();
-                    //controllerpopup.iSelectedIndex=
 
-                    String sTemp = jsonEncode(widget.miSelectedData.flowJson)
-                        .replaceAll('\\\\"', '"')
-                        .replaceAll('\\\"', '"')
-                        .replaceAll('\\"', '"');
+                    //final sTemp = jsonDecode(widget.miSelectedData.flowJson);
+                    controllerpopup.mFormJSon =
+                        jsonDecode(jsonDecode(widget.miSelectedData.flowJson));
 
-                    if (sTemp.length > 25) {
-                      sTemp = sTemp.substring(1, sTemp.length - 1);
-                      controllerpopup.mFormJSon = jsonDecode(sTemp.substring(1, sTemp.length - 1));
-                    }
                     openPopupForm();
                   },
                   title: Row(
@@ -329,9 +320,7 @@ class ListViewSearchState extends State<ListViewSearch> {
 
   findBlockId(var auserList, String sBlockId) {
     bool bpresent = false;
-
     bpresent = auserList['users'].contains(sUserId);
-
     if (!bpresent && auserList['groups'].length > 0 && controllerPanel.userGroupList.length > 0) {
       for (int i = 0; i < auserList['groups'].length; i++) {
 /*        for (int j = 0; j < controllerPanel.userGroupList.length; j++) {

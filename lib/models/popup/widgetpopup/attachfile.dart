@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/auth_repo.dart';
+import '../../../controllers/treeboxlistviewcontroller.dart';
 import '../../../utils/file_fns.dart';
 import '../../../utils/format_date_time.dart';
 import '../../../utils/helper/aes_encryption.dart';
@@ -34,6 +35,7 @@ class AttachFiles extends StatefulWidget {
 class _AttachFilesState extends State<AttachFiles> with AutomaticKeepAliveClientMixin {
   final controller = Get.put(AttcaheFileController());
   final controllerpopup = Get.put(PopupFullPageController());
+  final controllerTree = Get.put(TreeInboxListviewController());
   int iSelectedFileCount = 0;
 
   @override
@@ -183,24 +185,26 @@ class _AttachFilesState extends State<AttachFiles> with AutomaticKeepAliveClient
                           ]))));
             },
           ),
-          floatingActionButton: Wrap(
-            //will break to another line on overflow
-            direction: Axis.vertical, //use vertical to show  on vertical axis
-            children: <Widget>[
-              controller.iSelecteFileCount > 0
-                  ? Container(
-                      margin: EdgeInsets.all(5),
-                      child: FloatingActionButton.small(
-                        backgroundColor: Colors.blueAccent.shade200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(7.0))),
-                        child: Icon(color: Colors.white, Icons.delete_outline),
-                        onPressed: () => {deleteFiles()},
-                      ))
-                  : SizedBox(), //button first
+          floatingActionButton: Visibility(
+              visible: controllerTree.iCurrentSelect.toString().contains('_0'),
+              child: Wrap(
+                //will break to another line on overflow
+                direction: Axis.vertical, //use vertical to show  on vertical axis
+                children: <Widget>[
+                  controller.iSelecteFileCount > 0
+                      ? Container(
+                          margin: EdgeInsets.all(5),
+                          child: FloatingActionButton.small(
+                            backgroundColor: Colors.blueAccent.shade200,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(7.0))),
+                            child: Icon(color: Colors.white, Icons.delete_outline),
+                            onPressed: () => {deleteFiles()},
+                          ))
+                      : SizedBox(), //button first
 
-              // Merge file dont delete
-              /*       controller.iSelecteFileCount > 1
+                  // Merge file dont delete
+                  /*       controller.iSelecteFileCount > 1
                   ? Container(
                       margin: EdgeInsets.all(5),
                       child: FloatingActionButton.small(
@@ -212,20 +216,20 @@ class _AttachFilesState extends State<AttachFiles> with AutomaticKeepAliveClient
                       ))
                   : SizedBox(), // button second*/
 
-              controller.iSelecteFileCount == 0
-                  ? Container(
-                      margin: EdgeInsets.all(5),
-                      child: FloatingActionButton.small(
-                        backgroundColor: Colors.blueAccent.shade200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(7.0))),
-                        child: Icon(color: Colors.white, Icons.file_upload_outlined),
-                        onPressed: () => {onUpload()},
-                      ))
-                  : SizedBox(), // button third
-              // Add more buttons here
-            ],
-          ),
+                  controller.iSelecteFileCount == 0
+                      ? Container(
+                          margin: EdgeInsets.all(5),
+                          child: FloatingActionButton.small(
+                            backgroundColor: Colors.blueAccent.shade200,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(7.0))),
+                            child: Icon(color: Colors.white, Icons.file_upload_outlined),
+                            onPressed: () => {onUpload()},
+                          ))
+                      : SizedBox(), // button third
+                  // Add more buttons here
+                ],
+              )),
         ));
   }
 

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:ez/models/popup/widgetpopup/attachfile.dart';
 import 'package:ez/models/popup/widgetpopup/comments.dart';
 import 'package:ez/models/popup/widgetpopup/gridviewhome.dart';
@@ -98,7 +98,7 @@ class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMi
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
                   Tab(
-                      icon: Badge(
+                      icon: badges.Badge(
                     showBadge: false,
                     badgeContent: Text('',
                         style: TextStyle(
@@ -106,13 +106,13 @@ class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMi
                             fontSize: 10,
                             color: Colors.white, //#00bfd6
                             fontWeight: FontWeight.w500)),
-                    badgeStyle: BadgeStyle(
+                    badgeStyle: badges.BadgeStyle(
                       badgeColor: const Color(0xFF00bfd6),
                     ),
                     child: Icon(MdiIcons.listBoxOutline),
                   )),
                   Tab(
-                      icon: Badge(
+                      icon: badges.Badge(
                     badgeContent: Text(controllerpopup.iFilecount.toString(),
                         style: TextStyle(
                             //fontSize: 14,
@@ -121,13 +121,13 @@ class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMi
                             fontWeight:
                                 FontWeight.w500)), //Text(controllerpopup.iFilecount.toString()),
                     showBadge: controllerpopup.iFilecount > 0,
-                    badgeStyle: BadgeStyle(
+                    badgeStyle: badges.BadgeStyle(
                       badgeColor: const Color(0xFF00bfd6),
                     ),
                     child: Icon(Icons.attachment),
                   )),
                   Tab(
-                      icon: Badge(
+                      icon: badges.Badge(
                     badgeContent: Text(controllerpopup.iMsgCount.toString(),
                         style: TextStyle(
                             //fontSize: 14,
@@ -135,13 +135,13 @@ class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMi
                             color: Colors.white, //#00bfd6
                             fontWeight: FontWeight.w500)),
                     showBadge: controllerpopup.iMsgCount > 0,
-                    badgeStyle: BadgeStyle(
+                    badgeStyle: badges.BadgeStyle(
                       badgeColor: const Color(0xFF00bfd6),
                     ),
                     child: Icon(MdiIcons.commentOutline),
                   )),
                   Tab(
-                      icon: Badge(
+                      icon: badges.Badge(
                     badgeContent: Text(controllerpopup.iTaskCount.toString(),
                         style: TextStyle(
                             //fontSize: 14,
@@ -149,13 +149,13 @@ class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMi
                             color: Colors.white, //#00bfd6
                             fontWeight: FontWeight.w500)),
                     showBadge: controllerpopup.iTaskCount > 0,
-                    badgeStyle: BadgeStyle(
+                    badgeStyle: badges.BadgeStyle(
                       badgeColor: const Color(0xFF00bfd6),
                     ),
                     child: Icon(MdiIcons.cubeOutline),
                   )),
                   Tab(
-                      icon: Badge(
+                      icon: badges.Badge(
                     badgeContent: Text('',
                         style: TextStyle(
                             //fontSize: 14,
@@ -163,7 +163,7 @@ class TabMianScreenState extends State<TabMianScreen> with TickerProviderStateMi
                             color: Colors.white, //#00bfd6
                             fontWeight: FontWeight.w500)),
                     showBadge: false,
-                    badgeStyle: BadgeStyle(
+                    badgeStyle: badges.BadgeStyle(
                       badgeColor: const Color(0xFF00bfd6),
                     ),
                     child: Icon(MdiIcons.history),

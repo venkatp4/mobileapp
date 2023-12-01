@@ -12,6 +12,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import '../../../api/auth_repo.dart';
 import '../../../layouts/process/ProcessLayout.dart';
 import '../../../layouts/process/ProcessLayoutTab.dart';
+import '../../../utils/format_date_time.dart';
 import '../../../utils/helper/aes_encryption.dart';
 import '../../../widgets/buttonroundednoaction.dart';
 import '../controllers/gridviewhomecontroller.dart';
@@ -41,7 +42,6 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
 
   Future<Null> getInboxDetails() async {
     String payloadenc = '{"currentPage": 1, "itemsPerPage": 20}';
-    //payloadenc = '{"itemsPerPage":20,"currentPage":1}';
 
     final responses = await AuthRepo.getInboxListForFolder(
         controllerpopup.sWorkFlowId,
@@ -49,21 +49,15 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
         ''); //       timeFormate(_inboxDetailss[index].raisedAt.trim()),
 
     String dec = AaaEncryption.decryptAESaaa(responses.toString());
-
     Map<String, dynamic> valueMap = json.decode(dec);
-
     setState(() {
       controller.filedsnew = {};
     });
-
-    valueMap['data'].forEach((item) {
-      item['value'].forEach((items) {
-        if (controller.filedsnew.length == 0) {
-          getInboxSingleDetails(
-              items['formData']['formId'].toString(), items['formData']['fields']);
-        }
-      });
-    });
+    print('controllerpopup.iSelectedIndex = ' + controllerpopup.iSelectedIndex.toString());
+    getInboxSingleDetails(
+        valueMap['data'][0]['value'][controllerpopup.iSelectedIndex]['formData']['formId']
+            .toString(),
+        valueMap['data'][0]['value'][controllerpopup.iSelectedIndex]['formData']['fields']);
   }
 
   Future getInboxSingleDetails(String formId, Map<String, dynamic> mdata) async {
@@ -76,8 +70,6 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
       isLoading.value = false;
       Map<String, dynamic> datas = json.decode(data['formJson']);
 
-      int itemp = 0;
-
       datas['panels'].forEach((item) {
         for (var entry in mdata.entries) {
           item['fields'].forEach((field) {
@@ -85,7 +77,6 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
               mdataGenerate.putIfAbsent(field['label'].toString(), () => checkIsArray(entry.value));
             }
           });
-          itemp++;
         }
       });
 
@@ -121,7 +112,6 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
   }
 
   String checkIsArray(dynamic dVal) {
-    //print('222222222222222222222222222222');
     String stemp = dVal.toString().replaceAll('\n', '').replaceAll('\r', '');
     return stemp.trim().length > 0 ? stemp : '-';
   }
@@ -133,7 +123,7 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
     return ProcessLayoutTab(children: [
       Container(
           width: mediaQuery.size.width,
-          height: mediaQuery.size.height * .9,
+          height: mediaQuery.size.height * .99,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5.0))),
@@ -141,7 +131,7 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
-                  flex: 15,
+                  flex: 10,
                   child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -151,48 +141,35 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
                                   topRight: Radius.circular(20.0))*/
                       ),
                       width: double.infinity,
-                      child: Column(
+                      child: Row(
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Expanded(
-                                flex: 4,
+                                flex: 7,
                                 child: DefaultTextStyle(
                                     maxLines: 2,
-                                    style: TextStyle(decoration: TextDecoration.none),
+                                    style: TextStyle(
+                                      decoration: TextDecoration.none,
+                                    ),
                                     child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: TextNormalPop(
                                             sLabel: controllerpopup
                                                 .srequesno /*'+ They are not necessarily opaque, however; for example, a pop-up menu uses a ModalRoute'*/)))),
-                            SizedBox(
-                              height: 10,
-                            ),
                             Expanded(
                                 flex: 1,
-                                child: Row(children: <Widget>[
-                                  Icon(
-                                    size: 17,
-                                    MdiIcons.clockOutline,
-                                    color: Colors.purple,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  DefaultTextStyle(
-                                      maxLines: 2,
-                                      style: TextStyle(decoration: TextDecoration.none),
-                                      child: TextSmallPop(sLabel: controllerpopup.sRaisedAt)),
-                                  SizedBox(
-                                    width: 15,
-                                  )
-                                ])),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: TextSmallPop(
+                                        sLabel: timeFormate(controllerpopup.sRaisedAt)
+                                            .replaceAll(' ', '\n')))),
                           ])
                       // color: Colors.blue, /*child: TextNormal(sLabel: 'dsd')*/
                       )),
               Expanded(
-                  flex: 80,
+                  flex: 90,
                   child: Material(
                       child: Container(
                     color: Colors.white,
@@ -204,12 +181,6 @@ class _PopupFullpageInboxPageState extends State<PopupFullpageInboxPage> {
           )),
     ]);
   }
-
-/*  Future<bool> _onWillPop() async {
-    //final cont = Get.put(BrowseViewController());
-    Get.offAndToNamed("/home");
-    return true;
-  }*/
 
   buttonGenerate(String sname, Color clr, Icon icn) {
     return Container(

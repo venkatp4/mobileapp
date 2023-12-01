@@ -12,6 +12,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart'; //karthi
 
 import '../../../api/auth_repo.dart';
+import '../../../controllers/treeboxlistviewcontroller.dart';
 import '../../../utils/file_fns.dart';
 import '../../../utils/helper/aes_encryption.dart';
 import '../../comments.dart';
@@ -30,6 +31,7 @@ class _CommenttListState extends State<CommenttList> {
   TextEditingController commentTextController = TextEditingController();
   //SharedPreferences pre=null;
   CommentController controllerComments = Get.put(CommentController());
+  final controllerTree = Get.put(TreeInboxListviewController());
   final controllerpopup = Get.put(PopupFullPageController());
   ScrollController _scrollController = ScrollController();
   bool _needsScroll = false;
@@ -221,6 +223,7 @@ class _CommenttListState extends State<CommenttList> {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(5.0))),
                     child: TextField(
+                        enabled: controllerTree.iCurrentSelect.toString().contains('_0'),
                         scrollPadding: const EdgeInsets.only(bottom: 32.0),
                         controller: commentTextController,
                         style: TextStyle(
