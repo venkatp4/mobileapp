@@ -56,10 +56,12 @@ class SearchLayout extends StatelessWidget {
           child: Container(
               color: Colors.white,
               child: NestedScrollView(
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     SliverOverlapAbsorber(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
                       sliver: SliverAppBar(
                         automaticallyImplyLeading: false,
                         backgroundColor: Colors.black12,
@@ -77,7 +79,8 @@ class SearchLayout extends StatelessWidget {
                                 child: TextInputSearchableSearch(
                                     title: "",
                                     type: TextInputType.text,
-                                    onChange: tabbarController.onSearchTextChanged,
+                                    onChange:
+                                        tabbarController.onSearchTextChanged,
                                     placeholder: "Search"),
                                 // Expanded(...)
                                 /*Container(
@@ -100,7 +103,8 @@ class SearchLayout extends StatelessWidget {
                   return Container(
                       height: double.infinity,
                       //SingleChildScrollView
-                      margin: EdgeInsets.only(top: mediaQuery.size.height * .071),
+                      margin:
+                          EdgeInsets.only(top: mediaQuery.size.height * .071),
                       child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.start,

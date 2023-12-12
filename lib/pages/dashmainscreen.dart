@@ -101,7 +101,8 @@ class _DashMainScreenState extends State<DashMainScreen> {
         child: SearchLayout(wpersistentFooterButtons: List.empty(), children: [
           Expanded(
               child: Container(
-                  child: Column(mainAxisSize: MainAxisSize.min,
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       //crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                 dbcontroller.iCurrentSelect == 'dashboard'
@@ -112,7 +113,8 @@ class _DashMainScreenState extends State<DashMainScreen> {
                             padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
                                 color: Colors.indigoAccent,
-                                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5.0))),
                             child: IntrinsicHeight(
                                 child: Row(
                               children: [
@@ -126,13 +128,17 @@ class _DashMainScreenState extends State<DashMainScreen> {
                                           Icons.mail_outline_outlined,
                                           color: Colors.indigoAccent,
                                         ))),
-                                VerticalDivider(color: Colors.white, thickness: 1, indent: 7),
+                                VerticalDivider(
+                                    color: Colors.white,
+                                    thickness: 1,
+                                    indent: 7),
                                 GestureDetector(
                                     onTap: taskfn,
                                     child: Obx(() => ImageMultitext(
                                         title: 'My Task',
-                                        subtext:
-                                            dbcontroller.iPendingtask.value.toString() + ' Pending',
+                                        subtext: dbcontroller.iPendingtask.value
+                                                .toString() +
+                                            ' Pending',
                                         iIcon: Icon(
                                           MdiIcons.cubeOutline,
                                           color: Colors.indigoAccent,
@@ -143,8 +149,9 @@ class _DashMainScreenState extends State<DashMainScreen> {
                 dbcontroller.iCurrentSelect == 'inboxfn'
                     ? Expanded(
                         child: Container(
-                        decoration:
-                            BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         /*child: ListViewSearch(
                               sWorkflowId: '7',
                               sType: '0',
@@ -158,7 +165,8 @@ class _DashMainScreenState extends State<DashMainScreen> {
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(10))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
                             child: TreeInboxListview())) /*TestInbox()*/
 
                     : Container()
