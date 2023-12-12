@@ -4,6 +4,8 @@ import 'package:ez/core/CustomColors.dart';
 import 'package:ez/core/utils/strings.dart';
 import 'package:ez/features/workflow/view_model/viewmodel.dart';
 import 'package:ez/layouts/process/widgets/main_drawer.dart';
+import 'package:ez/routes.dart';
+import 'package:ez/widgets/button.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../../core/CustomAppBar.dart';
@@ -55,7 +57,7 @@ class _FormBuilderState extends State<Workflow> {
           AppBarAction(icon: Icon(Icons.search), onPressed: () => {}),
           AppBarAction(icon: Icon(Icons.person_sharp), onPressed: () => {})
         ],
-        backgroundColor: CustomColors.white24,
+        backgroundColor: CustomColors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -81,6 +83,19 @@ class _FormBuilderState extends State<Workflow> {
                                 child: loadWidgets(0, index,
                                     datas.panels[0].fields[index].type));
                           }),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  AppRoutes.push(context, AppRoutes.workflowdetail);
+                });
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(CustomColors.sapphireBlue),
+              ),
+              child: Text("Detail Screen",
+                  style: TextStyle(color: CustomColors.white)),
             ),
           ],
         ),

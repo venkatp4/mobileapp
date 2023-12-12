@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../controllers/login_controller.dart';
+import '../features/workflow/view/onBoardScreen.dart';
 import '../layouts/auth/auth_layout.dart';
 import '../layouts/auth/widgets/textsub.dart';
 import '../utils/helper/safe_area.dart';
@@ -95,8 +96,8 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 25),
             Button(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Workflow()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => OnBoardScreen()));
               },
               label: 'Form Builder',
               isFullWidth: true,
