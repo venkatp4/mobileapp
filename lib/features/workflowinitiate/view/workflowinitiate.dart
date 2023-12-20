@@ -1,14 +1,17 @@
-import 'dart:convert';
-
-import 'package:ez/core/CustomColors.dart';
-import 'package:ez/core/utils/strings.dart';
-import 'package:ez/features/workflow/view_model/viewmodel.dart';
-import 'package:ez/layouts/process/widgets/main_drawer.dart';
-import 'package:ez/routes.dart';
+import 'package:ez/features/qr_scanner/view/qrscanner.dart';
+import 'package:ez/features/workflow/workflowcreate/view/workflowcreate.dart';
+import 'package:ez/features/workflowinitiate/viewmodel/viewmodel.dart';
+import 'package:ez/widgets/AlertDialogScreen.dart';
 import 'package:ez/widgets/button.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../../core/CustomAppBar.dart';
+import '../../../core/CustomColors.dart';
+import '../../../core/utils/strings.dart';
 import '../../../models/popup/form/components/Labels.dart';
 import '../../../models/popup/form/components/bottomup_table.dart';
 import '../../../models/popup/form/components/check_box_input.dart';
@@ -19,35 +22,36 @@ import '../../../models/popup/form/components/dropdown_main.dart';
 import '../../../models/popup/form/components/dropdown_main_api.dart';
 import '../../../models/popup/form/components/number_increment.dart';
 import '../../../models/popup/form/components/text_input.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 import '../../../models/popup/form/components/time_input.dart';
 import '../../../models/popup/form/controllers/panel_controller.dart';
+import '../../../routes.dart';
 
-class Workflow extends StatefulWidget {
-  const Workflow({Key? key}) : super(key: key);
+class WorkflowInitiate extends StatefulWidget {
+  const WorkflowInitiate({Key? key}) : super(key: key);
 
   @override
-  State<Workflow> createState() => _FormBuilderState();
+  State<WorkflowInitiate> createState() => _WorkflowInitiateState();
 }
 
-class _FormBuilderState extends State<Workflow> {
+class _WorkflowInitiateState extends State<WorkflowInitiate> {
   dynamic datas = [];
   final controller = Get.put(PanelController());
   Widget child = Container();
+  List listofAttachedWorkflows = [];
 
   @override
   void initState() {
     SVProgressHUD.show(status: "");
-    final viewModel = Provider.of<WorkflowViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<WorkflowInitiateViewModel>(context, listen: false);
     viewModel.fetchData();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewmodel = Provider.of<WorkflowViewModel>(context);
+    final viewmodel = Provider.of<WorkflowInitiateViewModel>(context);
     datas = viewmodel.panel;
 
     return Scaffold(
@@ -81,23 +85,9 @@ class _FormBuilderState extends State<Workflow> {
                                     datas.panels[0].fields[index].type));
                           }),
             ),
-            ElevatedButton(
-              onPressed: () {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  AppRoutes.push(context, AppRoutes.workflowinitiate);
-                });
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(CustomColors.sapphireBlue),
-              ),
-              child: Text("Detail Screen",
-                  style: TextStyle(color: CustomColors.white)),
-            ),
           ],
         ),
       ),
-      drawer: MainDrawer(),
     );
   }
 
@@ -237,7 +227,9 @@ class _FormBuilderState extends State<Workflow> {
                 ));
         break;
       case Strings.table:
-        child = BottomUpTable();
+        // child = BottomUpTable();
+        child =
+            dynamic_workflowContainer(datas.panels[iPanel].fields[indexwidget]);
         break;
 
       default:
@@ -362,9 +354,128 @@ class _FormBuilderState extends State<Workflow> {
     return keyboardType;
   }
 
+  Widget dynamic_workflowContainer(dynamic data) {
+    late Widget child;
+    // if qrvalue equals to false and tableRowsType == ON_DEMAND
+    child = Column(
+      children: [
+        Row(
+          children: [
+            Labels(bRequired: false, sLabel: data.label),
+            Spacer(),
+            ElevatedButton(
+                onPressed: (!data.settings.specific.qrValue &&
+                            data.settings.specific.tableRowsType ==
+                                Strings.fixed &&
+                            data.settings.specific.tableFixedRowCount ==
+                                listofAttachedWorkflows.length ||
+                        !data.settings.specific.qrValue &&
+                            data.settings.specific.tableRowsType ==
+                                Strings.ondemand)
+                    ? () {
+                        AppRoutes.present(
+                          context,
+                          WorkflowCreate(
+                            datas: data,
+                            isEdit: false,
+                          ),
+                          (val) {
+                            setState(() {
+                              if (val != null) {
+                                // ignore adding values when there is null exists, this situation may ariase when user click on cancel button of window
+                                listofAttachedWorkflows.add(val);
+                              }
+                            });
+                          },
+                        );
+                      }
+                    : AppRoutes.present(context, QrScanner(), (val) {
+                        debugPrint(val);
+                      }),
+                child: Text(Strings.txt_add_button,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold)))
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          child: dynamicListView(data),
+        )
+      ],
+    );
+
+    return child;
+  }
+
+  // This method is used to create dynamic List of Workflow (type :- Table)
+  Widget dynamicListView(dynamic data) {
+    late Widget child;
+    child = Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: Colors.lime),
+      child: Column(
+        children: [
+          for (int i = 0; i < listofAttachedWorkflows.length; i++)
+            Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: ColoredBox(
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Column(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              AppRoutes.present(
+                                  context,
+                                  WorkflowCreate(
+                                    datas: data,
+                                    isEdit: true,
+                                    datas_onEdit: listofAttachedWorkflows[i],
+                                  ),
+                                  (val) {});
+                            },
+                            child: Text(
+                              listofAttachedWorkflows[0][i]['id'],
+                            ),
+                          )
+                        ],
+                      )),
+                      Spacer(),
+                      Container(width: 1, height: 30, color: Colors.grey),
+                      IconButton(
+                          onPressed: () {
+                            AlertDialogScreen(
+                                title: Strings.alert_delete_title,
+                                body: Strings.alert_delete_body,
+                                onTap: (val) {
+                                  setState(() {
+                                    listofAttachedWorkflows.removeAt(i);
+                                  });
+                                }).showAlertDialog(context);
+                          },
+                          icon: Icon(Icons.delete,
+                              color: CustomColors.sapphireBlue)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+    return child;
+  }
+
   @override
   void dispose() {
     controller.dispose();
+    // listofAttachedWorkflows.clear();
     super.dispose();
   }
 }

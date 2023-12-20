@@ -18,8 +18,7 @@ class FileManager implements Service {
     try {
       final String response = await rootBundle.loadString(path);
       final jsonData = await json.decode(response);
-      final result = Panel.fromJson(jsonData);
-      return result;
+      return jsonData;
     } catch (e) {
       // If any exception occurs during the API call, throw an exception with the error message.
       SVProgressHUD.dismiss();

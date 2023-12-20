@@ -3,6 +3,9 @@ class Strings {
   static const required = "REQUIRED";
   static const custom = "CUSTOM";
   static const existing = "EXISTING";
+  static const ondemand = "ON_DEMAND";
+  static const fixed = "FIXED";
+  static const txt_add_button = "Add +";
 
   // Component Keys
   static const shortText = "SHORT_TEXT";
@@ -23,4 +26,10 @@ class Strings {
   static const decimal = "DECIMAL";
   static const email = "EMAIL";
   static const name = "NAME";
+
+  // AlertDialog Keys
+  static const alert_delete_title = "Delete Confirmation";
+  static const alert_delete_body = "Are you sure you want to delete?";
+  static const alert_error_invalidform =
+      "Please update the form before submission";
 }

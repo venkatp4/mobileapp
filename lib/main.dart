@@ -4,6 +4,7 @@ import 'package:ez/controllers/dashmaincontroller.dart';
 import 'package:ez/controllers/foldermaincontroller.dart';
 import 'package:ez/controllers/session_controller.dart';
 import 'package:ez/features/workflow/view_model/viewmodel.dart';
+import 'package:ez/features/workflowinitiate/viewmodel/viewmodel.dart';
 import 'package:ez/pages/login.dart';
 import 'package:ez/routes.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,8 @@ void main() async {
         ChangeNotifierProvider<WorkflowViewModel>(
           create: (context) => sl.get<WorkflowViewModel>(),
         ),
+        ChangeNotifierProvider<WorkflowInitiateViewModel>(
+            create: (context) => sl.get<WorkflowInitiateViewModel>())
       ],
       child: const MyApp(),
     ),

@@ -1,10 +1,12 @@
+import 'package:ez/features/workflow/model/SpecificX.dart';
+
 import 'GeneralX.dart';
 import 'Specific.dart';
 import 'Validation.dart';
 
 class SettingsX {
   GeneralX? general;
-  Specific? specific;
+  SpecificX? specific;
   Validation? validation;
 
   SettingsX({this.general, this.specific, this.validation});
@@ -13,8 +15,9 @@ class SettingsX {
     return SettingsX(
       general:
           json['general'] != null ? GeneralX.fromJson(json['general']) : null,
-      specific:
-          json['specific'] != null ? Specific.fromJson(json['specific']) : null,
+      specific: json['specific'] != null
+          ? SpecificX.fromJson(json['specific'])
+          : null,
       validation: json['validation'] != null
           ? Validation.fromJson(json['validation'])
           : null,

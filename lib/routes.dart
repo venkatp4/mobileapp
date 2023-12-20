@@ -1,5 +1,7 @@
+import 'package:ez/features/qr_scanner/view/qrscanner.dart';
 import 'package:ez/features/workflow/view/workflow.dart';
-import 'package:ez/features/workflow/view/workflowdetailscreen.dart';
+import 'package:ez/features/workflow/workflowcreate/view/workflowcreate.dart';
+import 'package:ez/features/workflowinitiate/view/workflowinitiate.dart';
 import 'package:ez/models/popup/form/formmain.dart';
 import 'package:ez/pages/Taskcreen.dart';
 import 'package:ez/pages/foldermainscreen.dart';
@@ -32,7 +34,9 @@ class AppRoutes {
   static const categories = "categories";
   static const videos = "videos";
   static const reading = "Reading List";
-  static const workflowdetail = "workflowdetails";
+  static const workflowinitiate = "workflowinitiate";
+  static const workflowcreate = "workflowcreate";
+  static const qrscanner = "qrscanner";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
@@ -46,8 +50,16 @@ class AppRoutes {
       case AppRoutes.workflow:
         return MaterialPageRoute(
             settings: settings, builder: (_) => Workflow());
-      case AppRoutes.workflowdetail:
-        return MaterialPageRoute(builder: (_) => WorkflowDetails());
+      case AppRoutes.workflowinitiate:
+        return MaterialPageRoute(builder: (_) => WorkflowInitiate());
+      case AppRoutes.qrscanner:
+        return MaterialPageRoute(builder: (_) => QrScanner());
+      // case AppRoutes.workflowcreate:
+      //   return MaterialPageRoute(
+      //       builder: (_) => WorkflowCreate(
+      //             datas: settings.arguments as dynamic,
+      //             isEdit: false,
+      //           ));
       default:
         return _errorRoute();
     }
@@ -81,6 +93,24 @@ class AppRoutes {
 
   static push(BuildContext context, String route) {
     Navigator.of(context).pushNamed(route);
+  }
+
+  static pop(BuildContext context, [dynamic? data]) {
+    Navigator.of(context).pop(data);
+  }
+
+  static present(
+      BuildContext context, Widget route, Function(dynamic val) onTap) {
+    Navigator.of(context)
+        .push(
+      CupertinoPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => route,
+      ),
+    )
+        .then((value) {
+      onTap(value);
+    });
   }
 
   static changeRoot(BuildContext context, String route) {
