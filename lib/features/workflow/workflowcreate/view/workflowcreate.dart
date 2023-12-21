@@ -25,6 +25,7 @@ import '../../../../models/popup/form/components/dropdown_main_api.dart';
 import '../../../../models/popup/form/components/labels.dart';
 import '../../../../models/popup/form/components/number_increment.dart';
 import '../../../../models/popup/form/components/text_input.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class WorkflowCreate extends StatefulWidget {
   dynamic? datas = [];
@@ -42,6 +43,8 @@ class _WorkflowCreateState extends State<WorkflowCreate> {
   final controller = Get.put(PanelController());
   List<Map<String, dynamic>>? form_field_Values = [];
   Widget child = Container();
+  String dateValue = "";
+  String timeValue = "";
 
   @override
   Widget build(BuildContext context) {
@@ -200,15 +203,21 @@ class _WorkflowCreateState extends State<WorkflowCreate> {
           label: widget.datas.settings.specific.tableColumns[indexwidget].label,
           isDisabled: true,
           onChangedDate: (p0) {
+            dateValue = p0;
             updateFormValues_WhileSubmit(
                 widget.datas.settings.specific.tableColumns[indexwidget],
-                p0,
+                (timeValue.isNotEmpty)
+                    ? dateValue + "," + timeValue
+                    : dateValue,
                 widget.datas.id);
           },
           onChangedTime: (p0) {
+            timeValue = p0;
             updateFormValues_WhileSubmit(
                 widget.datas.settings.specific.tableColumns[indexwidget],
-                p0,
+                (dateValue.isNotEmpty)
+                    ? dateValue + "," + timeValue
+                    : timeValue,
                 widget.datas.id);
           },
           placeholder: widget.datas.settings.specific.tableColumns[indexwidget]
@@ -272,7 +281,13 @@ class _WorkflowCreateState extends State<WorkflowCreate> {
       case Strings.table:
         child = BottomUpTable();
         break;
-
+      case Strings.signature:
+        child = Container(
+          height: 100,
+          width: MediaQuery.of(context).size.width,
+          child: SfSignaturePad(),
+        );
+        break;
       default:
         child = Container(
             child: Labels(
@@ -409,6 +424,7 @@ class _WorkflowCreateState extends State<WorkflowCreate> {
     int? index = form_field_Values?.indexWhere((f) => f['id'] == data.id);
     if (index! >= 0) {
       // update the value
+
       form_field_Values?.removeAt(index);
     }
     // add the value

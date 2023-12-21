@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import '../controllers/login_controller.dart';
 import '../features/workflow/view/onBoardScreen.dart';
 import '../layouts/auth/auth_layout.dart';
@@ -101,8 +102,8 @@ class LoginPage extends StatelessWidget {
               },
               label: 'Form Builder',
               isFullWidth: true,
-              color: Colors.grey,
             ),
+
             const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

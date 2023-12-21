@@ -21,7 +21,7 @@ class Validation {
       allowedFileTypes: json['allowedFileTypes'] != null
           ? (json['allowedFileTypes'] as List).map((i) => Object).toList()
           : null,
-      contentRule: json['contentRule'],
+      contentRule: json['contentRule'] != null ? json['contentRule'] : "",
       enableSettings: json['enableSettings'] != null
           ? (json['enableSettings'] as List).map((i) => Object).toList()
           : null,

@@ -183,14 +183,13 @@ class _FormBuilderState extends State<Workflow> {
       //Date Time Components
       case Strings.date:
         child = DateTimeInput(
-          initialValue: '',
-          label: datas.panels[iPanel].fields[indexwidget].label,
-          isDisabled: true,
-          onChangedDate: (value) => controller.ondateandtime_DateChanged,
-          onChangedTime: (value) => controller.ondateandtime_TimeChanged,
-          placeholder: datas
-              .panels[iPanel].fields[indexwidget].settings.general.placeholder,
-        );
+            initialValue: '',
+            label: datas.panels[iPanel].fields[indexwidget].label,
+            isDisabled: true,
+            onChangedDate: (value) => controller.ondateandtime_DateChanged,
+            onChangedTime: (value) => controller.ondateandtime_TimeChanged,
+            placeholder: datas.panels[iPanel].fields[indexwidget].settings
+                .general.placeholder);
         break;
       case Strings.dateTime:
         child = DateInput(

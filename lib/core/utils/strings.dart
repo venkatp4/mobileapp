@@ -6,6 +6,8 @@ class Strings {
   static const ondemand = "ON_DEMAND";
   static const fixed = "FIXED";
   static const txt_add_button = "Add +";
+  static const txt_save_button = "Save";
+  static const txt_submit_button = "Submit";
 
   // Component Keys
   static const shortText = "SHORT_TEXT";
@@ -20,6 +22,7 @@ class Strings {
   static const singleSelect = "SINGLE_SELECT";
   static const multipleSelect = "MULTIPLE_CHOICE";
   static const table = "TABLE";
+  static const signature = "SIGNATURE";
 
   //Keyboard Type
   static const text = "TEXT";

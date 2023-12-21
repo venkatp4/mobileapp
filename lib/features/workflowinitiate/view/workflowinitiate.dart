@@ -25,6 +25,7 @@ import '../../../models/popup/form/components/text_input.dart';
 import '../../../models/popup/form/components/time_input.dart';
 import '../../../models/popup/form/controllers/panel_controller.dart';
 import '../../../routes.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class WorkflowInitiate extends StatefulWidget {
   const WorkflowInitiate({Key? key}) : super(key: key);
@@ -73,17 +74,35 @@ class _WorkflowInitiateState extends State<WorkflowInitiate> {
                       ? Center(
                           child: Text(viewmodel.errorMessage),
                         )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: datas?.panels[0].fields.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: loadWidgets(0, index,
-                                    datas.panels[0].fields[index].type));
-                          }),
+                      : ListView(children: [
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: datas?.panels[0].fields.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: loadWidgets(0, index,
+                                        datas.panels[0].fields[index].type));
+                              }),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              children: [
+                                Spacer(),
+                                Button(
+                                    label: Strings.txt_save_button,
+                                    onPressed: () {}),
+                                Spacer(),
+                                Button(
+                                    label: Strings.txt_submit_button,
+                                    onPressed: () {}),
+                                Spacer(),
+                              ],
+                            ),
+                          ),
+                        ]),
             ),
           ],
         ),
@@ -93,6 +112,7 @@ class _WorkflowInitiateState extends State<WorkflowInitiate> {
 
   Widget loadWidgets(int iPanel, int indexwidget, String widgetType) {
     Widget child;
+
     switch (widgetType) {
       case Strings.label:
         child = Container(
@@ -231,7 +251,13 @@ class _WorkflowInitiateState extends State<WorkflowInitiate> {
         child =
             dynamic_workflowContainer(datas.panels[iPanel].fields[indexwidget]);
         break;
-
+      case Strings.signature:
+        child = Container(
+          height: 100,
+          width: MediaQuery.of(context).size.width,
+          child: SfSignaturePad(),
+        );
+        break;
       default:
         child = Container(
             child: Labels(
@@ -291,8 +317,11 @@ class _WorkflowInitiateState extends State<WorkflowInitiate> {
           sColumnName: datas.panels[iPanel].fields[indexwidget].id,
           hasError: controller.hasNumberError.value,
           icon: null,
-          keyboardType: datas.panels[iPanel].fields[indexwidget].settings
-              .validation.contentRule,
+          keyboardType: (datas.panels[iPanel].fields[indexwidget].settings
+                      .validation.contentRule ==
+                  Strings.text)
+              ? TextInputType.text
+              : TextInputType.number,
           onChanged: controller.onNumberChanged,
           bOptional: datas.panels[iPanel].fields[indexwidget].settings
                   .validation.fieldRule ==
