@@ -8,10 +8,6 @@ class AaaEncryption {
   static Key KeyVal = Key.fromBase64('');
   static IV IvVal = IV.fromBase64('');
   static String sToken = '';
-/*
-  static Key KeyVal =
-  Key.fromBase64('4DVLvtBYHi6UW48/X8whN6lZd1HZayJW89J3fM1E5ew=');
-  static IV IvVal = IV.fromBase64('L0LJUxv1l/NIlpIzjErV7g==');*/
 
   SharedPreferences pre = SharedPreferences.getInstance() as SharedPreferences;
 

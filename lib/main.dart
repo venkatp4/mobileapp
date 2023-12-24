@@ -3,6 +3,10 @@ import 'package:ez/controllers/browse_view_controller.dart';
 import 'package:ez/controllers/dashmaincontroller.dart';
 import 'package:ez/controllers/foldermaincontroller.dart';
 import 'package:ez/controllers/session_controller.dart';
+import 'package:ez/features/login/viewmodel/loginviewmodel.dart';
+import 'package:ez/features/workflow/view_model/viewmodel.dart';
+import 'package:ez/features/workflowinitiate/viewmodel/viewmodel.dart';
+import 'package:ez/pages/login.dart';
 import 'package:ez/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +17,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:catcher/catcher.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 
 import 'controllers/auth_controller.dart';
 import 'controllers/forgot_controller.dart';
@@ -22,7 +27,7 @@ import 'controllers/taskcontroller.dart';
 import 'controllers/taskmaincontroller.dart';
 import 'controllers/webmaincontroller.dart';
 //import 'package:local_auth/local_auth.dart';
-import 'models/popup/controllers/MultiSelectMainController.dart';
+import 'core/di/injection.dart';
 import 'models/popup/controllers/commentcontroller.dart';
 
 void initialize() {
@@ -35,7 +40,6 @@ void initialize() {
   Get.put<AuthController>(AuthController());
   Get.put<SessionController>(SessionController());
   //Get.put<LanguageController>(LanguageController());
-  Get.put<LoginController>(LoginController());
   Get.put<ForgotController>(ForgotController());
   Get.put<SignUpController>(SignUpController());
   Get.put<BrowseViewController>(BrowseViewController());
@@ -45,7 +49,7 @@ void initialize() {
   Get.put<FolderMainController>(FolderMainController());
   Get.put<WebMainController>(WebMainController());
   Get.put<CommentController>(CommentController());
-  //Get.put<MultiSelectMainController>(MultiSelectMainController());
+  Get.put<LoginController>(LoginController());
 }
 
 void main() async {
@@ -53,7 +57,9 @@ void main() async {
   await GetStorage.init();
 
   initialize();
-  CatcherOptions debugOptions = CatcherOptions(DialogReportMode(), [ConsoleHandler()]);
+  setupLazySingleton();
+  CatcherOptions debugOptions =
+      CatcherOptions(DialogReportMode(), [ConsoleHandler()]);
   CatcherOptions releaseOptions = CatcherOptions(DialogReportMode(), []);
 /*
   debugPrint('Authendicate');
@@ -64,7 +70,26 @@ void main() async {
 /*  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
     (_) => runApp(MyApp()),
   );*/
-  runApp(MyApp());
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  runApp(
+    MultiProvider(
+      providers: [
+        // Provide the UserViewModel with UserRepository dependency to manage user data and API calls
+        ChangeNotifierProvider<WorkflowViewModel>(
+          create: (context) => sl.get<WorkflowViewModel>(),
+        ),
+        ChangeNotifierProvider<WorkflowInitiateViewModel>(
+            create: (context) => sl.get<WorkflowInitiateViewModel>()),
+        ChangeNotifierProvider<LoginViewModel>(
+          create: (context) => sl.get<LoginViewModel>(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 /*Future<void> main() async {
@@ -92,14 +117,16 @@ class MyApp extends StatelessWidget {
         //allowFontScaling: true,
         builder: (_, child) => GetMaterialApp(
             theme: ThemeData(
-                primarySwatch: Colors.blue,
+                //primarySwatch: Colors.grey.shade100,
+
                 fontFamily: 'Outfit',
-                accentColor: Colors.purple,
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                    secondary: Colors.purple, background: Colors.white),
                 dividerColor: Colors.white),
             navigatorKey: Catcher.navigatorKey,
             title: 'EZOFIS V5',
             debugShowCheckedModeBanner: false,
-            initialRoute: "/",
+            initialRoute: '/',
             getPages: AppRoutes.routes),
       );
     });

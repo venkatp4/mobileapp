@@ -1,3 +1,4 @@
+import 'package:ez/core/CustomColors.dart';
 import 'package:flutter/material.dart';
 
 import '../config/theme.dart';
@@ -40,7 +41,7 @@ class Button extends StatelessWidget {
         ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(isRounded ? 48 : 1),
+            borderRadius: BorderRadius.circular(isRounded ? 48 : 5),
           ),
         ),
       ),
@@ -49,7 +50,7 @@ class Button extends StatelessWidget {
           : Text(
               label,
               style: const TextStyle(
-                  //color: Colors.white,
+                  color: CustomColors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
             ),

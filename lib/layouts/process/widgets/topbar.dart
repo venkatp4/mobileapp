@@ -36,7 +36,8 @@ class TopBarDesign extends StatelessWidget implements PreferredSizeWidget {
                   child: Container(
                       height: 42,
                       margin: EdgeInsets.all(20),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             /*         RawMaterialButton(

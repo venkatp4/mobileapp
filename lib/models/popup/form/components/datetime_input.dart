@@ -10,6 +10,7 @@ import 'clear_button.dart';
 import 'reset_text_field.dart';
 
 import '../../../../config/theme.dart';
+import 'package:intl/intl.dart';
 
 class DateTimeInput extends StatefulWidget {
   const DateTimeInput({
@@ -89,10 +90,39 @@ class _DateTimeInputState extends State<DateTimeInput> {
     onChangedTime('');
   }
 
+  String formatPickerDateToString(String inputDate) {
+    DateTime tempDate = new DateFormat("dd MMM yyyy").parse(inputDate);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(tempDate);
+    return formattedDate;
+  }
+
+  TimeOfDay time12to24Format(String time) {
+    String dateTimeSplit =
+        (time.split(",").length > 1) ? time.split(",")[1] : time;
+    int h = int.parse(dateTimeSplit.split(":").first);
+    int m = int.parse(dateTimeSplit.split(":").last.split(" ").first);
+    String meridium =
+        dateTimeSplit.split(":").last.split(" ").last.toLowerCase();
+    if (meridium == "pm") {
+      if (h != 12) {
+        h = h + 12;
+      }
+    }
+    if (meridium == "am") {
+      if (h == 12) {
+        h = 00;
+      }
+    }
+
+    return TimeOfDay(hour: h, minute: m);
+  }
+
   Future _showDatePicker(BuildContext context) async {
     final date = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: (modelValueDate == '')
+          ? DateTime.now()
+          : DateTime.parse(formatPickerDateToString(modelValueDate)),
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
@@ -106,7 +136,9 @@ class _DateTimeInputState extends State<DateTimeInput> {
   Future _showTimePicker(BuildContext context) async {
     final time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: (modelValueTime == '')
+          ? TimeOfDay.now()
+          : time12to24Format(modelValueTime),
     );
 
     if (time != null) {

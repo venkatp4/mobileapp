@@ -30,12 +30,12 @@ class ProcessLayoutTab extends StatelessWidget {
           child: Container(
         width: mediaQuery.size.width,
         height: mediaQuery.size.height,
-        decoration: BoxDecoration(color: Colors.black.withOpacity(.7)),
+        decoration: BoxDecoration(color: Colors.white.withOpacity(.7)),
         child: SingleChildScrollView(
           //SingleChildScrollView
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-            //padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            //padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+            padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
             child: Column(
               //
               crossAxisAlignment: CrossAxisAlignment.start,

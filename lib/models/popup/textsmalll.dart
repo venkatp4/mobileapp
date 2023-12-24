@@ -19,11 +19,9 @@ class _TextSmallPopState extends State<TextSmallPop> {
   @override
   Widget build(BuildContext context) {
     return Text(widget.sLabel,
-        maxLines: 2,
+        maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-            fontSize: 16,
-            color: Colors.purple.shade400,
-            fontWeight: FontWeight.w400));
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 14, color: Colors.purple.shade400, fontWeight: FontWeight.w400));
   }
 }
