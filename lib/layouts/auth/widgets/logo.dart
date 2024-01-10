@@ -8,6 +8,8 @@ class Logo extends StatelessWidget {
     return Image.asset(
       'assets/images/logo/ezofis/logo.png',
       height: 36,
+      width: 200,
+      alignment: Alignment.topRight,
     );
   }
 }

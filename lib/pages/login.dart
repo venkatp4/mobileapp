@@ -1,9 +1,12 @@
+import 'package:ez/core/ApiClient/endpoint.dart';
 import 'package:ez/core/di/injection.dart';
 import 'package:ez/core/snackbar/snack_bar.dart';
 import 'package:ez/core/utils/strings.dart';
 import 'package:ez/features/login/model/login_request.dart';
 import 'package:ez/features/login/viewmodel/loginviewmodel.dart';
+import 'package:ez/features/tasklist/view/tasklist.dart';
 import 'package:ez/features/workflow/view/workflow.dart';
+import 'package:ez/routes.dart';
 import 'package:ez/utils/helper/aes_encryption.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -124,13 +127,11 @@ class LoginPage extends StatelessWidget {
                       context, Strings.alert_error_invalidUser);
                 }
 
-                final requestbody = {
-                  "email": loginRequest.email,
-                  "password": loginRequest.password,
-                  "loggedFrom": loginRequest.loggedFrom,
-                  "portalId": loginRequest.portalId
-                };
-
+                final requestbody = LoginRequest(
+                    email: loginRequest.email,
+                    password: loginRequest.password,
+                    loggedFrom: loginRequest.loggedFrom,
+                    portalId: loginRequest.portalId);
                 final viewmodel =
                     Provider.of<LoginViewModel>(context, listen: false);
                 await viewmodel.validateCredentials(requestbody);
@@ -145,7 +146,18 @@ class LoginPage extends StatelessWidget {
               label: 'Form Builder',
               isFullWidth: true,
             ),
-
+            SizedBox(height: 10),
+            // Button(
+            //     isFullWidth: true,
+            //     label: "TaskList",
+            //     onPressed: () {
+            //       String formId = "19";
+            //       String path =
+            //           EndPoint.getPath(method: "form/${formId}/entry/all");
+            //
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: (context) => TaskListScreen()));
+            //     }),
             const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -28,7 +28,7 @@ class AuthLayout extends StatelessWidget {
         width: mediaQuery.size.width,
         height: mediaQuery.size.height,
         decoration: const BoxDecoration(
-            color: Colors.red,
+            // color: Colors.red,
             image: DecorationImage(
                 image: AssetImage("assets/images/background/back.jpeg"),
                 fit: BoxFit.fill)),

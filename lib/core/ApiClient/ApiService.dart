@@ -5,11 +5,11 @@ import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 
 import '../../features/workflow/model/Panel.dart';
 
-abstract class Service {
+abstract class ApiService {
   Future<dynamic> getData(String path);
 }
 
-class FileManager implements Service {
+class FileManager implements ApiService {
   final Dio _dio; // Dio instance to perform HTTP requests.
   FileManager(Dio dio) : _dio = dio;
 
@@ -27,7 +27,7 @@ class FileManager implements Service {
   }
 }
 
-class ApiManager implements Service {
+class ApiManager implements ApiService {
   final Dio _dio; // Dio instance to perform HTTP requests.
   ApiManager(Dio dio) : _dio = dio;
 

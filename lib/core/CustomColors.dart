@@ -11,4 +11,6 @@ class CustomColors {
   static const Color white24 = const Color(0x3DFFFFFF);
   static const Color red = const Color(0xFFF44336);
   static const Color green = const Color(0xFF4CAF50);
+  static const Color paleblue = const Color(0xFF15AFCA);
+  static const Color transparent = const Color(0x00FFFFFF);
 }

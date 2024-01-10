@@ -1,4 +1,8 @@
+import 'package:ez/core/components/custom/custom_checkbox.dart';
+import 'package:ez/core/components/custom/customlogin.dart';
 import 'package:ez/features/qr_scanner/view/qrscanner.dart';
+import 'package:ez/features/task_create/view/task_add.dart';
+import 'package:ez/features/tasklist/view/tasklist.dart';
 import 'package:ez/features/workflow/view/workflow.dart';
 import 'package:ez/features/workflow/workflowcreate/view/workflowcreate.dart';
 import 'package:ez/features/workflowinitiate/view/workflowinitiate.dart';
@@ -37,6 +41,8 @@ class AppRoutes {
   static const workflowinitiate = "workflowinitiate";
   static const workflowcreate = "workflowcreate";
   static const qrscanner = "qrscanner";
+  static const tasklist = "tasklist";
+  static const taskcreate = "taskcreate";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
@@ -52,8 +58,12 @@ class AppRoutes {
             settings: settings, builder: (_) => Workflow());
       case AppRoutes.workflowinitiate:
         return MaterialPageRoute(builder: (_) => WorkflowInitiate());
+      case AppRoutes.tasklist:
+        return MaterialPageRoute(builder: (_) => TaskListScreen());
       case AppRoutes.qrscanner:
         return MaterialPageRoute(builder: (_) => QrScanner());
+      case AppRoutes.taskcreate:
+        return MaterialPageRoute(builder: (_) => TaskCreate());
       // case AppRoutes.workflowcreate:
       //   return MaterialPageRoute(
       //       builder: (_) => WorkflowCreate(
@@ -122,7 +132,14 @@ class AppRoutes {
     GetPage(name: '/noConnection', page: () => LostConnection()),
     GetPage(
         name: '/loginscreen',
-        page: () => LoginPage(),
+        // page: () => CustomCheckbox("Label1 ", "Label2", (p0) {}, (p0) {}),
+        page: () => CustomLogin(
+            loginType: 1,
+            signInAction: (username, password) {},
+            signUpAction: () {},
+            googleAction: () {},
+            microsoftAction: () {},
+            forgotPassword: () {}),
         transition: Transition.fadeIn,
         transitionDuration: Duration(milliseconds: 500)),
     GetPage(

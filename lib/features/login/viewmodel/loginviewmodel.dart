@@ -22,7 +22,7 @@ class LoginViewModel extends ChangeNotifier {
 
     try {
       final encryptedData = await repo.validateCredentials(
-          EndPoint.BaseUrl + EndPoint.login, _data);
+          EndPoint.getPath(method: EndPoint.login), _data);
       String decryptedData = AaaEncryption.dec_base64(encryptedData);
       final decryptedJson = json.decode(decryptedData);
       data = LoginResponse.fromJson(decryptedJson);

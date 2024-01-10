@@ -2,6 +2,9 @@ import 'package:ez/core/ApiClient/ApiService.dart';
 import 'package:ez/features/login/repository/loginrepo.dart';
 import 'package:ez/features/login/repository/loginrepoimpl.dart';
 import 'package:ez/features/login/viewmodel/loginviewmodel.dart';
+import 'package:ez/features/tasklist/repository/repo_impl.dart';
+import 'package:ez/features/tasklist/repository/repository.dart';
+import 'package:ez/features/tasklist/viewmodel/viewmodel.dart';
 import 'package:ez/features/workflow/repository/repo_impl.dart';
 import 'package:ez/features/workflow/repository/repository.dart';
 import 'package:ez/features/workflow/view/workflow.dart';
@@ -27,4 +30,7 @@ setupLazySingleton() {
       () => WorkflowInitiateViewModel(sl()));
   sl.registerLazySingleton<LoginReposity>(() => LoginRepoImpl(sl()));
   sl.registerLazySingleton<LoginViewModel>(() => LoginViewModel(sl()));
+
+  sl.registerLazySingleton<TaskListRepo>(() => TaskListRepoImpl(sl()));
+  sl.registerLazySingleton<TaskListViewModel>(() => TaskListViewModel(sl()));
 }
